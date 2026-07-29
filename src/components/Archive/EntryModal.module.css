@@ -1,0 +1,568 @@
+/* =========================================================
+   EntryModal.module.css — detail modal styles.
+   One overlay + one .modal container, with [data-type]
+   switching between three layouts:
+     - TOSHEH  → small card, raw→refined transition
+     - ARTICLE → larger scrollable prose
+     - POEM    → no card, just text on a darker overlay
+   ========================================================= */
+
+/* ---------- Overlay ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 12, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100; /* above Hero active chip (z=50) */
+  padding: 24px;
+  animation: overlayFade 0.3s var(--ease-out);
+}
+
+@keyframes overlayFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- Modal container ----------
+   Three sizes based on type. The data-type attribute drives
+   max-width + padding + background. */
+.modal {
+  position: relative;
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  animation: modalRise 0.4s var(--ease-out);
+  max-height: 85vh;
+  overflow: hidden;
+}
+
+@keyframes modalRise {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* TOSHEH: small card */
+.modal[data-type="TOSHEH"] {
+  max-width: 480px;
+  padding: 36px 32px 28px;
+}
+
+/* ARTICLE: large scrollable prose */
+.modal[data-type="ARTICLE"] {
+  max-width: 720px;
+  padding: 0; /* scroll body handles its own padding */
+}
+
+/* POEM: medium, centered, NO real card feel —
+   we still keep a subtle surface because the overlay is busy.
+   But padding is generous and content is centered. */
+.modal[data-type="POEM"] {
+  max-width: 560px;
+  padding: 56px 40px 48px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: visible;
+  /* Poem overlay is darker (more backdrop blur). */
+}
+
+/* When the poem modal is open, darken the overlay more. */
+.modal[data-type="POEM"] ~ * {
+  /* no-op (siblings) — kept for clarity */
+}
+
+.overlay:has(.modal[data-type="POEM"]) {
+  background: rgba(10, 10, 12, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 48px 32px;
+}
+
+/* Loading & error states: small card */
+.modal[data-type="loading"] {
+  max-width: 360px;
+  padding: 36px 24px;
+  text-align: center;
+}
+
+/* ---------- Close button ---------- */
+.close {
+  position: absolute;
+  top: 16px;
+  left: 16px; /* RTL: close on the left */
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s var(--ease-out), background 0.2s var(--ease-out);
+  z-index: 2;
+}
+
+.close:hover,
+.close:focus-visible {
+  color: var(--text);
+  background: var(--surface);
+  outline: none;
+}
+
+/* For POEM, the close sits above the text (since there's no card). */
+.modal[data-type="POEM"] .close {
+  top: -44px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid var(--line);
+  background: rgba(10, 10, 12, 0.6);
+}
+
+/* ---------- Loading / error states ---------- */
+.loadingState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px 0;
+}
+
+.loadingDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.4;
+  animation: loadingPulse 1.4s var(--ease-out) infinite;
+}
+
+.loadingDot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loadingDot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loadingPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.errorState p {
+  color: var(--danger);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.errorButton {
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: color 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
+}
+
+.errorButton:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ===================== TOSHEH detail ===================== */
+.toshehDetail {
+  /* nothing special — modal padding handles spacing */
+}
+
+.toshehHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 0.78rem;
+  color: var(--ink-raw);
+  flex-wrap: wrap;
+}
+
+.rawDot {
+  color: var(--accent);
+  font-size: 1.4rem;
+  line-height: 0.6;
+  text-shadow: 0 0 8px var(--accent-soft);
+}
+
+.mood {
+  color: var(--ink-raw);
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+}
+
+.source {
+  color: var(--ink-raw);
+  font-size: 0.74rem;
+}
+
+.source::before {
+  content: "← ";
+  color: var(--muted-2);
+}
+
+.rawText {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--text);
+  font-style: italic;
+  font-weight: 300;
+  margin: 0 0 16px;
+  transition: opacity 0.4s var(--ease-out), filter 0.4s var(--ease-out);
+}
+
+.rawText[data-hidden="true"] {
+  opacity: 0;
+  filter: blur(8px);
+  position: absolute;
+  pointer-events: none;
+}
+
+.refinedText {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--text);
+  margin: 0;
+  min-height: 4em; /* prevents jump when raw→refined swaps */
+  white-space: pre-wrap;
+}
+
+.cursor {
+  color: var(--accent);
+  animation: cursorBlink 0.9s steps(2, end) infinite;
+  margin-right: 2px;
+}
+
+@keyframes cursorBlink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--surface-strong);
+  font-size: 0.78rem;
+  color: var(--muted-2);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
+}
+
+.footer[data-shown="true"] {
+  opacity: 1;
+}
+
+.footer time {
+  font-variant-numeric: tabular-nums;
+}
+
+.unfinishedTag {
+  color: var(--danger);
+  border: 1px dashed var(--danger-soft);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+}
+
+/* ===================== ARTICLE detail ===================== */
+.articleDetail {
+  /* outer padding handled by scroll body */
+}
+
+.articleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.typeLabel {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.articleHeader time {
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.articleTitle {
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--text);
+  margin: 0 0 12px;
+  letter-spacing: -0.015em;
+}
+
+.articleLead {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0 0 24px;
+  font-style: italic;
+}
+
+.articleMeta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--surface-strong);
+}
+
+.articleMetaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: var(--ink-raw);
+  font-variant-numeric: tabular-nums;
+}
+
+.readingIcon {
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+.articleTags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--surface-strong);
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+.prose {
+  /* The actual scrollable body. */
+}
+
+.prose p {
+  font-size: 1.02rem;
+  line-height: 2;
+  color: var(--muted);
+  margin: 0 0 1.4em;
+}
+
+.prose strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.prose a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-soft);
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.prose a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* ARTICLE modal uses an inner scroll container.
+   Since the modal sets max-height: 85vh + overflow: hidden,
+   we make .articleDetail itself the scroller. */
+.modal[data-type="ARTICLE"] {
+  overflow-y: auto;
+  padding: 48px 48px 40px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.modal[data-type="ARTICLE"]::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal[data-type="ARTICLE"]::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 3px;
+}
+
+/* ===================== POEM detail ===================== */
+.poemDetail {
+  /* no card — text floats */
+}
+
+.poemEmotion {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  color: var(--muted-2);
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  opacity: 0.7;
+}
+
+.poemBody {
+  margin: 0 auto 36px;
+}
+
+.poemLine {
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  line-height: 2.3; /* very tall — breathing */
+  color: color-mix(in srgb, var(--accent-2) 88%, var(--text) 12%);
+  margin: 0 auto;
+  max-width: 28ch;
+  font-weight: 400;
+}
+
+.poemRule {
+  width: 64px;
+  height: 1px;
+  background: var(--accent-2-soft);
+  margin: 0 auto 28px;
+  opacity: 0.6;
+}
+
+.poemFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.poemDedicate {
+  color: var(--accent-2);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.poemDate {
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 640px) {
+  .overlay {
+    padding: 16px;
+  }
+
+  .modal[data-type="TOSHEH"] {
+    padding: 28px 22px 22px;
+  }
+
+  .modal[data-type="ARTICLE"] {
+    padding: 36px 22px 28px;
+  }
+
+  .modal[data-type="POEM"] {
+    padding: 40px 20px 32px;
+  }
+
+  .rawText,
+  .refinedText {
+    font-size: 0.98rem;
+  }
+
+  .articleTitle {
+    font-size: 1.4rem;
+  }
+
+  .prose p {
+    font-size: 0.96rem;
+    line-height: 1.95;
+  }
+
+  .poemLine {
+    font-size: 1.05rem;
+    line-height: 2.05;
+  }
+
+  .modal[data-type="POEM"] .close {
+    top: -36px;
+  }
+}
+
+/* ===================== Reduced motion ===================== */
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .modal {
+    animation: none;
+  }
+
+  .rawText {
+    transition: none;
+  }
+
+  .footer {
+    transition: none;
+    opacity: 1;
+  }
+
+  .cursor {
+    animation: none;
+    opacity: 0.6;
+  }
+
+  .loadingDot {
+    animation: none;
+    opacity: 0.6;
+  }
+}

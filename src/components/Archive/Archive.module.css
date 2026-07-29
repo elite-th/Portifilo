@@ -1,0 +1,332 @@
+/* =========================================================
+   Archive — «آزمایشگاه» (Lab)
+   Tokens come from src/app/globals.css (no new tokens).
+   Layout follows the new design: Deep Ink background with
+   parchment-like cards, crimson accents.
+   ========================================================= */
+
+.archive {
+  width: 100%;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  padding: 80px 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.archiveInner {
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ---------- Header (kicker / title / subtitle) ---------- */
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.kicker {
+  display: inline-block;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin: 0 0 16px;
+}
+
+.title {
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+
+.subtitle {
+  font-size: 1.02rem;
+  line-height: 1.9;
+  color: var(--muted);
+  margin: 0 auto;
+  max-width: 48ch;
+}
+
+/* ---------- Stats (Task 23 §8) ----------
+   Each number is a button — click → filter that type.
+   Active state matches the filter bar (accent fill). */
+.stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.statsLabel {
+  color: var(--ink-raw);
+  letter-spacing: 0.02em;
+}
+
+.statButton {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  background: none;
+  border: 1px solid transparent;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--muted);
+  transition: color 0.25s var(--ease-out),
+    background 0.25s var(--ease-out),
+    border-color 0.25s var(--ease-out);
+}
+
+.statButton:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+
+.statButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.statButton[aria-pressed="true"] {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: var(--accent-soft);
+}
+
+.statNumber {
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+}
+
+.statUnit {
+  font-size: 0.85rem;
+  color: var(--ink-raw);
+}
+
+.statSeparator {
+  color: var(--muted-2);
+  user-select: none;
+}
+
+/* ---------- Filter bar ---------- */
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 56px;
+}
+
+.filterButton {
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: color 0.25s var(--ease-out),
+    border-color 0.25s var(--ease-out),
+    background 0.25s var(--ease-out);
+}
+
+.filterButton:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.filterButton[aria-pressed="true"] {
+  color: var(--bg);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.filterButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Masonry (Task 23 §2.3) ---------- */
+.masonry {
+  direction: rtl; /* RTL: first item in the right column, per Persian reading */
+  column-count: 3;
+  column-gap: 24px;
+}
+
+.masonryItem {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 24px;
+  display: block;
+  width: 100%;
+  /* Entrance animation — fades + lifts. Driven by `data-entered` on the
+     child card, but the wrapper controls the animation-delay so the
+     staggering applies to the wrapper, not the inner card. */
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(6px);
+  pointer-events: none;
+  transition: opacity 0.6s var(--ease-out),
+    transform 0.7s var(--ease-out),
+    filter 0.5s var(--ease-out);
+}
+
+.masonryItem[data-entered="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  pointer-events: auto;
+}
+
+/* ---------- Loading state ---------- */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 60px 0;
+}
+
+.loadingDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.4;
+  animation: loadingPulse 1.4s var(--ease-out) infinite;
+}
+
+.loadingDot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loadingDot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loadingPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+/* ---------- Empty / error states ---------- */
+.empty {
+  text-align: center;
+  color: var(--muted-2);
+  font-size: 0.95rem;
+  padding: 60px 0;
+}
+
+.error {
+  text-align: center;
+  padding: 48px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.error p {
+  color: var(--danger);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.errorButton {
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: color 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
+}
+
+.errorButton:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ---------- Screen-reader-only announcement ---------- */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1023px) {
+  .masonry {
+    column-count: 2;
+    column-gap: 20px;
+  }
+
+  .masonryItem {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .archive {
+    padding: 56px 20px;
+  }
+
+  .masonry {
+    column-count: 1;
+    column-gap: 0;
+  }
+
+  .masonryItem {
+    margin-bottom: 18px;
+    /* Mobile: opacity-only — transform/filter feels heavy on small screens. */
+    transform: none;
+    filter: none;
+    transition: opacity 0.4s var(--ease-out);
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .masonryItem {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    pointer-events: auto;
+    transition: none;
+  }
+
+  .loadingDot {
+    animation: none;
+    opacity: 0.6;
+  }
+}

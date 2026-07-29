@@ -1,0 +1,567 @@
+/* =========================================================
+   Hero — Knowledge Alchemy (Scattered Raw → Refined)
+   Tokens are defined globally in src/app/globals.css
+   ---------------------------------------------------------
+   Layout (Loop-4, Task 12 §2 — Centered "قلب و حومه"):
+     - Desktop (≥1180px): centered textBlock in the geometric
+       heart of the hero (max-width 560px, z-index 10), with
+       scatterField as an absolute transparent overlay covering
+       the whole hero (CRITICAL: no z-index on scatterField —
+       see roadmap §1.3-A). Chips sit at z-index 2/3 (raw/trace)
+       in the background; the active chip pops to z-index 50 to
+       hover above the textBlock.
+     - Mobile (≤900px): flex column — textBlock on top (still
+       centered, max-width 100%), scatterField below in static
+       position with chips arranged as a 2-column grid.
+   The visual half is now a transparent overlay of scattered
+   chips rendered by <ThoughtCluster /> (Worker A). The p5
+   constellation has been removed (see design spec §0).
+   ========================================================= */
+
+.page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient background — crimson glow + antique gold for depth */
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      55% 45% at 75% 18%,
+      rgba(139, 0, 0, 0.08) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 35% at 18% 82%,
+      rgba(197, 160, 89, 0.06) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      50% 40% at 50% 100%,
+      rgba(139, 0, 0, 0.04) 0%,
+      transparent 65%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(139, 0, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 0, 0, 0.02) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center;
+  mask-image: radial-gradient(80% 80% at 50% 40%, black 30%, transparent 90%);
+  -webkit-mask-image: radial-gradient(80% 80% at 50% 40%, black 30%, transparent 90%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===================== Header ===================== */
+.header {
+  position: relative;
+  z-index: 20; /* Loop-4: above textBlock (z=10) and active chips (z=50) — per spec §6.1 */
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brandDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navLink {
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-decoration: none;
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.3s var(--ease-out);
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.35s var(--ease-out);
+}
+
+.navLink:hover,
+.navLink:focus-visible {
+  color: var(--text);
+}
+
+.navLink:hover::after,
+.navLink:focus-visible::after {
+  width: 100%;
+}
+
+/* ===================== Hero layout ===================== */
+/* Loop-4 (Task 12 §2.2): centered layout — textBlock in the
+   geometric heart of the hero. scatterField (rendered by
+   <ThoughtCluster>) is positioned absolute and covers the whole
+   hero (see ThoughtCluster.module.css). It is rendered BEFORE
+   textBlock in DOM order; with no z-index on scatterField,
+   chips (z=2/3/50) compete in the page stacking context with
+   textBlock (z=10), header (z=20), and footer (z=20) — exactly
+   the layered depth we want (active chip z=50 > footer z=20).
+   CRITICAL: .hero itself must NOT create a stacking context
+   (z-index: auto), otherwise the chips are trapped inside it
+   and the active chip can never rise above the footer. */
+.hero {
+  position: relative;
+  /* z-index intentionally omitted (auto) — see CRITICAL note above. */
+  flex: 1;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 32px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100svh - 152px); /* Loop-5 (Task 16): header 85px + footer 67px = 152px */
+}
+
+/* scatterOverlay — Loop-4 wrapper around <ThoughtCluster />.
+   Absolute overlay covering the whole hero. CRITICAL (roadmap §1.3-A):
+   NO z-index — must NOT create a stacking context, otherwise the
+   active chip (z=50 inside .scatterField) would be trapped below
+   textBlock (z=10) in the hero stacking context.
+   CRITICAL (roadmap §1.3-B): pointer-events: none so the overlay
+   cannot steal clicks from textBlock. Children chips/reset re-enable
+   pointer-events: auto themselves (see RawThought.module.css and
+   ThoughtCluster.module.css). */
+.scatterOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* z-index intentionally omitted (auto) — see CRITICAL note above. */
+  overflow: visible; /* escaped t6 chip can break out on desktop */
+}
+
+/* textBlock — قلب. Centered, z-index 10, above background chips (z=2/3),
+   below active chips (z=50). max-width 560px fits 2-line h1 at 7rem. */
+.textBlock {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ===================== Eyebrow ===================== */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  backdrop-filter: blur(6px);
+  margin: 0 auto;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: heroRise 0.9s var(--ease-out) 0.05s forwards;
+}
+
+.eyebrowDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.eyebrowSlash {
+  color: var(--muted-2);
+  margin: 0 2px;
+}
+
+/* ===================== Headline ===================== */
+.headline {
+  font-size: clamp(3.5rem, 7vw, 7.5rem);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: heroRise 1s var(--ease-out) 0.18s forwards;
+}
+
+.headlineAccent {
+  color: var(--accent);
+  position: relative;
+  display: inline-block;
+}
+
+.headlineAccent::after {
+  content: "";
+  position: absolute;
+  bottom: 0.08em;
+  right: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent),
+    transparent
+  );
+  opacity: 0.55;
+}
+
+/* ===================== Description ===================== */
+.description {
+  font-size: 1.0625rem;
+  line-height: 1.9;
+  color: var(--muted);
+  margin: 0 auto;
+  max-width: 50ch;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: heroRise 0.9s var(--ease-out) 0.34s forwards;
+}
+
+.description strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ===================== CTA ===================== */
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 8px auto 0;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: heroRise 0.9s var(--ease-out) 0.5s forwards;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 14px 26px;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.3s var(--ease-out),
+    box-shadow 0.3s var(--ease-out), background 0.3s var(--ease-out);
+  box-shadow: 0 8px 30px var(--accent-soft);
+}
+
+.ctaPrimary:hover,
+.ctaPrimary:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px var(--accent-glow);
+  background: var(--accent-bright);
+}
+
+.ctaPrimary:active {
+  transform: translateY(0);
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.ctaPrimary:hover .ctaArrow {
+  transform: translateX(-4px); /* RTL: arrow points left, moves left on hover */
+}
+
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--line);
+  padding: 14px 26px;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.3s var(--ease-out),
+    background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+
+.ctaSecondary:hover,
+.ctaSecondary:focus-visible {
+  border-color: var(--accent-2);
+  background: var(--accent-2-soft);
+  color: var(--text-bright);
+}
+
+/* ===================== Footer ===================== */
+.footer {
+  position: relative;
+  z-index: 20; /* Loop-4: above textBlock (z=10) — per spec §6.1 */
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  margin-top: auto; /* push to bottom of flex column page */
+  padding: 20px 32px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--muted-2);
+  border-top: 1px solid var(--surface);
+}
+
+.footerMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footerPulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2.4s var(--ease-out) infinite;
+}
+
+/* ===================== Animations ===================== */
+@keyframes heroRise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+/* ===================== Responsive ===================== */
+/* Loop-2 FIX-4 / Loop-5 (Task 16) REVISE: pin headline on desktop.
+   The base clamp(3.5rem, 7vw, 7.5rem) only reaches ~6.3rem at 1440px.
+   Originally pinned to 7rem, but Reviewer (Task 15) found that at 7rem,
+   "از فکر خام<br>تا ساختن واقعی." wraps to 5 lines inside textBlock
+   max-width 560px (Persian glyph metrics + inline-block accent span
+   cause the period to break to its own line). Supervisor (Task 16)
+   smoke-tested 5.5rem first — still 3 lines (period wraps alone).
+   Dropping to 5rem (80px) keeps the full phrase on exactly 2 lines
+   inside 560px (line 2 = 532px), preserves the period and accent
+   span, and still reads as a strong hero headline. */
+@media (min-width: 1280px) {
+  .headline {
+    font-size: 5rem;
+  }
+}
+
+/* Loop-4 (Task 12 §8.1): desktop-narrow mitigation — give chips
+   more room by shrinking the textBlock so t3/t4 don't overlap. */
+@media (max-width: 1179px) and (min-width: 1010px) {
+  .textBlock {
+    max-width: 480px;
+  }
+}
+
+/* Loop-4 (Task 12 §5.5): text-shadow on text-bearing elements for
+   readability over background chips (raw chips sit at opacity 0.85
+   but the text-block needs stronger contrast against any chip
+   that might wander into the center in narrow viewports). CTA
+   buttons have their own background contrast, so no shadow there. */
+.eyebrow,
+.headline,
+.description {
+  text-shadow: 0 2px 12px rgba(8, 8, 7, 0.6);
+}
+
+@media (max-width: 900px) {
+  /* Loop-5 (Task 16): on mobile, content flows in a natural flex column
+     (textBlock + scatterField grid stacked). The desktop `overflow: hidden`
+     (which exists to clip escaped t6 chip) is wrong on mobile — it clips
+     the footer (تهران · ۱۶ سال · علوم انسانی + © year) when the chips grid
+     is taller than (viewport - header - textBlock). Allow the page to grow
+     with content and let the user scroll. No chip on mobile is `isEscaped`
+     (positionMobile is safe inside hero), so nothing leaks out visually. */
+  .page {
+    overflow: visible;
+  }
+
+  .header {
+    padding: 22px 20px;
+  }
+
+  .nav {
+    gap: 18px;
+  }
+
+  .navLink {
+    font-size: 0.8rem;
+  }
+
+  /* Mobile: flex column — textBlock on top (still centered),
+     scatterField flows below as a 2-column grid.
+     Note: DOM order is scatterOverlay→textBlock (so on desktop,
+     scatterOverlay's absolute overlay paints behind textBlock).
+     On mobile we use CSS `order` to swap them visually:
+     textBlock (order: 1) on top, scatterOverlay (order: 2) below. */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 32px;
+    padding: 16px 20px 56px;
+    min-height: auto;
+  }
+
+  .scatterOverlay {
+    position: static;
+    inset: auto;
+    overflow: visible;
+    order: 2; /* below textBlock in mobile flex column */
+  }
+
+  .textBlock {
+    max-width: 100%;
+    order: 1; /* above scatterOverlay in mobile flex column */
+    /* text-align: center, align-items: center, z-index: 10 inherited from desktop */
+  }
+
+  .headline {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+    line-height: 1.02;
+  }
+
+  .description {
+    font-size: 1rem;
+    line-height: 1.85;
+  }
+
+  .footer {
+    padding: 16px 20px 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 18px 16px;
+  }
+
+  .nav {
+    gap: 14px;
+  }
+
+  .hero {
+    padding: 8px 16px 40px;
+  }
+
+  .actions {
+    gap: 14px;
+  }
+
+  .ctaPrimary {
+    padding: 13px 22px;
+    font-size: 0.9rem;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 14px 16px 20px;
+  }
+}
+
+/* ===================== Reduced motion ===================== */
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow,
+  .headline,
+  .description,
+  .actions {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .footerPulse {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .ctaPrimary,
+  .ctaPrimary:hover,
+  .ctaArrow,
+  .ctaSecondaryArrow,
+  .navLink::after {
+    transition: none;
+  }
+}

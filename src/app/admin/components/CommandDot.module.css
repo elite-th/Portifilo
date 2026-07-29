@@ -1,0 +1,36 @@
+.dot {
+  display: inline-block;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+  flex-shrink: 0;
+  animation: dotPulse 2.4s var(--ease-out) infinite;
+}
+
+.sizeSm { width: 10px; height: 10px; }
+.sizeMd { width: 14px; height: 14px; }
+
+.stateIdle {
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.stateActive {
+  background: var(--accent-bright);
+  box-shadow: 0 0 18px var(--accent-glow);
+}
+
+.stateError {
+  background: var(--danger);
+  box-shadow: 0 0 12px var(--danger-soft);
+  animation: none;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.75; transform: scale(0.92); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot { animation: none; }
+}

@@ -1,0 +1,89 @@
+/* Admin page wrapper + LoadingScreen.
+ * Each component (LoginCard, Dashboard, EntryForm) owns its own module.css. */
+
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px 24px 80px;
+  position: relative;
+  transition: padding 0.3s var(--ease-out);
+}
+
+.page[data-view="loading"] {
+  align-items: center;
+  padding-top: 40vh;
+}
+
+.page[data-view="login"] {
+  align-items: center;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.page[data-view="dashboard"] {
+  padding: 56px 24px 80px;
+}
+
+/* ===================== Loading ===================== */
+.loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  animation: loadingFade 0.4s var(--ease-out) both;
+}
+
+@keyframes loadingFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.loadingDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.4;
+  animation: loadingPulse 1.4s var(--ease-out) infinite;
+}
+
+.loadingDot:nth-child(2) { animation-delay: 0.2s; }
+.loadingDot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes loadingPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.4); }
+}
+
+.loadingText {
+  margin-right: 4px;
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 600px) {
+  .page {
+    padding: 32px 16px 60px;
+  }
+  .page[data-view="dashboard"] {
+    padding: 32px 16px 60px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading,
+  .loadingDot {
+    animation: none;
+  }
+  .loadingDot {
+    opacity: 0.6;
+  }
+  .page {
+    transition: none;
+  }
+}

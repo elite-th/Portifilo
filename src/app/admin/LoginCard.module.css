@@ -1,0 +1,208 @@
+.page {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* The ambient layer is full-screen; this wrapper just centers the card. */
+}
+
+/* ─── Ambient background (Hero pattern, reused) ─── */
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 75% 20%,
+      var(--accent-soft) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 25% 80%,
+      var(--accent-2-soft) 0%,
+      transparent 55%
+    );
+  animation: ambientFade 1.2s var(--ease-out) both;
+}
+
+@keyframes ambientFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Glassmorphic card ─── */
+.card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  background: linear-gradient(
+    180deg,
+    rgba(22, 22, 26, 0.7),
+    rgba(18, 18, 20, 0.85)
+  );
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  padding: 44px 40px 32px;
+  box-shadow: var(--shadow-soft), var(--shadow-glow);
+  animation: cardEntrance 0.5s var(--ease-out) both;
+  transition: border-color 0.25s var(--ease-out);
+}
+
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card[data-state="error"] {
+  border-color: var(--danger);
+  animation: cardEntrance 0.5s var(--ease-out) both,
+    cardShake 0.42s var(--ease-out) 0.18s;
+}
+
+@keyframes cardShake {
+  0%, 100% { transform: translateX(0); }
+  15%, 75% { transform: translateX(-7px); }
+  30%, 60% { transform: translateX(7px); }
+  45%      { transform: translateX(-4px); }
+}
+
+/* ─── Header (dot + title + subtitle) ─── */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 0.82rem;
+  color: var(--muted-2);
+  margin: 4px 0 0;
+  letter-spacing: 0.02em;
+}
+
+/* ─── Form ─── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.errorBanner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--danger-soft);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 11px 14px;
+  border-radius: var(--radius-lg);
+  font-size: 0.85rem;
+  animation: bannerFade 0.3s var(--ease-out);
+}
+
+@keyframes bannerFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.errorIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* ─── Submit ─── */
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 6px;
+  box-shadow: 0 8px 24px var(--accent-glow);
+  transition: transform 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out),
+    opacity 0.2s var(--ease-out);
+}
+
+.submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px var(--accent-glow);
+}
+
+.submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  animation: spinnerSpin 0.8s linear infinite;
+}
+
+@keyframes spinnerSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Footer ─── */
+.footer {
+  margin: 24px 0 0;
+  font-size: 0.78rem;
+  color: var(--muted-2);
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 480px) {
+  .card {
+    padding: 32px 24px 24px;
+  }
+  .title {
+    font-size: 1.4rem;
+  }
+  .header {
+    margin-bottom: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient { animation: none; }
+  .card,
+  .card[data-state="error"] { animation: none; }
+  .errorBanner { animation: none; }
+  .submit,
+  .submit:hover:not(:disabled) {
+    transition: none;
+    transform: none;
+  }
+  .spinner { animation: none; }
+}

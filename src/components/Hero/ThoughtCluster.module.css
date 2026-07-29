@@ -1,0 +1,273 @@
+/* =========================================================
+   ThoughtCluster — scatter field overlay (Loop-4 centered)
+   ---------------------------------------------------------
+   The scatter field used to be a visible card on the visual
+   left half of the hero (border + surface-strong background
+   + corner ticks). In the centered layout (Task 12 §2.5) it
+   becomes a TRANSPARENT absolute overlay that covers the whole
+   hero, so the six chips float on the ambient background
+   (page::before glow + page::after grid) around the central
+   textBlock — "حومه" rather than a rival object.
+   ---------------------------------------------------------
+   DOM (Worker A — verified against ThoughtCluster.tsx):
+     <section class=scatterField data-layout=... data-mobile=...>
+       <ul class=thoughtList role="list" data-mobile=...>
+         <li class=thoughtItem><RawThought .../></li>
+         ...
+       </ul>
+       <span class=hintTooltip data-visible="true|false">...</span>
+       <button class=resetButton data-visible="true|false">↺ خام</button>
+       <p class="sr-only">... SEO/screen-reader fallback ...</p>
+     </section>
+   ---------------------------------------------------------
+   CRITICAL (roadmap §1.3-A): scatterField has NO z-index.
+     If you add `z-index: 1` here, you create a stacking
+     context that traps the chips inside it — the active chip
+     (z=50) would never rise above textBlock (z=10) in the
+     hero stacking context. Leave z-index: auto.
+   CRITICAL (roadmap §1.3-B): scatterField has pointer-events:
+     none so it cannot steal clicks from textBlock underneath.
+     Children that need to be interactive (chips, reset) set
+     `pointer-events: auto` themselves (see RawThought.module.css
+     and the reset rule below).
+   ---------------------------------------------------------
+   Worker B's task spec lists `.hint` and `.resetBtn` as the
+   canonical class names; Worker A's TSX uses `.hintTooltip`
+   and `.resetButton`. This file supports BOTH naming schemes
+   (same styles applied to both selectors) so either side can
+   be adjusted without breaking integration.
+   ========================================================= */
+
+/* -------------------- Scatter field (desktop overlay) -------------------- */
+.scatterField {
+  /* Loop-4: absolute overlay covers whole hero. CRITICAL: no z-index
+     here — must NOT create a stacking context (roadmap §1.3-A). */
+  position: absolute;
+  inset: 0;
+
+  /* Loop-4: transparent — chips float on ambient background, not in a card. */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  min-height: 0; /* override the old min-height: 540px */
+
+  /* CRITICAL (roadmap §1.3-B): don't block clicks on textBlock underneath.
+     Children re-enable pointer-events where they need to be interactive. */
+  pointer-events: none;
+
+  /* overflow visible lets escaped t6 break out of the field on desktop. */
+  overflow: visible;
+
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+}
+
+/* REMOVED (Loop-4): .scatterField::before / ::after corner ticks.
+   These belonged to the old "diagram frame" aesthetic. In the
+   centered layout the scatter field is transparent and corner
+   ticks would float on the ambient background as visual noise. */
+
+/* -------------------- Thought list -------------------- */
+.thoughtList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* No min-height — inherits the absolute scatterField which inherits
+     its size from the hero (min-height: calc(100svh - 80px)). */
+}
+
+/* Loop-2 FIX-1 preserved: `.thoughtItem` is `position: static` so the
+   child <button class="thoughtChip"> (which IS `position: absolute` and
+   receives inline top/left from RawThought.tsx) uses the nearest
+   positioned ancestor — `.thoughtList` (`position: relative`) — as its
+   containing block. */
+.thoughtItem {
+  position: static;
+}
+
+/* -------------------- Hint tooltip -------------------- */
+/* Two class aliases: `.hint` (Worker B spec) and `.hintTooltip`
+   (Worker A TSX). Same styles, both supported. */
+.hint,
+.hintTooltip {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--ink-raw);
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+  /* hint is intentionally visual-only — keep pointer-events: none even
+     though scatterField already sets it (defense-in-depth). */
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 5;
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+}
+
+/* Visibility — supports both patterns:
+   (a) `data-visible="true"` on the hint element itself (Worker A)
+   (b) `data-hint="visible"` on the parent .scatterField (Worker B spec) */
+.hint[data-visible="true"],
+.hintTooltip[data-visible="true"],
+.scatterField[data-hint="visible"] .hint,
+.scatterField[data-hint="visible"] .hintTooltip {
+  opacity: 0.75;
+}
+
+/* -------------------- Reset affordance -------------------- */
+/* Two class aliases: `.resetBtn` (Worker B spec) and `.resetButton`
+   (Worker A TSX). Same styles, both supported. */
+.resetBtn,
+.resetButton {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+  font-size: 0.7rem;
+  color: var(--ink-raw);
+  background: rgba(18, 18, 19, 0.5);
+  border: 1px solid var(--surface);
+  border-radius: 999px;
+  padding: 4px 10px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out), color 0.3s var(--ease-out),
+    border-color 0.3s var(--ease-out);
+  z-index: 5;
+  backdrop-filter: blur(6px);
+  /* CRITICAL (roadmap §1.3-B): re-enable pointer-events so the reset
+     button stays clickable inside the pointer-events: none overlay. */
+  pointer-events: auto;
+}
+
+/* Visibility — supports both patterns:
+   (a) `data-visible="true"` on the reset button itself (Worker A)
+   (b) `data-show-reset="true"` on the parent .scatterField (Worker B spec) */
+.resetBtn[data-visible="true"],
+.resetButton[data-visible="true"],
+.scatterField[data-show-reset="true"] .resetBtn,
+.scatterField[data-show-reset="true"] .resetButton {
+  opacity: 0.7;
+}
+
+.resetBtn:hover,
+.resetBtn:focus-visible,
+.resetButton:hover,
+.resetButton:focus-visible {
+  color: var(--text);
+  border-color: var(--line);
+  opacity: 1;
+  outline: none;
+}
+
+.resetBtn:focus-visible,
+.resetButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   Flask Shake — Reset Button Active State (§4.6)
+   ---------------------------------------------------------
+   When the reset button is actively pressed (active state),
+   the flask icon shakes slightly — a tactile "fizz" moment.
+   ========================================================= */
+@keyframes flaskShake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-2px) rotate(-1deg); }
+  75% { transform: translateX(2px) rotate(1deg); }
+}
+
+.resetBtn:active,
+.resetButton:active {
+  animation: flaskShake 0.3s ease-out;
+}
+
+/* -------------------- Screen-reader-only fallback --------------------
+   Worker A uses Tailwind's `sr-only` utility directly on the
+   <p>/<span> elements, so this class is currently unused.
+   Kept per Worker B's task spec for any future caller that
+   imports it from this module. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* -------------------- Responsive -------------------- */
+/* Loop-4 (Task 12 §3): mobile — scatterField is no longer an
+   absolute overlay. It flows below textBlock as a static
+   element holding a 2-column grid of chips. */
+@media (max-width: 900px) {
+  .scatterField {
+    /* No longer absolute — flows below textBlock in the hero's flex column. */
+    position: static;
+    inset: auto;
+    padding: 0;
+    min-height: auto;
+    overflow: visible;
+    /* pointer-events: none stays — children chips re-enable it via
+       RawThought.module.css (roadmap §1.3-B). */
+  }
+
+  .thoughtList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    min-height: auto;
+    height: auto;
+    /* `.thoughtItem` is already position: static; chip buttons are also
+       static on mobile (see RawThought.module.css @media (max-width: 900px)),
+       so the grid places them in normal flow. */
+  }
+
+  /* Hint: position static, flows with grid (placed after chips). */
+  .hint,
+  .hintTooltip {
+    position: static;
+    transform: none;
+    margin: 8px auto 0;
+    white-space: normal;
+    max-width: 70%;
+    text-align: center;
+  }
+
+  /* Reset: position static, flows with grid (placed after hint). */
+  .resetBtn,
+  .resetButton {
+    position: static;
+    margin: 8px auto 0;
+    display: block;
+  }
+}
+
+/* Tiny mobile (<480px): grid 1-column for very narrow viewports */
+@media (max-width: 480px) {
+  .thoughtList {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+/* -------------------- Reduced motion -------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .hint,
+  .hintTooltip,
+  .resetBtn,
+  .resetButton {
+    transition: none;
+  }
+}

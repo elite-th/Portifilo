@@ -1,0 +1,390 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-vazirmatn);
+  --font-display: var(--font-crimson-pro);
+  --font-mono: var(--font-jetbrains-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ===== Knowledge Alchemy — "Ink & Archive" Design System =====
+   Palette: Dark-first, scholarly, warm
+   - Base (Ink):      Deep carbon black with midnight undertone
+   - Surface (Parchment): Aged manuscript warmth
+   - Accent (Verdigris): Copper verdigris — insight spark
+   - Highlight (Ochre): Illuminated manuscript gold
+   ========================================================= */
+
+:root {
+  --radius: 2px; /* Card radius - manuscript folio */
+
+  /* === Core Palette === */
+  --ink-black: #0B0B0C;           /* Deep background */
+  --parchment: #F5F0E8;           /* Primary text on dark, card backgrounds */
+  --sepia-ink: #8B7355;           /* Secondary text, borders, dividers */
+  --iron-gall: #4A3A2A;           /* Accent borders, focus rings, active states */
+  --verdigris: #3A6B6B;           /* Primary CTAs, links, active chips */
+  --ochre: #C9A84C;               /* Hover accents, emphasis, gold-leaf moments */
+
+  /* === Semantic Mappings (Dark Mode — Default) === */
+  --bg: var(--ink-black);
+  --bg-soft: #111113;
+  --bg-elevated: #161618;
+  --fg: var(--parchment);
+  --text: var(--fg);
+  --text-bright: var(--parchment);
+  --muted: var(--sepia-ink);
+  --ink-raw: #6B5B4A;
+  --muted-2: #5A4E3E;
+  --border: var(--iron-gall);
+  --accent: var(--verdigris);
+  --accent-bright: #4DB8B8;
+  --accent-deep: #2D5555;
+  --accent-soft: rgba(58, 107, 107, 0.16);
+  --accent-glow: rgba(58, 107, 107, 0.32);
+  --highlight: var(--ochre);
+  --highlight-soft: rgba(201, 168, 76, 0.15);
+  --accent-2: var(--ochre);
+  --accent-2-soft: var(--highlight-soft);
+  --focus: var(--verdigris);
+
+  /* Surface layers */
+  --surface: rgba(245, 240, 232, 0.04);
+  --surface-strong: rgba(245, 240, 232, 0.08);
+  --card-bg: rgba(245, 240, 232, 0.06);
+
+  /* Lines & danger */
+  --line: rgba(245, 240, 232, 0.12);
+  --line-strong: rgba(245, 240, 232, 0.25);
+  --danger: #C0392B;
+  --danger-soft: rgba(192, 57, 43, 0.18);
+
+  /* === Fluid Type Scale (clamp-based) === */
+  --step--2: clamp(0.69rem, 0.67rem + 0.11vw, 0.75rem);  /* caption */
+  --step--1: clamp(0.83rem, 0.80rem + 0.17vw, 0.94rem);  /* small */
+  --step-0:  clamp(1rem, 0.96rem + 0.22vw, 1.13rem);     /* body */
+  --step-1:  clamp(1.2rem, 1.15rem + 0.28vw, 1.35rem);   /* lead */
+  --step-2:  clamp(1.44rem, 1.38rem + 0.35vw, 1.62rem);  /* h4 */
+  --step-3:  clamp(1.73rem, 1.65rem + 0.44vw, 1.94rem);  /* h3 */
+  --step-4:  clamp(2.07rem, 1.97rem + 0.55vw, 2.33rem);  /* h2 */
+  --step-5:  clamp(2.49rem, 2.35rem + 0.7vw, 2.8rem);    /* h1 */
+  --step-6:  clamp(2.98rem, 2.81rem + 0.88vw, 3.36rem);  /* display */
+
+  /* === Easing === */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* === Shadows === */
+  --shadow-raw: 0 2px 8px rgba(11, 11, 12, 0.4);
+  --shadow-growing: 0 4px 16px rgba(58, 107, 107, 0.2);
+  --shadow-faceted: 0 8px 24px rgba(58, 107, 107, 0.25);
+  --shadow-crystal: 0 12px 32px rgba(58, 107, 107, 0.3), 0 0 0 1px rgba(58, 107, 107, 0.15) inset;
+  --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 40px rgba(58, 107, 107, 0.2);
+
+  /* === shadcn fallbacks (compatibility) === */
+  --background: var(--ink-black);
+  --foreground: var(--parchment);
+  --card: var(--card-bg);
+  --card-foreground: var(--parchment);
+  --popover: var(--bg-soft);
+  --popover-foreground: var(--parchment);
+  --primary: var(--verdigris);
+  --primary-foreground: var(--ink-black);
+  --secondary: var(--bg-soft);
+  --secondary-foreground: var(--parchment);
+  --muted-fg: var(--sepia-ink);
+  --muted-foreground: var(--sepia-ink);
+  --accent-foreground: var(--ink-black);
+  --destructive: var(--danger);
+  --border: var(--line);
+  --input: var(--surface);
+  --ring: var(--verdigris);
+  --chart-1: var(--verdigris);
+  --chart-2: var(--ochre);
+  --chart-3: var(--sepia-ink);
+  --chart-4: var(--parchment);
+  --chart-5: var(--ink-raw);
+  --sidebar: var(--bg-soft);
+  --sidebar-foreground: var(--parchment);
+  --sidebar-primary: var(--verdigris);
+  --sidebar-primary-foreground: var(--ink-black);
+  --sidebar-accent: var(--bg-soft);
+  --sidebar-accent-foreground: var(--parchment);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--verdigris);
+}
+
+/* Light Mode (Inverted Metaphor — Reading in Daylight) */
+[data-theme="light"] {
+  --bg: var(--parchment);
+  --bg-soft: #FAF6F0;
+  --bg-elevated: #F5F0E8;
+  --fg: var(--ink-black);
+  --text: var(--fg);
+  --text-bright: var(--ink-black);
+  --muted: var(--iron-gall);
+  --ink-raw: #5A4E3E;
+  --muted-2: #7A6E5E;
+  --border: var(--sepia-ink);
+  --accent: var(--verdigris);
+  --accent-bright: #2D5555;
+  --accent-deep: #1E3D3D;
+  --accent-soft: rgba(58, 107, 107, 0.12);
+  --accent-glow: rgba(58, 107, 107, 0.25);
+  --highlight: var(--ochre);
+  --highlight-soft: rgba(201, 168, 76, 0.12);
+  --accent-2: var(--ochre);
+  --accent-2-soft: var(--highlight-soft);
+  --focus: var(--verdigris);
+  --surface: rgba(11, 11, 12, 0.04);
+  --surface-strong: rgba(11, 11, 12, 0.08);
+  --card-bg: rgba(11, 11, 12, 0.05);
+  --line: rgba(11, 11, 12, 0.1);
+  --line-strong: rgba(11, 11, 12, 0.2);
+  --danger: #C0392B;
+  --danger-soft: rgba(192, 57, 43, 0.15);
+}
+
+.dark {
+  --muted: var(--sepia-ink);
+  --muted-foreground: var(--sepia-ink);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    font-family: var(--font-vazirmatn), system-ui, -apple-system, sans-serif;
+    font-size: var(--step-0);
+    line-height: 1.7;
+  }
+
+  /* Focus visible ring */
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Selection */
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--fg);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--surface-strong);
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--line);
+  }
+}
+
+/* === Structural Language (Archive Grammar) === */
+
+/* Cards — Manuscript folio */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  backdrop-filter: blur(8px);
+}
+
+/* Dividers — Quire stitching */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border),
+    var(--border) 2px,
+    transparent 2px,
+    transparent 10px
+  );
+}
+
+/* Code Blocks — Scribe's working notes */
+.code-block {
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  line-height: 1.65;
+  color: var(--fg);
+}
+.code-block .comment { color: var(--muted); }
+.code-block .keyword { color: var(--accent); }
+.code-block .string { color: var(--highlight); }
+
+/* Chips/Tags — Catalog tags */
+.chip {
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: var(--step--2);
+  font-weight: 500;
+  color: var(--muted);
+  transition: all 0.25s var(--ease-out);
+}
+.chip:hover,
+.chip.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Hover Lift — Gilt edge catch */
+.lift {
+  transition: transform 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.lift:hover {
+  transform: translateY(-2px);
+  border-bottom-color: var(--highlight);
+}
+
+/* === Motion Keyframes === */
+
+/* Crystallization Entrance */
+@keyframes crystallizeIn {
+  0%   { opacity: 0; scale: 0.6; filter: blur(12px) hue-rotate(40deg); transform: rotate(var(--rot, 0deg)) translateY(40px); }
+  40%  { opacity: 0.6; scale: 0.9; filter: blur(4px) hue-rotate(10deg); transform: rotate(var(--rot, 0deg)) translateY(4px); }
+  100% { opacity: 0.88; scale: 1; filter: none; transform: rotate(var(--rot, 0deg)) translateY(0); }
+}
+
+/* Crystal Growth (Refining Phase) */
+@keyframes crystalGrow {
+  0%   { scale: 1;     border-radius: 14px; box-shadow: var(--shadow-raw); }
+  30%  { scale: 1.06;  border-radius: 12px; box-shadow: var(--shadow-growing); }
+  60%  { scale: 1.02;  border-radius: 10px; box-shadow: var(--shadow-faceted); }
+  100% { scale: 1.04;  border-radius: 8px;  box-shadow: var(--shadow-crystal); }
+}
+
+/* Facet Sweep */
+@keyframes facetSweep {
+  to { transform: rotate(360deg); }
+}
+
+/* Phosphorescent Trace */
+@keyframes phosphoresce {
+  0%, 100% { opacity: 0.3; scale: 1; box-shadow: 0 0 4px var(--chip-accent-soft, var(--accent-soft)); }
+  50%      { opacity: 0.9; scale: 1.4; box-shadow: 0 0 16px var(--chip-accent-glow, var(--accent-glow)); }
+}
+
+/* Resonance Beam */
+@keyframes resonancePulse {
+  0%, 100% { opacity: 0.15; filter: blur(2px); }
+  50%      { opacity: 0.5;  filter: blur(0); }
+}
+
+/* Crucible Heat */
+@keyframes crucibleHeat {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 1.3; }
+}
+
+/* Hero Rise */
+@keyframes heroRise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pulse */
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.3); }
+}
+
+/* Loading Pulse */
+@keyframes loadingPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.4); }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .thoughtChip[data-scroll-revealed="true"] { animation: none; opacity: 0.88; scale: 1; filter: none; }
+  .thoughtChip[data-state="refining"] { animation: none; }
+  .traceDot, .resonanceBeam { animation: none; }
+}
+
+/* === Scroll-Reveal States === */
+[data-scroll-revealed="true"] {
+  animation: crystallizeIn 1.4s var(--ease-out-expo) forwards;
+}
+
+/* Stagger delays for thought chips */
+[data-id="t4"][data-scroll-revealed="true"] { animation-delay: 0ms; }
+[data-id="t1"][data-scroll-revealed="true"] { animation-delay: 120ms; }
+[data-id="t6"][data-scroll-revealed="true"] { animation-delay: 200ms; }
+[data-id="t2"][data-scroll-revealed="true"] { animation-delay: 280ms; }
+[data-id="t5"][data-scroll-revealed="true"] { animation-delay: 340ms; }
+[data-id="t3"][data-scroll-revealed="true"] { animation-delay: 420ms; }

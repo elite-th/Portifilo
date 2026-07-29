@@ -1,0 +1,89 @@
+/* Projects.module.css - "Ink & Archive" Design System */
+
+.projects {
+  --section-padding-y: clamp(80px, 12vw, 140px);
+  --section-padding-x: clamp(24px, 6vw, 80px);
+
+  padding: var(--section-padding-y) var(--section-padding-x);
+  background: var(--bg);
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.kicker {
+  font-family: var(--font-vazirmatn);
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--verdigris);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-family: var(--font-crimson-pro);
+  font-weight: 600;
+  font-size: var(--step-4);
+  line-height: 1.2;
+  color: var(--parchment);
+  margin: 0 0 16px;
+}
+
+.desc {
+  font-family: var(--font-vazirmatn);
+  font-size: var(--step-0);
+  line-height: 1.8;
+  color: var(--sepia-ink);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .projects {
+    --section-padding-y: 60px;
+    --section-padding-x: 20px;
+  }
+
+  .header {
+    margin-bottom: 32px;
+  }
+
+  .title {
+    font-size: var(--step-3);
+  }
+
+  .grid {
+    gap: 16px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .projects {
+    --section-padding-y: 80px;
+  }
+}

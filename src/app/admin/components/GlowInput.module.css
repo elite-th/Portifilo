@@ -1,0 +1,133 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0; /* prevent overflow in fieldRow */
+}
+
+.label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: color 0.2s var(--ease-out);
+}
+
+.control {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.input,
+.textarea {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: inherit;
+  width: 100%;
+  transition: border-color 0.2s var(--ease-out),
+    box-shadow 0.25s var(--ease-out),
+    background 0.2s var(--ease-out);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.8;
+}
+
+/* ─── Icon slot (for LoginCard username/password) ─── */
+.icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--ink-raw);
+  pointer-events: none;
+  transition: color 0.25s var(--ease-out);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.inputWithIcon {
+  padding-right: 44px; /* leave room for the icon (RTL) */
+}
+
+/* focus: glow halo (not just outline) */
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft), 0 0 24px var(--accent-glow);
+  background: var(--bg-elevated);
+}
+
+.input:focus-visible,
+.textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* label color follows focus */
+.field:has(.input:focus) .label,
+.field:has(.textarea:focus) .label {
+  color: var(--accent);
+}
+
+/* icon color follows focus */
+.field:has(.input:focus) .icon {
+  color: var(--accent);
+}
+
+/* error state */
+.field[data-state="error"] .input,
+.field[data-state="error"] .textarea {
+  border-color: var(--danger);
+  animation: fieldShake 0.32s var(--ease-out);
+}
+
+.field[data-state="error"] .label {
+  color: var(--danger);
+}
+
+.field[data-state="error"] .icon {
+  color: var(--danger);
+}
+
+@keyframes fieldShake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-4px); }
+  40%      { transform: translateX(4px); }
+  60%      { transform: translateX(-3px); }
+  80%      { transform: translateX(3px); }
+}
+
+.hint {
+  font-size: 0.74rem;
+  color: var(--muted-2);
+}
+
+.errorText {
+  font-size: 0.78rem;
+  color: var(--danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field[data-state="error"] .input,
+  .field[data-state="error"] .textarea { animation: none; }
+  .input, .textarea, .label, .icon { transition: none; }
+}

@@ -1,0 +1,124 @@
+.synthesis {
+  padding: var(--step-5) 0;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--step-0);
+}
+
+.equation {
+  text-align: center;
+  margin-bottom: var(--step-4);
+}
+
+.title {
+  font-size: var(--step-3);
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: var(--step-3);
+}
+
+.equationVisual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--step-0);
+  font-family: var(--font-mono);
+  font-size: var(--step-1);
+  flex-wrap: wrap;
+}
+
+.term {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--step--2);
+}
+
+.termBox {
+  padding: var(--step--1) var(--step-0);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--fg);
+  transition: all 0.3s var(--ease-out);
+}
+
+.termBox.result {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: var(--shadow-growing);
+}
+
+.termSub {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.operator {
+  color: var(--muted);
+  font-size: var(--step-2);
+}
+
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--step-1);
+  margin-top: var(--step-4);
+}
+
+.pillarCard {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--step-1);
+  position: relative;
+  transition: all 0.3s var(--ease-out);
+  backdrop-filter: blur(8px);
+}
+
+.pillarCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--highlight);
+  box-shadow: var(--shadow-faceted);
+}
+
+.pillarLabel {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  color: var(--highlight);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: var(--step--2);
+}
+
+.pillarTitle {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: var(--step--1);
+}
+
+.pillarDesc {
+  font-size: var(--step-0);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .equationVisual {
+    flex-direction: column;
+    gap: var(--step--1);
+  }
+
+  .operator {
+    transform: rotate(90deg);
+  }
+}

@@ -1,0 +1,335 @@
+/* =========================================================
+   EntryCard.module.css — shared styles for all three card variants.
+   Each variant has its own visual identity (Task 23 §3):
+     - .tosheh  → sticky-note, italic lite, gold raw-dot
+     - .article → book chapter, h3 + tags + reading time, surface border
+     - .poem    → NO CARD (text floats on the section bg, accent-2 sage)
+   ========================================================= */
+
+/* ===================== TOSHEH ===================== */
+/* Sticky-note feel. Small, daily, raw.
+   Accent: --accent (gold) for the raw-dot, otherwise muted. */
+.tosheh {
+  background: var(--surface);
+  border: 1px solid transparent;
+  border-radius: 14px; /* smaller than radius-lg → cozier */
+  padding: 18px 20px 16px;
+  cursor: pointer;
+  transition: border-color 0.3s var(--ease-out),
+    background 0.3s var(--ease-out);
+}
+
+.tosheh:hover {
+  border-color: var(--line);
+  background: var(--surface-strong);
+}
+
+.tosheh:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* "Unfinished" tosheh — derived from a "ناتمام" tag in the DTO.
+   Dashed border signals: طاها is still working on this thought. */
+.tosheh[data-unfinished="true"] {
+  border-style: dashed;
+  border-color: var(--line);
+}
+
+.toshehHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  min-height: 1.3rem;
+}
+
+/* Golden raw-dot — the "spark" of the raw thought.
+   Same visual language as the Hero raw-thought chips. */
+.rawDot {
+  color: var(--accent);
+  font-size: 1.3rem;
+  line-height: 0.6;
+  text-shadow: 0 0 8px var(--accent-soft);
+}
+
+.toshehMood {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-raw);
+  text-transform: lowercase;
+}
+
+.toshehBody {
+  font-size: 0.98rem;
+  line-height: 1.85;
+  color: var(--text);
+  font-style: italic;
+  font-weight: 300; /* italic lite */
+  margin: 0 0 14px;
+  font-feature-settings: "ss01";
+  /* Two-line clamp — keeps the card compact in masonry. */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.toshehMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.78rem;
+}
+
+.toshehDate {
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.toshehSource {
+  color: var(--ink-raw);
+  font-size: 0.74rem;
+}
+
+.toshehSource::before {
+  content: "← ";
+  color: var(--muted-2);
+}
+
+/* ===================== ARTICLE ===================== */
+/* Book-chapter feel. Clean, structured, typographic.
+   Accent: --accent for type label, --text for headline. */
+.article {
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 26px 24px 22px;
+  cursor: pointer;
+  transition: border-color 0.3s var(--ease-out),
+    background 0.3s var(--ease-out),
+    box-shadow 0.4s var(--ease-out);
+}
+
+.article:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-glow);
+}
+
+.article:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.articleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.articleType {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.articleDate {
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.articleTitle {
+  font-size: 1.35rem;
+  line-height: 1.35;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0 0 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.articleExcerpt {
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: var(--muted);
+  margin: 0 0 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.articleFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid var(--surface-strong);
+}
+
+.readingTime {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  color: var(--ink-raw);
+  font-variant-numeric: tabular-nums;
+}
+
+.readingIcon {
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+.articleTags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--surface-strong);
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+/* ===================== POEM (NO CARD) ===================== */
+/* Crucial (Task 23 §3.3): poems are NOT cards. They float
+   directly on the section background. Only padding + center
+   alignment + a hairline rule below — that's the entire
+   "card" for a poem. This is the imperfection that makes
+   poems feel suspended, not boxed. */
+.poem {
+  padding: 36px 24px 32px;
+  cursor: pointer;
+  text-align: center;
+  transition: opacity 0.3s var(--ease-out);
+  position: relative;
+}
+
+.poem:hover {
+  opacity: 0.88;
+}
+
+.poem:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 8px;
+  border-radius: 4px;
+}
+
+.poemEmotion {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--muted-2);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0.7;
+}
+
+.poemBody {
+  margin: 0 auto 24px;
+}
+
+.poemLine {
+  font-size: 1.05rem;
+  line-height: 2.1; /* very tall — breathing room */
+  color: var(--accent-2); /* sage — distinct from gold tosheh/article */
+  font-weight: 400;
+  margin: 0 auto;
+  letter-spacing: 0.005em;
+  max-width: 32ch;
+  /* Lighten accent-2 slightly for long-line readability (Task 23 §4).
+     color-mix is supported in all modern browsers; older ones get
+     the base --accent-2 which still passes AA contrast. */
+  color: color-mix(in srgb, var(--accent-2) 88%, var(--text) 12%);
+}
+
+/* Hairline rule below the poem — a single thin line, that's all. */
+.poemRule {
+  width: 48px;
+  height: 1px;
+  background: var(--accent-2-soft);
+  margin: 0 auto 18px;
+  opacity: 0.6;
+}
+
+.poemFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+}
+
+.poemDedicate {
+  color: var(--accent-2);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.poemDate {
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===================== Shared keyboard hint ===================== */
+/* Cards act as buttons (role="button" + tabIndex=0). Show a subtle
+   ring on hover for keyboard users, in addition to the focus-visible. */
+.cardRole {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 640px) {
+  .poem {
+    padding: 24px 16px 20px;
+  }
+
+  .poemLine {
+    font-size: 0.98rem;
+    line-height: 1.95;
+  }
+
+  .article {
+    padding: 22px 20px 18px;
+  }
+
+  .articleTitle {
+    font-size: 1.2rem;
+  }
+}
+
+/* ===================== Reduced motion ===================== */
+@media (prefers-reduced-motion: reduce) {
+  .tosheh,
+  .article,
+  .poem {
+    transition: none;
+  }
+}

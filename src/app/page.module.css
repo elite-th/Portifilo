@@ -1,0 +1,49 @@
+.projects {
+  width: 100%;
+  background: var(--bg-soft);
+  border-top: 1px solid var(--surface);
+  padding: 120px 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.projectsInner {
+  max-width: 760px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.kicker {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+}
+
+.projectsTitle {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.projectsDesc {
+  font-size: 1.02rem;
+  line-height: 1.9;
+  color: var(--muted);
+  margin: 0;
+  max-width: 52ch;
+}
+
+@media (max-width: 600px) {
+  .projects {
+    padding: 80px 20px;
+  }
+}
