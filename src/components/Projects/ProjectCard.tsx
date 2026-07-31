@@ -40,12 +40,7 @@ export default function ProjectCard({
 
       {/* Crystal seed — hexagon SVG که نماینده‌ی پروژه است */}
       <div className={styles.crystalSeed} aria-hidden="true">
-        <svg
-          className={styles.crystalSvg}
-          viewBox="0 0 60 60"
-          width="52"
-          height="52"
-        >
+        <svg viewBox="0 0 60 60" width="52" height="52">
           <defs>
             <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="var(--card-accent-bright, #e6c585)" />
@@ -63,15 +58,14 @@ export default function ProjectCard({
             points="30,12 46,21 46,39 30,48 14,39 14,21"
             fill={`url(#${gradId})`}
             opacity="0.16"
-            className={styles.crystalInner}
           />
           {/* facet lines */}
-          <line x1="30" y1="4" x2="30" y2="12" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" className={styles.crystalFacet} />
-          <line x1="54" y1="18" x2="46" y2="21" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" className={styles.crystalFacet} />
-          <line x1="54" y1="42" x2="46" y2="39" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" className={styles.crystalFacet} />
-          <line x1="30" y1="56" x2="30" y2="48" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" className={styles.crystalFacet} />
-          <line x1="6" y1="42" x2="14" y2="39" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" className={styles.crystalFacet} />
-          <line x1="6" y1="18" x2="14" y2="21" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" className={styles.crystalFacet} />
+          <line x1="30" y1="4" x2="30" y2="12" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
+          <line x1="54" y1="18" x2="46" y2="21" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
+          <line x1="54" y1="42" x2="46" y2="39" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
+          <line x1="30" y1="56" x2="30" y2="48" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
+          <line x1="6" y1="42" x2="14" y2="39" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
+          <line x1="6" y1="18" x2="14" y2="21" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
         </svg>
       </div>
 
