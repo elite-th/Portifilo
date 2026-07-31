@@ -1,0 +1,327 @@
+/* =========================================================
+   Connect — §۵ «بیا وصل بشیم» (Coagulation → Gold)
+   accent: gradient from --accent (gold) to --accent-2 (olive)
+   ---------------------------------------------------------
+   Final convergence. Three contact cards + postscript.
+   A large gradient title acts as the CTA.
+   ========================================================= */
+
+.connect {
+  position: relative;
+  padding: clamp(4rem, 8vw, 6.5rem) 0 clamp(5rem, 10vw, 7rem);
+  color: var(--text);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Coagulation glow — particles converging to the center */
+.coagulationGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70vw;
+  max-width: 800px;
+  height: 70vw;
+  max-height: 800px;
+  background:
+    radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, var(--accent-2-soft) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+  animation: coagulate 6s var(--ease-out) infinite alternate;
+}
+
+@keyframes coagulate {
+  0% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.08); }
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* ===================== Title (large CTA) ===================== */
+.connectTitle {
+  font-family: var(--font-display, var(--font-vazirmatn)), serif;
+  font-size: clamp(2rem, 5.5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 1s var(--ease-out),
+    transform 1s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.connect[data-revealed="true"] .connectTitle {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.titleLine1 {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.62em;
+}
+
+.titleLine2 {
+  background: linear-gradient(
+    100deg,
+    var(--accent) 0%,
+    var(--accent-bright) 40%,
+    var(--accent-2) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 4px 30px var(--accent-glow));
+}
+
+/* ===================== Subtitle ===================== */
+.connectSub {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--muted);
+  max-width: 54ch;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.connect[data-revealed="true"] .connectSub {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===================== Grid of contact cards ===================== */
+.connectGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.connectCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.5rem 1.25rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: var(--text);
+  overflow: hidden;
+  transition:
+    transform 0.4s var(--ease-out),
+    border-color 0.4s var(--ease-out),
+    box-shadow 0.4s var(--ease-out),
+    background 0.4s var(--ease-out);
+  /* reveal */
+  opacity: 0;
+  transform: translateY(28px);
+  transition-property: opacity, transform, border-color, box-shadow, background;
+  transition-duration: 0.8s, 0.8s, 0.4s, 0.4s, 0.4s;
+  transition-timing-function: var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.connect[data-revealed="true"] .connectCard {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Gradient border that lights up on hover */
+.connectCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+  pointer-events: none;
+}
+
+.connectCard::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    var(--accent-soft) 0%,
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+  pointer-events: none;
+}
+
+.connectCard:hover,
+.connectCard:focus-visible {
+  transform: translateY(-4px);
+  border-color: transparent;
+  background: var(--bg-soft);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), var(--shadow-glow);
+}
+
+.connectCard:hover::before,
+.connectCard:focus-visible::before,
+.connectCard:hover::after,
+.connectCard:focus-visible::after {
+  opacity: 1;
+}
+
+/* ===================== Icon ===================== */
+.connectIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--accent);
+  transition:
+    transform 0.4s var(--ease-spring, var(--ease-out)),
+    color 0.4s var(--ease-out),
+    border-color 0.4s var(--ease-out);
+}
+
+.connectCard:hover .connectIcon,
+.connectCard:focus-visible .connectIcon {
+  transform: scale(1.12) rotate(-3deg);
+  color: var(--accent-bright);
+  border-color: var(--accent);
+}
+
+.connectLabel {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.connectValue {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  color: var(--text);
+  word-break: break-all;
+  text-align: center;
+}
+
+.connectArrow {
+  position: absolute;
+  top: 1rem;
+  inset-inline-end: 1rem;
+  color: var(--accent);
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition:
+    opacity 0.4s var(--ease-out),
+    transform 0.4s var(--ease-out);
+  font-size: 1rem;
+}
+
+.connectCard:hover .connectArrow,
+.connectCard:focus-visible .connectArrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* ===================== Postscript ===================== */
+.connectPostscript {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--ink-raw);
+  max-width: 50ch;
+  margin: 1.5rem 0 0;
+  font-style: italic;
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 1s var(--ease-out),
+    transform 1s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.connect[data-revealed="true"] .connectPostscript {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 720px) {
+  .connectGrid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 640px) {
+  .connectSub {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .connectPostscript {
+    font-size: 0.9rem;
+  }
+}
+
+/* ===================== Reduced motion ===================== */
+@media (prefers-reduced-motion: reduce) {
+  .connectTitle,
+  .connectSub,
+  .connectCard,
+  .connectPostscript {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .connectCard:hover,
+  .connectCard:focus-visible {
+    transform: none !important;
+  }
+  .coagulationGlow {
+    animation: none !important;
+    opacity: 0.5 !important;
+  }
+}

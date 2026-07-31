@@ -1,0 +1,90 @@
+/* =========================================================
+   Journey — container
+   Vertical rhythm + ambient light-line behind all sections.
+   Each subsection owns its own scroll-reveal + module CSS.
+   ========================================================= */
+
+.journey {
+  position: relative;
+  background: var(--bg);
+  color: var(--text);
+  padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 4vw, 2.5rem) clamp(5rem, 10vw, 8rem);
+  /* Subtle vertical gradient so the journey feels like a descent
+     from the hero into the synthesis — gold warmth at the top
+     cooling toward neutral at the bottom. */
+  background-image:
+    radial-gradient(60% 30% at 50% 0%, rgba(212, 175, 106, 0.06), transparent 70%),
+    radial-gradient(50% 25% at 50% 100%, rgba(122, 148, 114, 0.05), transparent 70%);
+  overflow: hidden;
+}
+
+/* Ambient — sticky light-line that flows behind the whole journey.
+   pointer-events: none so it never steals interaction. */
+.ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambientLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(212, 175, 106, 0.18) 12%,
+    rgba(212, 175, 106, 0.10) 40%,
+    rgba(122, 148, 114, 0.12) 70%,
+    transparent 100%
+  );
+  opacity: 0.6;
+}
+
+.ambientGlow {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  width: 60vw;
+  max-width: 720px;
+  height: 60vw;
+  max-height: 720px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle,
+    rgba(212, 175, 106, 0.08) 0%,
+    transparent 60%
+  );
+  filter: blur(40px);
+}
+
+/* Each section sits above the ambient layer. */
+.journey > section {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 768px) {
+  .ambientLine {
+    /* On mobile the center line is too prominent; dim it. */
+    opacity: 0.35;
+  }
+  .ambientGlow {
+    width: 90vw;
+    height: 90vw;
+  }
+}
+
+/* ===================== Reduced motion ===================== */
+@media (prefers-reduced-motion: reduce) {
+  .ambientLine,
+  .ambientGlow {
+    /* Keep them visible (they're static gradients), just no shimmer. */
+    opacity: 0.4;
+  }
+}

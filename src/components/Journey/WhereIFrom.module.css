@@ -1,0 +1,243 @@
+/* =========================================================
+   WhereIFrom — §۳ «از کجا میام» (Separation)
+   accent: var(--accent-2) — olive
+   ---------------------------------------------------------
+   Two-column layout: minimal map + conversational text.
+   The pulse dot animates independently of scroll so the city
+   feels alive.
+   ========================================================= */
+
+.whereIFrom {
+  position: relative;
+  padding: clamp(3rem, 7vw, 5.5rem) 0;
+  color: var(--text);
+}
+
+.inner {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+/* ===================== Header ===================== */
+.sectionHeader {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--accent-2);
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--accent-2-soft);
+  border-radius: 999px;
+  background: var(--accent-2-soft);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.whereIFrom[data-revealed="true"] .kicker {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.kickerDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 10px var(--accent-2-soft);
+}
+
+.title {
+  font-family: var(--font-display, var(--font-vazirmatn)), serif;
+  font-size: clamp(1.6rem, 3.8vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0;
+  max-width: 22ch;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.whereIFrom[data-revealed="true"] .title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===================== Grid ===================== */
+.fromGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: center;
+}
+
+/* ===================== Map ===================== */
+.mapWrap {
+  position: relative;
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  color: var(--accent-2);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(24px) scale(0.97);
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.whereIFrom[data-revealed="true"] .mapWrap {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.mapWrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 53% 52%,
+    var(--accent-2-soft) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.map {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Pulse — independent of scroll (city is alive) */
+.mapPulse {
+  transform-origin: 170px 105px;
+  transform-box: fill-box;
+  animation: mapPulse 2.6s var(--ease-out) infinite;
+}
+
+.mapPulseRing {
+  transform-origin: 170px 105px;
+  transform-box: fill-box;
+  animation: mapPulseRing 2.6s var(--ease-out) infinite;
+}
+
+@keyframes mapPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.25); }
+}
+
+@keyframes mapPulseRing {
+  0% { opacity: 0.5; transform: scale(0.7); }
+  100% { opacity: 0; transform: scale(2.2); }
+}
+
+.mapCaption {
+  display: block;
+  margin-top: 1rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-raw);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===================== Text ===================== */
+.fromText {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.fromPara {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--muted);
+  margin: 0;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.whereIFrom[data-revealed="true"] .fromPara {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fromPara:first-child::first-letter {
+  color: var(--accent-2);
+  font-weight: 700;
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 880px) {
+  .fromGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .mapWrap {
+    order: 2;
+  }
+  .fromText {
+    order: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .fromPara {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .mapWrap {
+    padding: 1.25rem;
+  }
+}
+
+/* ===================== Reduced motion ===================== */
+@media (prefers-reduced-motion: reduce) {
+  .kicker,
+  .title,
+  .mapWrap,
+  .fromPara {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .mapPulse,
+  .mapPulseRing {
+    animation: none !important;
+  }
+}

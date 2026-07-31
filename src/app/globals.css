@@ -151,6 +151,48 @@
   --sidebar-accent-foreground: var(--parchment);
   --sidebar-border: var(--line);
   --sidebar-ring: var(--verdigris);
+
+  /* === Knowledge Alchemy — Gold Standard (override) ===
+     Applied by Worker A (Task 34-A) per UI/UX Designer (Task 32)
+     directive: the redesign orbits gold/olive (not verdigris teal),
+     completing the "turn-to-gold" alchemy metaphor.
+     This block overrides the verdigris tokens above with the
+     canonical gold/olive palette shared by Journey + Synthesis +
+     Projects (Worker B reuses the same tokens). */
+  --bg: #0a0a0c;
+  --bg-soft: #121214;
+  --bg-elevated: #16161a;
+  --fg: #f5f0e4;
+  --text: #f5f0e4;
+  --text-bright: #f5f0e4;
+  --muted: #c8c0b0;
+  --ink-raw: #8e8a82;
+  --muted-2: #75716a;
+  --accent: #d4af6a;
+  --accent-bright: #e6c585;
+  --accent-deep: #b08d4a;
+  --accent-2: #7a9472;
+  --accent-soft: rgba(212, 175, 106, 0.16);
+  --accent-glow: rgba(212, 175, 106, 0.32);
+  --accent-2-soft: rgba(122, 148, 114, 0.15);
+  --highlight: var(--accent);
+  --highlight-soft: var(--accent-soft);
+  --line: rgba(212, 175, 106, 0.22);
+  --line-strong: rgba(212, 175, 106, 0.4);
+  --danger: #e0935a;
+  --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px rgba(212, 175, 106, 0.12);
+  --radius-xl: 28px;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  /* Re-sync shadcn fallbacks to new accent */
+  --primary: var(--accent);
+  --primary-foreground: #0a0a0c;
+  --ring: var(--accent);
+  --focus: var(--accent);
+  --card-bg: rgba(245, 240, 228, 0.05);
+  --surface: rgba(245, 240, 228, 0.04);
+  --surface-strong: rgba(245, 240, 228, 0.08);
 }
 
 /* Light Mode (Inverted Metaphor — Reading in Daylight) */

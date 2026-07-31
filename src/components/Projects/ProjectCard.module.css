@@ -1,241 +1,399 @@
-/* ProjectCard.module.css - "Ink & Archive" Design System */
+/* ============================================================
+   ProjectCard.module.css — Crystal Form
+   ------------------------------------------------------------
+   کارتِ کریستالی با hexagon SVG، transformation قبل/بعد،
+   tags، و link. hover: glow + scale + facet sweep.
+   rotation از طریق --rotation CSS variable اعمال می‌شود
+   (که parent grid با :nth-child تنظیم می‌کند).
+   ============================================================ */
 
 .card {
-  --card-bg: rgba(var(--parchment-rgb), 0.08);
-  --card-border: var(--iron-gall);
-  --card-radius: 2px;
+  /* === Knowledge Alchemy — Gold Standard (local fallback) === */
+  --bg: #0a0a0c;
+  --bg-elevated: #16161a;
+  --text: #f5f0e4;
+  --muted: #c8c0b0;
+  --ink-raw: #8e8a82;
+  --muted-2: #75716a;
+  --accent: #d4af6a;
+  --card-accent-bright: #e6c585;
+  --card-accent-deep: #b08d4a;
+  --accent-soft: rgba(212, 175, 106, 0.16);
+  --accent-glow: rgba(212, 175, 106, 0.32);
+  --line: rgba(212, 175, 106, 0.22);
+  --line-strong: rgba(212, 175, 106, 0.4);
+  --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px rgba(212, 175, 106, 0.12);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius-xl: 28px;
+  --radius-lg: 18px;
+  --radius-md: 12px;
 
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: var(--card-radius);
-  padding: 24px;
+  /* === Crystal card vars === */
+  --crystal-bg: rgba(245, 240, 228, 0.04);
+  --crystal-border: var(--line);
+  --crystal-glow: var(--accent-glow);
+
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
+  padding: 26px 24px 22px;
+  background: var(--crystal-bg);
+  border: 1px solid var(--crystal-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transform: rotate(var(--rotation, 0deg));
   transition:
-    border-color 0.3s var(--ease-out-expo),
-    box-shadow 0.3s var(--ease-out-expo),
-    transform 0.2s var(--ease-out-expo);
+    transform 0.5s var(--ease-out),
+    border-color 0.4s var(--ease-out),
+    box-shadow 0.5s var(--ease-out),
+    background 0.4s var(--ease-out),
+    opacity 0.9s var(--ease-out-expo),
+    filter 0.7s var(--ease-out);
+  /* Stagger delay for initial reveal. --card-index is set via inline style.
+     Override to 0 on hover so hover feedback is instant. */
+  transition-delay: calc(var(--card-index, 0) * 80ms);
+  overflow: hidden;
+  isolation: isolate;
+  direction: rtl;
+  height: 100%;
+  opacity: 0;
+}
+
+.card[data-revealed="true"] {
+  opacity: 1;
+}
+
+/* Initial reveal state (mirrors the parent's reveal pattern) */
+.card:not([data-revealed="true"]) {
+  transform: rotate(var(--rotation, 0deg)) translateY(24px) scale(0.98);
+  filter: blur(8px);
+}
+
+.card[data-revealed="true"]:not(:hover) {
+  transform: rotate(var(--rotation, 0deg));
+  filter: none;
+}
+
+/* Top radial facet glow */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 100% 55% at 50% 0%,
+    var(--accent-soft) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Top edge gold sweep */
+.card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0;
+  transform: scaleX(0.3);
+  transition: opacity 0.4s var(--ease-out), transform 0.6s var(--ease-out);
+  z-index: 1;
 }
 
 .card:hover {
-  border-color: var(--verdigris);
+  transform: rotate(0deg) translateY(-6px) scale(1.02);
+  border-color: var(--accent);
+  background: rgba(245, 240, 228, 0.06);
   box-shadow:
-    0 8px 24px rgba(58, 107, 107, 0.25),
-    0 0 0 1px rgba(58, 107, 107, 0.15) inset;
-  transform: translateY(-2px);
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px var(--accent-soft),
+    0 0 40px var(--crystal-glow);
+  filter: none;
+  /* Override stagger delay so hover feedback is instant */
+  transition-delay: 0ms;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .card:focus-within {
   outline: none;
+  border-color: var(--accent);
   box-shadow:
-    0 0 0 2px var(--verdigris),
-    0 8px 24px rgba(58, 107, 107, 0.25);
+    0 0 0 2px var(--accent),
+    0 0 30px var(--crystal-glow);
 }
 
-.header {
+/* ============================================================
+   Facet top — a thin gold sweep
+   ============================================================ */
+.facetTop {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--card-accent-bright), transparent);
+  transform: translateX(-50%);
+  opacity: 0.4;
+  z-index: 1;
+}
+
+/* ============================================================
+   Crystal seed — hexagon SVG
+   ============================================================ */
+.crystalSeed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 2px;
+}
+
+.crystalShape {
+  transform-origin: center;
+  animation: crystalRotate 14s linear infinite;
+}
+
+@keyframes crystalRotate {
+  to { transform: rotate(360deg); }
+}
+
+.card:hover .crystalShape {
+  animation-duration: 5s;
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+.cardHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 4px;
 }
 
 .projectName {
-  font-family: var(--font-crimson-pro);
-  font-weight: 600;
-  font-size: var(--step-2);
-  color: var(--ochre);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  display: block;
+  font-family: var(--font-vazirmatn, system-ui, sans-serif);
+  font-size: var(--step-2, 1.44rem);
+  font-weight: 700;
+  color: var(--card-accent-bright);
+  letter-spacing: -0.005em;
+  margin: 0;
+  text-shadow: 0 0 12px var(--accent-glow);
+  line-height: 1.3;
 }
 
-.content {
+.projectIndex {
+  font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
+  font-size: var(--step--2, 0.75rem);
+  color: var(--ink-raw);
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   Transformation block — قبل/بعد vertical
+   ============================================================ */
+.transformation {
   display: flex;
-  align-items: flex-start;
-  gap: 24px;
-  direction: rtl;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  flex: 1;
 }
 
-.column {
-  flex: 1;
-  min-width: 0;
+.beforeAfter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .label {
-  font-family: var(--font-vazirmatn);
-  font-size: var(--step--2);
-  font-weight: 500;
-  color: var(--sepia-ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
+  font-size: var(--step--2, 0.75rem);
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  display: block;
-  margin-bottom: 8px;
 }
 
-.value {
-  font-family: var(--font-vazirmatn);
-  font-size: var(--step-0);
+.labelIcon {
+  color: var(--accent);
+  font-size: var(--step--1, 0.83rem);
+  line-height: 1;
+}
+
+.rootThought {
+  font-family: var(--font-vazirmatn, system-ui, sans-serif);
+  font-size: var(--step--1, 0.83rem);
+  line-height: 1.75;
+  color: var(--muted);
+  font-style: italic;
+  margin: 0;
+  padding-right: 12px;
+  border-right: 1px solid var(--line);
+}
+
+.builtStructure {
+  font-family: var(--font-vazirmatn, system-ui, sans-serif);
+  font-size: var(--step-0, 1rem);
   line-height: 1.7;
-  color: var(--parchment);
+  color: var(--text);
+  margin: 0;
+  padding-right: 12px;
+  border-right: 2px solid var(--accent);
 }
 
 .arrow {
-  flex-shrink: 0;
-  width: 40px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  color: var(--verdigris);
+  color: var(--accent);
   opacity: 0.7;
-  transition: opacity 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
+  margin: -2px 0;
+  animation: arrowPulse 2.4s ease-in-out infinite;
 }
 
-.card:hover .arrow {
-  opacity: 1;
-  transform: translateX(-4px);
+@keyframes arrowPulse {
+  0%, 100% { opacity: 0.5; transform: translateY(0); }
+  50%      { opacity: 1;   transform: translateY(3px); }
 }
 
-.footer {
+/* ============================================================
+   Footer
+   ============================================================ */
+.cardFooter {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  flex-direction: column;
+  gap: 14px;
   padding-top: 16px;
-  border-top: 1px dashed var(--iron-gall);
-  flex-wrap: wrap;
+  border-top: 1px dashed var(--line);
+  margin-top: auto;
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 .tag {
-  font-family: var(--font-vazirmatn);
-  font-size: var(--step--2);
-  font-weight: 400;
-  color: var(--parchment);
-  background: var(--iron-gall);
+  font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
+  font-size: var(--step--2, 0.75rem);
+  color: var(--muted);
+  background: rgba(212, 175, 106, 0.06);
+  border: 1px solid var(--line);
   border-radius: 4px;
-  padding: 4px 10px;
-  transition: background 0.2s var(--ease-out-expo), color 0.2s var(--ease-out-expo);
+  padding: 3px 8px;
+  transition:
+    background 0.3s var(--ease-out),
+    border-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out);
 }
 
 .card:hover .tag {
-  background: var(--verdigris);
+  background: rgba(212, 175, 106, 0.12);
+  border-color: var(--accent-soft);
+  color: var(--card-accent-bright);
 }
 
 .link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-family: var(--font-vazirmatn);
-  font-size: var(--step--1);
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--font-vazirmatn, system-ui, sans-serif);
+  font-size: var(--step--1, 0.83rem);
   font-weight: 500;
-  color: var(--verdigris);
+  color: var(--accent);
   text-decoration: none;
-  padding: 8px 12px;
-  border: 1px solid var(--verdigris);
-  border-radius: 4px;
+  padding: 10px 16px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
   transition:
-    background 0.2s var(--ease-out-expo),
-    color 0.2s var(--ease-out-expo),
-    border-color 0.2s var(--ease-out-expo);
+    background 0.3s var(--ease-out),
+    color 0.3s var(--ease-out),
+    box-shadow 0.3s var(--ease-out);
 }
 
 .link:hover {
-  background: var(--verdigris);
-  color: var(--ink-black);
-  border-color: var(--verdigris);
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 0 24px var(--accent-glow);
 }
 
 .link:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--verdigris), 0 0 0 4px var(--ink-black);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
 }
 
 .link svg {
+  transition: transform 0.3s var(--ease-out);
   flex-shrink: 0;
-  transition: transform 0.2s var(--ease-out-expo);
 }
 
 .link:hover svg {
   transform: translateX(-4px);
 }
 
-/* RTL adjustments */
+/* ============================================================
+   Responsive
+   ============================================================ */
 @media (max-width: 640px) {
-  .content {
-    flex-direction: column;
-    gap: 16px;
+  .card {
+    padding: 22px 20px 18px;
   }
 
-  .arrow {
-    transform: rotate(-90deg);
-    width: 32px;
+  .crystalSeed {
+    width: 52px;
+    height: 52px;
   }
 
-  .card:hover .arrow {
-    transform: rotate(-90deg) translateY(-4px);
-  }
-
-  .footer {
-    flex-direction: column;
-    align-items: flex-start;
+  .projectName {
+    font-size: var(--step-1, 1.2rem);
   }
 }
 
-/* Reduced motion */
+/* ============================================================
+   Reduced motion
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   .card,
-  .arrow,
-  .tag,
-  .link,
-  .link svg {
-    transition: none;
+  .card:not([data-revealed="true"]) {
+    opacity: 1 !important;
+    transform: rotate(var(--rotation, 0deg)) !important;
+    filter: none !important;
+    transition: none !important;
   }
-}
 
-/* Light mode adjustments */
-[data-theme="light"] .card {
-  --card-bg: rgba(var(--ink-black-rgb), 0.04);
-  --card-border: var(--sepia-ink);
-}
+  .crystalShape,
+  .arrow {
+    animation: none !important;
+  }
 
-[data-theme="light"] .card:hover {
-  border-color: var(--verdigris);
-  box-shadow:
-    0 8px 24px rgba(58, 107, 107, 0.2),
-    0 0 0 1px rgba(58, 107, 107, 0.1) inset;
-}
-
-[data-theme="light"] .value {
-  color: var(--ink-black);
-}
-
-[data-theme="light"] .label {
-  color: var(--iron-gall);
-}
-
-[data-theme="light"] .tag {
-  background: var(--sepia-ink);
-  color: var(--ink-black);
-}
-
-[data-theme="light"] .card:hover .tag {
-  background: var(--verdigris);
-  color: var(--parchment);
-}
-
-[data-theme="light"] .link {
-  color: var(--verdigris);
-  border-color: var(--verdigris);
-}
-
-[data-theme="light"] .link:hover {
-  background: var(--verdigris);
-  color: var(--parchment);
-}
-
-[data-theme="light"] .link:focus-visible {
-  box-shadow: 0 0 0 2px var(--verdigris), 0 0 0 4px var(--parchment);
+  .link,
+  .tag,
+  .link svg {
+    transition: none !important;
+  }
 }

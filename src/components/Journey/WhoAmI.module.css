@@ -1,0 +1,265 @@
+/* =========================================================
+   WhoAmI — §۱ «کی هستم» (Calcination)
+   accent: var(--accent) — gold
+   ---------------------------------------------------------
+   Scroll-reveal: section owns the ref. Children stagger via
+   `transition-delay: var(--reveal-delay)` set inline.
+   `[data-revealed="true"]` is set on the section by the hook,
+   and CSS descendant selectors fire each child's transition.
+   ========================================================= */
+
+.whoAmI {
+  position: relative;
+  padding: clamp(3rem, 7vw, 5.5rem) 0;
+  color: var(--text);
+}
+
+.inner {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* ===================== Kicker ===================== */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  backdrop-filter: blur(6px);
+  /* reveal */
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.whoAmI[data-revealed="true"] .kicker {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.kickerDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* ===================== Portrait ===================== */
+.portrait {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* The single gold dot — calcined core */
+.portraitDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 6px var(--accent-soft),
+    0 0 28px var(--accent-glow);
+  /* reveal: scale from 0 with spring-like overshoot via ease-spring */
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.9s var(--ease-spring, var(--ease-out));
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.whoAmI[data-revealed="true"] .portraitDot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ===================== Name (typewriter) ===================== */
+.name {
+  font-family: var(--font-display, var(--font-vazirmatn)), serif;
+  font-size: clamp(2rem, 5.5vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.15em;
+  /* reveal */
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+  min-height: 1.2em; /* prevent layout shift while typed is empty */
+}
+
+.whoAmI[data-revealed="true"] .name {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nameText {
+  background: linear-gradient(180deg, var(--text) 0%, var(--accent-bright) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Typewriter cursor — visible while typing, fades when done */
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--accent);
+  margin-inline-start: 0.1em;
+  transform: translateY(0.1em);
+  animation: blink 1s steps(2, end) infinite;
+  transition: opacity 0.6s var(--ease-out);
+}
+
+.cursor[data-hidden="true"] {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ===================== Meta ===================== */
+.meta {
+  font-size: 0.95rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  margin: 0;
+  /* reveal: letter-spacing collapses from 0.3em to 0.06em */
+  opacity: 0;
+  transform: translateY(14px);
+  letter-spacing: 0.3em;
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out),
+    letter-spacing 0.9s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.whoAmI[data-revealed="true"] .meta {
+  opacity: 1;
+  transform: translateY(0);
+  letter-spacing: 0.06em;
+}
+
+/* ===================== Bio ===================== */
+.bio {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--muted);
+  max-width: 56ch;
+  margin: 0.5rem auto 0;
+  /* reveal */
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.whoAmI[data-revealed="true"] .bio {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===================== Transition strip ===================== */
+.transitionStrip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--ink-raw);
+  margin-top: 1.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 1s var(--ease-out),
+    transform 1s var(--ease-out);
+  transition-delay: 1.1s;
+  will-change: opacity, transform;
+}
+
+.whoAmI[data-revealed="true"] .transitionStrip {
+  opacity: 0.85;
+  transform: translateY(0);
+}
+
+.stripArrow {
+  color: var(--accent);
+  animation: nudge 2.4s var(--ease-out) infinite;
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 640px) {
+  .bio {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .name {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+}
+
+/* ===================== Reduced motion ===================== */
+@media (prefers-reduced-motion: reduce) {
+  .kicker,
+  .portraitDot,
+  .name,
+  .meta,
+  .bio,
+  .transitionStrip {
+    opacity: 1 !important;
+    transform: none !important;
+    letter-spacing: 0.06em !important;
+    transition: none !important;
+  }
+  .portraitDot {
+    transform: scale(1) !important;
+  }
+  .cursor {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+  .stripArrow {
+    animation: none !important;
+  }
+}
