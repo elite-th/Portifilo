@@ -1,6 +1,7 @@
 "use client";
 
 import styles from "./Journey.module.css";
+import LightThread from "./LightThread";
 import WhoAmI from "./WhoAmI";
 import WhatIBuild from "./WhatIBuild";
 import WhereIFrom from "./WhereIFrom";
@@ -34,6 +35,11 @@ export default function Journey() {
         <div className={styles.ambientLine} />
         <div className={styles.ambientGlow} />
       </div>
+
+      {/* نخ بصری — vertical optical thread that binds the five
+          sections into a single linear path (Task 39-B).
+          Desktop-only — renders null on mobile via CSS. */}
+      <LightThread />
 
       <WhoAmI />
       <WhatIBuild />

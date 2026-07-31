@@ -232,14 +232,33 @@
   margin: 0;
 }
 
-/* ===================== Responsive (mobile = vertical rail) ===================== */
-@media (max-width: 880px) {
+/* ===================== Responsive (Task 39-B) ===================== */
+/* Unified breakpoints: 1024 (md), 768 (sm→md, vertical rail), 480 (xs).
+   At ≤768 the horizontal 4-up timeline collapses to a vertical rail
+   so each waypoint gets a full row. */
+@media (max-width: 1024px) {
+  .timeline {
+    gap: 0.75rem;
+  }
+  .timelineTitle {
+    font-size: 1rem;
+  }
+  .timelineDesc {
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .whereIGo {
+    padding: clamp(2.5rem, 7vw, 4rem) 0;
+  }
+
   .rail {
     top: 0;
     bottom: 0;
     left: 1.25rem;
     right: auto;
-    width: 2px;
+    width: 1px;
     height: auto;
     direction: ltr;
   }
@@ -279,9 +298,12 @@
     transform: translateX(0);
   }
 
+  /* Smaller dot on the vertical rail so it doesn't dominate. */
   .timelineDot {
     top: 0.3rem;
     left: -1.85rem;
+    width: 10px;
+    height: 10px;
     transform: translateX(0) scale(0);
   }
   .whereIGo[data-revealed="true"] .timelineDot {
@@ -289,11 +311,35 @@
   }
   .timelineItem:hover .timelineDot,
   .timelineItem:focus-within .timelineDot {
-    transform: translateX(0) scale(1.25);
+    transform: translateX(0) scale(1.2);
   }
 
   .timelineYear {
     align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .whereIGo {
+    padding: 2.25rem 0;
+  }
+  .title {
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+  }
+  /* Year + title share one row to save vertical space. */
+  .timelineContent {
+    gap: 0.35rem;
+  }
+  .timelineYear {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+  }
+  .timelineTitle {
+    font-size: 0.95rem;
+  }
+  .timelineDesc {
+    font-size: 0.8rem;
+    line-height: 1.65;
   }
 }
 
@@ -310,17 +356,20 @@
   .timelineDot {
     transform: translateX(-50%) scale(1) !important;
   }
-  @media (max-width: 880px) {
-    .timelineDot {
-      transform: translateX(0) scale(1) !important;
-    }
-    .timelineItem {
-      transform: none !important;
-    }
-  }
   .railFill {
     transition: none !important;
     width: 100% !important;
     height: 100% !important;
+  }
+}
+
+/* Reduced motion on mobile (vertical rail): the dot loses its
+   translateX(-50%) and the items lose their entry offset. */
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .timelineDot {
+    transform: translateX(0) scale(1) !important;
+  }
+  .timelineItem {
+    transform: none !important;
   }
 }

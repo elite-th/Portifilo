@@ -231,19 +231,32 @@
   opacity: 1;
 }
 
-/* ===================== Responsive ===================== */
-@media (max-width: 880px) {
+/* ===================== Responsive (Task 39-B) ===================== */
+/* Unified breakpoints: 1024 (md), 768 (sm→md), 480 (xs). */
+@media (max-width: 1024px) {
+  .buildGrid {
+    /* Tablet: keep 3 columns but with a tighter gap so cards
+       don't feel cramped on a portrait iPad. */
+    gap: 1.25rem;
+  }
+  .buildCard {
+    padding: 1.5rem 1.35rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .whatIBuild {
+    padding: clamp(2.5rem, 7vw, 4rem) 0;
+  }
   .buildGrid {
     grid-template-columns: 1fr;
     gap: 1rem;
     max-width: 540px;
     margin: 0 auto;
   }
-}
-
-@media (max-width: 640px) {
   .buildCard {
     padding: 1.5rem;
+    border-radius: 14px;
   }
   .buildName {
     font-size: 1.15rem;
@@ -251,6 +264,32 @@
   .buildDesc {
     font-size: 0.9rem;
     line-height: 1.75;
+  }
+  .buildIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .whatIBuild {
+    padding: 2.25rem 0;
+  }
+  /* Tiny phones: hide the decorative card index — it competes
+     with the title for horizontal space. */
+  .cardIndex {
+    display: none;
+  }
+  .buildCard {
+    padding: 1.25rem;
+  }
+  .buildIcon {
+    width: 42px;
+    height: 42px;
+  }
+  .title {
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
   }
 }
 

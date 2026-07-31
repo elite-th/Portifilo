@@ -15,54 +15,54 @@ interface ProjectData {
 const projects: ProjectData[] = [
   {
     rootThought:
-      "لیست‌های خطی جواب نمی‌دهند. ذهن انسان در ماتریس‌ها زیست می‌کند، نه در صف‌های بی‌پایان.",
+      "تقویم و to-do list برای مغزی ساخته شده‌اند که خطی فکر می‌کند. مغز من خطی نیست.",
     builtStructure:
-      "Taskino: شبکه‌ی معناییِ اولویت‌ها. معماری مبتنی بر گراف جهت مدل‌سازی وابستگی‌ها، انرژی، و بازده.",
+      "Taskino: تسک‌ها به‌جای صف، در یک گراف می‌نشینن. اولویت از شبکه بیرون میاد — از انرژی، وابستگی، و بازدهِ هر گره.",
     project: "Taskino",
     tags: ["Offline-First", "Local-First", "Priority Network", "Semantic Graph"],
     href: "/projects/taskino",
   },
   {
     rootThought:
-      "ترس از انتخابِ بی‌نهایت. حیرتِ مواجهه با بیشمار مسیر، مانعِ اقدام است.",
+      "هزار یادداشت. هیچی پیدا نمی‌شه. انتخاب از تصمیم سخت‌تره.",
     builtStructure:
-      "Mind 2.0: مدیریتِ وظایف مبتنی بر اولویت. الگوریتم‌های تصمیم‌گیری که إنتروپی را به نظم تبدیل می‌کنند.",
+      "Mind 2.0: یادداشت‌ها با خاستگاه و غایت وصل می‌شن. entropy شناختی پایین میاد، تصمیم برمی‌گرده.",
     project: "Mind 2.0",
     tags: ["Decision Architecture", "Entropy Reduction", "Cognitive Load", "Second Brain"],
     href: "/projects/mind2",
   },
   {
     rootThought:
-      "علوم انسانی «سخت» نیست. فلسفه، تاریخ، و ادبیات، داده‌ی خامِ نوآوری هستند.",
+      "همه میگن علوم انسانی بی‌فایده‌ست. هیچ‌کس نمی‌پرسه: کد بدون فلسفه، کدوم طرفِ بی‌فایده‌ست؟",
     builtStructure:
-      "Humanities × Code: هرمنوتیکِ مدرن — کد به‌مثابه‌ی تفسیر. مهندسیِ نرم‌افزار به‌عنوان رشته‌ای از علوم انسانیِ کاربردی.",
+      "Humanities × Code: کد به‌مثابه‌ی هرمنوتیک. مهندسیِ نرم‌افزار، رشته‌ی انسانیِ کاربردی — نه برعکس.",
     project: "Humanities × Code",
     tags: ["Hermeneutics", "Digital Humanities", "Critical Theory", "Code as Interpretation"],
     href: "/projects/humanities-code",
   },
   {
     rootThought:
-      "ایده‌های شبانه می‌میرند. لحظه‌ی بیداری، لحظه‌ی فوتِ خلاقیتِ ناب است.",
+      "ساعت ۲:۱۴ صبح، ایده‌ی ناب. ساعت ۷ صبح، یادت رفته. مشکل کجاست؟",
     builtStructure:
-      "Circadian Notes: ساعتِ زیستی — ثبت در لحظه‌ی ظهور. ابزارِ ضبطِ ایده که با ریتمِ سرکاردیئن هم‌ریخت است.",
+      "Circadian Notes: ضبطِ ایده در لحظه‌ی ظهور — نه صبح، نه بعداً. هم‌ریخت با ریتمِ سرکاردیئن.",
     project: "Circadian Notes",
     tags: ["Circadian Rhythm", "Capture at Dawn", "Fleeting Thoughts", "Biological Clock"],
     href: "/projects/circadian",
   },
   {
     rootThought:
-      "اینترنت همیشه نیست. متروی صبح، اتصالِ قطع، ایده‌ها کجا می‌روند؟",
+      "متروی صبح، اینترنت قطع. ایده‌ها کجان؟ سیستم از بین می‌ره یا منتظر می‌مونه؟",
     builtStructure:
-      "Offline-First Architecture: تاب‌آوریِ واقعی. سیستم‌هایی که در انزوا نیز حیات دارند، با واقعیتِ زیسته هم‌ریخت.",
+      "Offline-First: سیستم در انزوا هم زنده‌ست. وقتی وصل شد، همگام می‌شه. با واقعیتِ زیسته‌ی تهران هم‌ریخت.",
     project: "Offline-First Architecture",
     tags: ["Offline-First", "Local-First", "Resilience", "CRDTs", "Sync Protocols"],
     href: "/projects/offline-first",
   },
   {
     rootThought:
-      "Taskino فقط برای من است؟ ابزاری برای ساختِ ابزار، ابرابزارِ فکر است.",
+      "۱۶ ساله‌ام، چرا اصلا پورتفولیو ساختم؟ نه برای نمایش — برای رصدِ تطورِ فکریِ خودم.",
     builtStructure:
-      "Meta: فریم‌ورکِ ساختِ فریم‌ورک. انتزاعِ الگو تا ابدیتِ کاربردِ مجدد — ابزارِ ساختنِ ابزار.",
+      "Meta: ابزارِ ساختنِ ابزار. فریم‌ورکِ فریم‌ورک‌ها. انتزاع تا جایی که دیگران هم بتونن بسازن.",
     project: "Meta",
     tags: ["Meta-Tooling", "Composability", "Abstraction", "Framework for Frameworks"],
     href: "/projects/meta",
@@ -92,11 +92,12 @@ export default function Projects() {
             §آزمایشگاه
           </span>
           <h2 id="projects-title" className={styles.title} data-reveal>
-            تبلورِ مفاهیم در کالبدِ تکنولوژی.
+            شش فکر خام. شش کریستال.
           </h2>
           <p className={styles.desc} data-reveal>
-            هر پروژه، یک کریستال است — پاسخِ تبلور‌یافته‌ی یک فکرِ خام.
-            روی هر کریستال برو تا ببینی چطور از پراکندگی به ساختار رسید.
+            هر پروژه یک کریستاله — از یک فکرِ خام شروع شده، به یک ساختار رسیده.
+            <br />
+            برو روی هر کدوم تا ببینی این تبدیل چطور اتفاق افتاده.
           </p>
         </header>
 
@@ -112,7 +113,7 @@ export default function Projects() {
 
         <p className={styles.footerNote} data-reveal>
           <span className={styles.footerDot} aria-hidden="true">✦</span>
-          هر کریستال، یک بار پراکنده بوده — آن‌جا که ایده خام بود.
+          هیچ کریستالی بدون پراکندگی شکل نگرفته.
         </p>
       </div>
     </section>

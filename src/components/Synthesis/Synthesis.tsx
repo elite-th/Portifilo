@@ -102,7 +102,7 @@ export default function Synthesis() {
     {
       label: "چرا؟",
       title: "Humanities as OS",
-      desc: "فلسفه specification می‌دهد؛ کد implementation است. سیستم‌عاملِ ذهن، علوم انسانی است.",
+      desc: "قبل از اینکه چیزی بسازی، باید بدانی چرا. فلسفه specification می‌دهد، کد پیاده می‌کند. علوم انسانی، سیستم‌عاملِ ذهنِ منه.",
       icon: (
         <svg
           viewBox="0 0 48 48"
@@ -123,7 +123,7 @@ export default function Synthesis() {
     {
       label: "چگونه؟",
       title: "Code as Hermeneutics",
-      desc: "برنامه‌نویسی = هرمنوتیکِ مدرن. کد، تفسیرِ هستیِ دیجیتال است.",
+      desc: "هر تابع یک قرائت است. هر API یک قاعده‌ی هرمنوتیک. کد، تفسیرِ دنیاست — فقط به زبونِ صفر و یک.",
       icon: (
         <svg
           viewBox="0 0 48 48"
@@ -146,7 +146,7 @@ export default function Synthesis() {
     {
       label: "چیست؟",
       title: "Structure as Freedom",
-      desc: "محدودیت‌ها — typeها، schemaها، offline-first — عاملیتِ خلاقانه را ممکن می‌کنند.",
+      desc: "typeها، schemaها، offline-first — همه محدودیت‌اند. ولی تازه همین محدودیت‌ها جاییه که خلاقیت می‌تونه نفس بکشه. آزادی بدون ساختار، فقط اضطرابه.",
       icon: (
         <svg
           viewBox="0 0 48 48"
@@ -188,11 +188,14 @@ export default function Synthesis() {
             §تبلور
           </span>
           <h2 id="synthesis-title" className={styles.title} data-reveal>
-            منطقِ تبلور: از پرسش تا ساخت.
+            از پرسش تا ساخت — منطقِ کارِ من.
           </h2>
           <p className={styles.subtitle} data-reveal>
-            هر چیزی که می‌سازی، خروجیِ یک معادله‌ی سه‌ضرفی است. دو ضرفِ آن انسانی،
-            یکی الگوریتمی. حاصل — ابزارِ معنادار.
+            هر چیزی که می‌سازم، خروجیِ یک معادله‌ست.
+            <br />
+            دو ضرفِ انسانی، یکی الگوریتمی. حاصل: چیزی که نه کاملاً فلسفه است،
+            <br />
+            نه کاملاً کد — چیزی شبیه طلا.
           </p>
         </header>
 
@@ -229,7 +232,7 @@ export default function Synthesis() {
           <div className={`${styles.term} ${styles.termResult}`} data-reveal>
             <span className={styles.termBox}>
               <span className={styles.termIcon} aria-hidden="true">✦</span>
-              <span className={styles.termLabel}>ابزارِ المعنى‌دار</span>
+              <span className={styles.termLabel}>ابزارِ معنادار</span>
             </span>
             <span className={styles.termSub}>«چیست؟»</span>
           </div>

@@ -484,9 +484,25 @@
 }
 
 /* ============================================================
-   Responsive
+   Responsive (Task 39-B unified breakpoints)
    ============================================================ */
+@media (max-width: 1024px) {
+  .synthesis {
+    padding: clamp(64px, 10vw, 120px) 0;
+  }
+  .pillars {
+    gap: clamp(16px, 2.5vw, 24px);
+  }
+  .pillarCard {
+    padding: clamp(20px, 2.5vw, 28px);
+  }
+}
+
 @media (max-width: 768px) {
+  .synthesis {
+    padding: clamp(56px, 9vw, 88px) 0;
+  }
+
   .equation {
     flex-direction: column;
     gap: 14px;
@@ -497,6 +513,13 @@
     margin: -4px 0;
   }
 
+  .termBox {
+    padding: 12px 18px;
+    font-size: var(--step--1, 0.94rem);
+  }
+
+  /* Hide the light-line SVG on mobile — it doesn't survive the
+     column-stack equation and competes with the crucible glow. */
   .lightLine {
     display: none;
   }
@@ -506,9 +529,65 @@
     height: 80vw;
   }
 
+  /* Performance: dim the crucible canvas on small screens so the
+     GPU doesn't have to composite dozens of particles over a
+     narrow viewport. The glow + ring still carry the metaphor. */
+  .crucibleCanvas {
+    opacity: 0.45;
+  }
+
   .pillarIndex {
     top: 14px;
     left: 16px;
+  }
+
+  .pillars {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .synthesis {
+    padding: 48px 0;
+  }
+  .container {
+    padding: 0 16px;
+  }
+  .header {
+    margin-bottom: 36px;
+  }
+  .title {
+    font-size: var(--step-3, 1.73rem);
+  }
+  .subtitle {
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .termBox {
+    width: 100%;
+    justify-content: center;
+    padding: 11px 14px;
+  }
+  .termLabel {
+    white-space: normal;
+  }
+  .operator {
+    font-size: 1.1rem;
+  }
+  .pillarCard {
+    padding: 18px;
+    border-radius: var(--radius-lg);
+  }
+  .pillarTitle {
+    font-size: var(--step-1, 1.2rem);
+  }
+  .pillarDesc {
+    font-size: 0.85rem;
+    line-height: 1.7;
   }
 }
 

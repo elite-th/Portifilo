@@ -16,9 +16,9 @@ import { useReducedMotion } from "@/components/Hero/useReducedMotion";
  * ========================================================= */
 
 const NAME = "طاها حسینی هستم.";
-const META = "۱۶ سال · تهران · علوم انسانی";
+const META = "۱۶ ساله · تهران · علوم انسانیِ فیلم‌شده";
 const BIO =
-  "دانش‌آموز رشته‌ی علوم انسانی‌ام، ولی بیشترِ وقتِ بیداری‌ام پای کد می‌گذرد. باور دارم فلسفه و مهندسی نرم‌افزار دو رویِ یک سکه‌اند — یکی می‌پرسد «چرا؟»، دیگری می‌پرسد «چطور؟». اینجا جایی است که این دو سؤال به هم می‌رسند.";
+  "شانزده سالم است و در تهران بزرگ می‌شوم. روزها در مدرسه هگل و فوکو می‌خوانم، شب‌ها پای لپ‌تاپ type می‌نویسم. خیلی وقت فکر می‌کردم این دو دنیای جدا هستند — تا اینکه فهمیدم هر دو یک کار می‌کنند: می‌پرسند «چیزی که هست، چرا هست؟». یکی با واژه می‌پرسد، دیگری با type. من از این دو سؤال چیزی می‌سازم.";
 
 const delay = (ms: number): CSSProperties =>
   ({ "--reveal-delay": `${ms}ms` }) as CSSProperties;
@@ -74,7 +74,7 @@ export default function WhoAmI() {
         </div>
 
         <div className={styles.transitionStrip} aria-hidden="true">
-          <span className={styles.stripText}>به پایین بیا — بگذار بیشتر نشانت بدهم</span>
+          <span className={styles.stripText}>حالا که منو شناختی — بذار بگم چی می‌سازم</span>
           <span className={styles.stripArrow}>↓</span>
         </div>
       </div>

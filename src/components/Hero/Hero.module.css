@@ -516,21 +516,56 @@
     padding: 18px 16px;
   }
 
+  /* Task 39-B: nav collapses to a horizontal scroll strip on
+     very narrow viewports so links never wrap or clip. */
   .nav {
     gap: 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Allow the link row to scroll independently of the header. */
+    max-width: 60%;
+  }
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+  .navLink {
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .hero {
     padding: 8px 16px 40px;
   }
 
-  .actions {
-    gap: 14px;
+  .headline {
+    font-size: clamp(1.8rem, 7vw, 2.4rem);
   }
 
-  .ctaPrimary {
-    padding: 13px 22px;
-    font-size: 0.9rem;
+  .description {
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  /* Task 39-B: CTA buttons stack vertically on very small phones
+     so both buttons stay comfortably tappable (≥44px). */
+  .actions {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  .ctaPrimary,
+  .ctaSecondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Task 39-B: dim the eyebrow slashes — text replacement is
+     Worker A's job, but we can soften them so the eyebrow reads
+     as a single comma-separated phrase on a small surface. */
+  .eyebrowSlash {
+    opacity: 0.4;
   }
 
   .footer {
@@ -538,6 +573,12 @@
     gap: 8px;
     align-items: flex-start;
     padding: 14px 16px 20px;
+  }
+
+  /* Task 39-B: drop the pulse dot on mobile so the footer reads
+     as plain meta text (per Planner §3.2.1). */
+  .footerPulse {
+    display: none;
   }
 }
 

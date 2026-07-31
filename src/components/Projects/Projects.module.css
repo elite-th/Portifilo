@@ -194,7 +194,7 @@
 }
 
 /* ============================================================
-   Responsive
+   Responsive (Task 39-B unified breakpoints)
    ============================================================ */
 @media (max-width: 1024px) {
   .grid {
@@ -211,14 +211,15 @@
   .grid > *:nth-child(6)  { --rotation:  0.75deg; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .projects {
-    padding: 60px 20px;
+    padding: clamp(56px, 9vw, 80px) clamp(16px, 4vw, 24px);
   }
-
   .grid {
     grid-template-columns: 1fr;
     gap: 16px;
+    max-width: 540px;
+    margin: 0 auto;
   }
 
   /* موبایل: rotation کاملاً غیرفعال */
@@ -232,6 +233,24 @@
 
   .title {
     font-size: var(--step-3, 1.73rem);
+  }
+
+  /* Task 39-B: dim the radial bgGlow on mobile for performance. */
+  .bgGlow {
+    opacity: 0.4;
+  }
+}
+
+@media (max-width: 480px) {
+  .projects {
+    padding: 44px 16px;
+  }
+  .desc {
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .footerNote {
+    font-size: 0.78rem;
   }
 }
 

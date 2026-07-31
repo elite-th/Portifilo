@@ -89,10 +89,12 @@ const JSON_LD = [
 ];
 
 export default function Hero() {
+  // Primary CTA now opens the linear journey (§۱ WhoAmI) first, so the
+  // reader meets Taha before seeing his work. Planner §1.1 (Task 37).
   const handleEnterLab = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault();
-      const target = document.getElementById("projects");
+      const target = document.getElementById("whoami");
       if (target) {
         target.scrollIntoView({ behavior: "smooth", block: "start" });
       }
@@ -138,42 +140,46 @@ export default function Hero() {
         <div className={styles.textBlock}>
           <span className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />
-            Mind 2.0
+            ۱۶ سال
             <span className={styles.eyebrowSlash} aria-hidden="true">
               /
             </span>
-            Taskino
+            تهران
             <span className={styles.eyebrowSlash} aria-hidden="true">
               /
             </span>
-            علوم انسانی × کد
+            ۲:۱۴ صبح
           </span>
 
           <h1 className={styles.headline}>
-            جایی که کلمات
+            جایی که اندیشه،
             <br />
-            به <span className={styles.headlineAccent}>کد تبدیل می‌شوند</span>.
+            <span className={styles.headlineAccent}>کالبد</span> می‌یابد.
           </h1>
 
           <p className={styles.description}>
-            من <strong>طاها حسینی</strong> هستم؛ دانش‌آموز علوم انسانی و معمار سیستم‌های
-            دیجیتال. اینجا ایده‌های پراکنده از دنیای واژه‌ها، در آزمایشگاه من به
-            ساختارهای منطقی و کدهای واقعی تبلور می‌یابند.
+            من <strong>طاها</strong> هستم. شانزده سالم است، در تهران بزرگ می‌شوم.
+            <br />
+            روزها علوم انسانی می‌خوانم، شب‌ها کد می‌زنم.
+            <br />
+            بین این دو، چیزی می‌سازم که نه کاملاً فلسفه است، نه کاملاً مهندسی —
+            <br />
+            چیزی شبیه کیمیاگری.
           </p>
 
           <div className={styles.actions}>
             <a
-              href="#projects"
+              href="#whoami"
               className={styles.ctaPrimary}
               onClick={handleEnterLab}
             >
-              ورود به آزمایشگاه
+              برو پایین — بیشتر بخون
               <span className={styles.ctaArrow} aria-hidden="true">
                 ←
               </span>
             </a>
             <a href="#path" className={styles.ctaSecondary}>
-              مشاهده‌ی مسیر فکری
+              ببین چی ساختم
               <span className={styles.ctaSecondaryArrow} aria-hidden="true">
                 ←
               </span>

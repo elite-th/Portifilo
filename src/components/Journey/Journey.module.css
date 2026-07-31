@@ -69,14 +69,43 @@
 }
 
 /* ===================== Responsive ===================== */
+/* Task 39-B — unified breakpoints (xs ≤480 / sm 481–768 / md 769–1024 / lg ≥1025).
+   Mobile: dim the centre spine so the stacked layout breathes; the
+   LightThread component is hidden below 768px via its own module. */
+@media (max-width: 1024px) {
+  .journey {
+    padding: clamp(3.5rem, 7vw, 6rem) clamp(1.25rem, 4vw, 2.5rem) clamp(4rem, 8vw, 7rem);
+  }
+  .ambientGlow {
+    width: 75vw;
+    height: 75vw;
+  }
+}
+
 @media (max-width: 768px) {
+  .journey {
+    padding: clamp(3rem, 7vw, 5rem) clamp(1rem, 4vw, 1.5rem) clamp(3.5rem, 7vw, 5rem);
+  }
   .ambientLine {
     /* On mobile the center line is too prominent; dim it. */
-    opacity: 0.35;
+    opacity: 0.25;
   }
   .ambientGlow {
     width: 90vw;
     height: 90vw;
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .journey {
+    padding: 2.5rem 1rem 3rem;
+  }
+  .ambientLine {
+    opacity: 0.18;
+  }
+  .ambientGlow {
+    opacity: 0.4;
   }
 }
 

@@ -29,7 +29,7 @@ const ITEMS: BuildItem[] = [
     id: "taskino",
     name: "Taskino",
     desc:
-      "شبکه‌ی معناییِ اولویت‌ها. وقتی لیست‌های خطی جواب نمی‌دهند، ذهن را به‌جای صف، در یک گراف مدل می‌کند.",
+      "To-do list‌ها برای مغزی ساخته شده‌اند که خطی فکر می‌کند. مغز من خطی نیست. Taskino تسک‌ها را به هم وصل می‌کند — اولویت از شبکه بیرون می‌آید، نه از شماره‌ی ردیف.",
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <polygon points="24,6 40,15 40,33 24,42 8,33 8,15" />
@@ -47,7 +47,7 @@ const ITEMS: BuildItem[] = [
     id: "mind2",
     name: "Mind 2.0",
     desc:
-      "معماریِ دومین مغز. کاهشِ entropy شناختی — وقتی بیشمار مسیر جلویت باز است، انتخاب از تصمیم سخت‌تر می‌شود.",
+      "هزار یادداشت، هیچی پیدا نمی‌شه. Mind 2.0 یادداشت‌ها را به هم وصل می‌کند — هر کدام می‌داند از کجا آمده و کجا باید برود. entropy شناختی پایین می‌آید، تصمیم برمی‌گردد.",
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <polygon points="24,4 44,24 24,44 4,24" />
@@ -63,7 +63,7 @@ const ITEMS: BuildItem[] = [
     id: "humxcode",
     name: "Humanities × Code",
     desc:
-      "کد به‌مثابه‌ی هرمنوتیکِ مدرن. فلسفه specification می‌دهد، کد implementation. مهندسی نرم‌افزار، رشته‌ی انسانیِ کاربردی است.",
+      "مگه برنامه‌نویسی چیزی جز تفسیر نیست؟ هر تابع یک قرائت است، هر API یک قاعده‌ی هرمنوتیک. فلسفه spec می‌دهد، کد پیاده می‌کند. مهندسی نرم‌افزار، انسانی‌ترین رشته‌ی منه.",
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <circle cx="18" cy="24" r="12" />
@@ -96,7 +96,7 @@ export default function WhatIBuild() {
             §۲ · چی می‌سازم
           </span>
           <h2 id="build-title" className={styles.title} style={delay(120)}>
-            سه خطِ موازی که در یک نقطه تقاطع می‌کنند.
+            سه پروژه. سه سؤال. هر کدام جوابِ یکی است، سؤالِ دیگری.
           </h2>
         </header>
 

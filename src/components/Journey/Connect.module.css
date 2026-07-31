@@ -288,21 +288,85 @@
   transform: translateY(0);
 }
 
-/* ===================== Responsive ===================== */
-@media (max-width: 720px) {
+/* ===================== Responsive (Task 39-B) ===================== */
+/* Unified breakpoints: 1024 (md), 768 (sm→md, card stack), 480 (xs). */
+@media (max-width: 1024px) {
   .connectGrid {
-    grid-template-columns: 1fr;
-    max-width: 380px;
+    gap: 0.85rem;
+  }
+  .connectCard {
+    padding: 1.25rem 1rem;
+  }
+  .connectTitle {
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .connect {
+    padding: clamp(2.75rem, 7vw, 4rem) 0 clamp(3.5rem, 7vw, 5rem);
+    /* iOS safe-area: leave room for the home indicator at the
+       very bottom of the journey. */
+    padding-bottom: calc(clamp(3.5rem, 7vw, 5rem) + env(safe-area-inset-bottom, 0px));
+  }
+  .connectGrid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    gap: 0.75rem;
+  }
+  .connectCard {
+    padding: 1.25rem;
+    flex-direction: row;
+    align-items: center;
+    text-align: start;
+    gap: 1rem;
+  }
+  .connectIcon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+  .connectArrow {
+    inset-inline-end: 0.85rem;
+    top: 50%;
+    transform: translate(-4px, -50%);
+  }
+  .connectCard:hover .connectArrow,
+  .connectCard:focus-visible .connectArrow {
+    transform: translate(0, -50%);
+  }
+  /* Reduce the coagulation-glow's blur radius on mobile for
+     performance (per Planner §3.2.6). */
+  .coagulationGlow {
+    opacity: 0.4;
+    filter: blur(40px);
+  }
+  .connectTitle {
+    font-size: clamp(1.7rem, 7vw, 2.4rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .connect {
+    padding: 2.25rem 0 calc(3rem + env(safe-area-inset-bottom, 0px));
+  }
+  .inner {
+    padding: 0 1rem;
+    gap: 1.25rem;
+  }
   .connectSub {
-    font-size: 1rem;
-    line-height: 1.8;
+    font-size: 0.95rem;
+    line-height: 1.75;
   }
   .connectPostscript {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+  .connectCard {
+    padding: 1rem 0.85rem;
+  }
+  .connectValue {
+    font-size: 0.78rem;
   }
 }
 
