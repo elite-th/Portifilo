@@ -29,7 +29,7 @@ const ITEMS: BuildItem[] = [
     id: "taskino",
     name: "Taskino",
     desc:
-      "To-do list‌ها برای مغزی ساخته شده‌اند که خطی فکر می‌کند. مغز من خطی نیست. Taskino تسک‌ها را به هم وصل می‌کند — اولویت از شبکه بیرون می‌آید، نه از شماره‌ی ردیف.",
+      "تسک‌لیست‌ها برای مغزی ساخته شدن که خطی فکر می‌کنه. مغزِ من خطی نیست. توی Taskino تسک‌ها به هم وصلن؛ اولویت از تویِ شبکه بیرون میاد، نه از شماره‌ی ردیف.",
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <polygon points="24,6 40,15 40,33 24,42 8,33 8,15" />
@@ -47,7 +47,7 @@ const ITEMS: BuildItem[] = [
     id: "mind2",
     name: "Mind 2.0",
     desc:
-      "هزار یادداشت، هیچی پیدا نمی‌شه. Mind 2.0 یادداشت‌ها را به هم وصل می‌کند — هر کدام می‌داند از کجا آمده و کجا باید برود. entropy شناختی پایین می‌آید، تصمیم برمی‌گردد.",
+      "هزار یادداشت، هیچی پیدا نمی‌شه. توی Mind 2.0 هر یادداشت می‌دونه از کجا اومده و کجا باید بره.",
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <polygon points="24,4 44,24 24,44 4,24" />
@@ -63,7 +63,7 @@ const ITEMS: BuildItem[] = [
     id: "humxcode",
     name: "Humanities × Code",
     desc:
-      "مگه برنامه‌نویسی چیزی جز تفسیر نیست؟ هر تابع یک قرائت است، هر API یک قاعده‌ی هرمنوتیک. فلسفه spec می‌دهد، کد پیاده می‌کند. مهندسی نرم‌افزار، انسانی‌ترین رشته‌ی منه.",
+      "کد ادامه‌ی فلسفه‌ست، با ابزارِ دیگه. هر دوتا می‌پرسن «چرا» و «چطور». من این دوتا رو به هم وصل می‌کنم.",
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <circle cx="18" cy="24" r="12" />

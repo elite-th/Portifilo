@@ -1,0 +1,421 @@
+/* =========================================================
+ * ExploreMore.module.css
+ * ---------------------------------------------------------
+ * Owner: Worker C (Task 42-C)
+ *
+ * Class name registry (owned by Worker C — do not override):
+ *   .explore        — <section id="explore"> root
+ *   .ambient        — decorative gradient halo
+ *   .container      — max-width inner wrapper
+ *   .kicker         — small eyebrow line above the title
+ *   .title          — «اگه وقت داری، بیشتر هست.»
+ *   .grid           — 3-col desktop / 1-col mobile
+ *   .card           — gateway link card
+ *   .icon           — SVG icon chip
+ *   .cardTitle      — h3 inside card
+ *   .cardDesc       — p inside card
+ *   .arrow          — ↗ corner glyph (inset-inline-end)
+ *
+ * Tokens used (from globals.css — gold/olive palette):
+ *   --bg, --text, --muted, --accent, --accent-bright,
+ *   --accent-soft, --accent-glow, --line, --line-strong,
+ *   --card-bg, --radius-md, --radius-lg, --ease-out,
+ *   --ease-out-expo, --step-0..--step-4
+ *
+ * Motion model:
+ *   useScrollReveal sets `data-revealed="true"` on the
+ *   <section> once it enters the viewport. Cards + title
+ *   fade-up via CSS transitions gated on that attribute,
+ *   each staggered by its own `--reveal-delay` variable
+ *   (set inline from the TSX).
+ *
+ * Reduced motion: all entrance/hover transitions collapse
+ * to instant. Content stays visible.
+ * ========================================================= */
+
+.explore {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(4rem, 9vw, 7rem) clamp(1.25rem, 5vw, 2rem);
+  background: var(--bg);
+  /* soft gold halo from the top so the section reads as a
+     distinct "one-more-thing" beat without breaking flow */
+  background-image: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    var(--accent-soft) 0%,
+    transparent 65%
+  );
+  border-block-start: 1px solid var(--line);
+}
+
+.ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      circle at 12% 30%,
+      var(--accent-2-soft) 0%,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 88% 70%,
+      var(--accent-soft) 0%,
+      transparent 38%
+    );
+  opacity: 0.6;
+  filter: blur(2px);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* === Eyebrow + title === */
+
+.kicker {
+  margin: 0 0 0.75rem;
+  text-align: center;
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-transform: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.7s var(--ease-out-expo),
+    transform 0.7s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.explore[data-revealed="true"] .kicker {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.title {
+  margin: 0 0 clamp(2rem, 5vw, 3rem);
+  text-align: center;
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+  font-size: var(--step-4);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.explore[data-revealed="true"] .title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === Card grid === */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  align-items: stretch;
+}
+
+/* === Card === */
+
+.card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  min-height: 200px;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  color: var(--text);
+  text-decoration: none;
+  overflow: hidden;
+  /* entrance state */
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s var(--ease-out-expo),
+    transform 0.5s var(--ease-out-expo),
+    border-color 0.3s var(--ease-out),
+    box-shadow 0.3s var(--ease-out),
+    background-color 0.3s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.explore[data-revealed="true"] .card {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.7s var(--ease-out-expo),
+    transform 0.5s var(--ease-out-expo),
+    border-color 0.3s var(--ease-out),
+    box-shadow 0.3s var(--ease-out),
+    background-color 0.3s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* gold inner glow behind the card content */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    circle at 50% 0%,
+    var(--accent-soft) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+  pointer-events: none;
+}
+
+/* a thin top hairline that brightens on hover */
+.card::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent) 50%,
+    transparent 100%
+  );
+  opacity: 0.25;
+  transition: opacity 0.3s var(--ease-out);
+  pointer-events: none;
+}
+
+.card:hover,
+.card:focus-visible {
+  border-color: var(--accent);
+  background-color: rgba(212, 175, 106, 0.06);
+  box-shadow:
+    0 14px 36px rgba(212, 175, 106, 0.18),
+    0 0 0 1px var(--accent-soft) inset;
+  transform: translateY(-4px);
+  outline: none;
+}
+
+.card:hover::before,
+.card:focus-visible::before {
+  opacity: 1;
+}
+
+.card:hover::after,
+.card:focus-visible::after {
+  opacity: 1;
+}
+
+/* === Icon chip === */
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--line);
+  transition:
+    color 0.3s var(--ease-out),
+    background-color 0.3s var(--ease-out),
+    border-color 0.3s var(--ease-out),
+    transform 0.4s var(--ease-out);
+}
+
+.card:hover .icon,
+.card:focus-visible .icon {
+  color: var(--accent-bright);
+  background-color: var(--accent-glow);
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+/* === Card text === */
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+  font-size: var(--step-2);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+  transition: color 0.3s var(--ease-out);
+}
+
+.card:hover .cardTitle,
+.card:focus-visible .cardTitle {
+  color: var(--accent-bright);
+}
+
+.cardDesc {
+  margin: 0;
+  flex: 1;
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+  font-size: var(--step-0);
+  line-height: 1.75;
+  color: var(--muted);
+  transition: color 0.3s var(--ease-out);
+}
+
+.card:hover .cardDesc,
+.card:focus-visible .cardDesc {
+  color: var(--text);
+}
+
+/* === Corner arrow ===
+   inset-inline-end resolves to "left" in RTL, which is the
+   natural "outward" direction for cards whose title flows
+   right-to-left. */
+
+.arrow {
+  position: absolute;
+  inset-block-start: clamp(1rem, 2vw, 1.5rem);
+  inset-inline-end: clamp(1rem, 2vw, 1.5rem);
+  font-family: var(--font-mono), monospace;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--muted-2);
+  transition:
+    color 0.3s var(--ease-out),
+    transform 0.3s var(--ease-out);
+}
+
+.card:hover .arrow,
+.card:focus-visible .arrow {
+  color: var(--accent);
+  transform: translate(-3px, 3px);
+}
+
+/* === Tactile fallback for touch devices === */
+
+@media (hover: none) {
+  .card:active {
+    border-color: var(--accent);
+    background-color: rgba(212, 175, 106, 0.06);
+    transform: scale(0.99);
+  }
+  .card:active .icon {
+    color: var(--accent-bright);
+    border-color: var(--accent);
+  }
+}
+
+/* === Responsive === */
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* on 2-col, the third card spans full width to keep
+     visual rhythm — feels intentional, not orphaned */
+  .card:nth-child(3) {
+    grid-column: 1 / -1;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .card:nth-child(3) {
+    grid-column: auto;
+  }
+  .title {
+    font-size: var(--step-3);
+    margin-bottom: 1.75rem;
+  }
+  .card {
+    min-height: 0;
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .explore {
+    padding: 3.5rem 1rem;
+  }
+  .kicker {
+    font-size: var(--step--2);
+  }
+  .title {
+    font-size: var(--step-3);
+  }
+  .icon {
+    width: 44px;
+    height: 44px;
+  }
+  .icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  .cardTitle {
+    font-size: var(--step-1);
+  }
+  .cardDesc {
+    font-size: var(--step--1);
+  }
+  .arrow {
+    font-size: 1.05rem;
+  }
+}
+
+/* === Reduced motion === */
+
+@media (prefers-reduced-motion: reduce) {
+  .kicker,
+  .title,
+  .card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .card:hover,
+  .card:focus-visible {
+    transform: none !important;
+  }
+  .card:hover .icon,
+  .card:focus-visible .icon {
+    transform: none !important;
+  }
+  .card:hover .arrow,
+  .card:focus-visible .arrow {
+    transform: none !important;
+  }
+  .ambient {
+    filter: none;
+  }
+}
+
+/* === RTL note ===
+   This module relies on logical properties (inset-block-start,
+   inset-inline-end) and `dir="rtl"` on <html>. The arrow at
+   inset-inline-end appears top-left in RTL, matching the
+   right-to-left reading flow. No `direction` rule is needed
+   here — the page inherits RTL from the root. */

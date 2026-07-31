@@ -15,54 +15,54 @@ interface ProjectData {
 const projects: ProjectData[] = [
   {
     rootThought:
-      "تقویم و to-do list برای مغزی ساخته شده‌اند که خطی فکر می‌کند. مغز من خطی نیست.",
+      "تسک‌لیست‌های خطی جواب‌گوی مغزِ غیرخطی من نیستن.",
     builtStructure:
-      "Taskino: تسک‌ها به‌جای صف، در یک گراف می‌نشینن. اولویت از شبکه بیرون میاد — از انرژی، وابستگی، و بازدهِ هر گره.",
+      "تسک‌ها روی یه گراف می‌شینن؛ اولویت از رابطه‌ها بیرون میاد.",
     project: "Taskino",
     tags: ["Offline-First", "Local-First", "Priority Network", "Semantic Graph"],
     href: "/projects/taskino",
   },
   {
     rootThought:
-      "هزار یادداشت. هیچی پیدا نمی‌شه. انتخاب از تصمیم سخت‌تره.",
+      "هزار یادداشت، هیچی پیدا نمی‌شه.",
     builtStructure:
-      "Mind 2.0: یادداشت‌ها با خاستگاه و غایت وصل می‌شن. entropy شناختی پایین میاد، تصمیم برمی‌گرده.",
+      "هر یادداشت با فاز/منبع/خروجی برچسب می‌خوره.",
     project: "Mind 2.0",
     tags: ["Decision Architecture", "Entropy Reduction", "Cognitive Load", "Second Brain"],
     href: "/projects/mind2",
   },
   {
     rootThought:
-      "همه میگن علوم انسانی بی‌فایده‌ست. هیچ‌کس نمی‌پرسه: کد بدون فلسفه، کدوم طرفِ بی‌فایده‌ست؟",
+      "علوم انسانی رو همه بی‌فایده می‌دونن.",
     builtStructure:
-      "Humanities × Code: کد به‌مثابه‌ی هرمنوتیک. مهندسیِ نرم‌افزار، رشته‌ی انسانیِ کاربردی — نه برعکس.",
+      "پروژه‌ای که کد رو به‌مثابه‌ی تفسیر می‌بینه.",
     project: "Humanities × Code",
     tags: ["Hermeneutics", "Digital Humanities", "Critical Theory", "Code as Interpretation"],
     href: "/projects/humanities-code",
   },
   {
     rootThought:
-      "ساعت ۲:۱۴ صبح، ایده‌ی ناب. ساعت ۷ صبح، یادت رفته. مشکل کجاست؟",
+      "۲:۱۴ صبح ایده‌ی ناب؛ ۷ صبح یادت رفته.",
     builtStructure:
-      "Circadian Notes: ضبطِ ایده در لحظه‌ی ظهور — نه صبح، نه بعداً. هم‌ریخت با ریتمِ سرکاردیئن.",
+      "ضبطِ ایده در لحظه‌ی ظهور، نه بعداً.",
     project: "Circadian Notes",
     tags: ["Circadian Rhythm", "Capture at Dawn", "Fleeting Thoughts", "Biological Clock"],
     href: "/projects/circadian",
   },
   {
     rootThought:
-      "متروی صبح، اینترنت قطع. ایده‌ها کجان؟ سیستم از بین می‌ره یا منتظر می‌مونه؟",
+      "مترو صبح، اتصال قطع، ایده‌ها کجا می‌رن؟",
     builtStructure:
-      "Offline-First: سیستم در انزوا هم زنده‌ست. وقتی وصل شد، همگام می‌شه. با واقعیتِ زیسته‌ی تهران هم‌ریخت.",
+      "معماریِ آفلاین-اول؛ سینک بعد از وصل‌شدن.",
     project: "Offline-First Architecture",
     tags: ["Offline-First", "Local-First", "Resilience", "CRDTs", "Sync Protocols"],
     href: "/projects/offline-first",
   },
   {
     rootThought:
-      "۱۶ ساله‌ام، چرا اصلا پورتفولیو ساختم؟ نه برای نمایش — برای رصدِ تطورِ فکریِ خودم.",
+      "Taskino فقط برای منه؟",
     builtStructure:
-      "Meta: ابزارِ ساختنِ ابزار. فریم‌ورکِ فریم‌ورک‌ها. انتزاع تا جایی که دیگران هم بتونن بسازن.",
+      "تبدیلِ ابزارِ شخصی به زیرساختِ عمومی.",
     project: "Meta",
     tags: ["Meta-Tooling", "Composability", "Abstraction", "Framework for Frameworks"],
     href: "/projects/meta",
@@ -92,7 +92,7 @@ export default function Projects() {
             §آزمایشگاه
           </span>
           <h2 id="projects-title" className={styles.title} data-reveal>
-            شش فکر خام. شش کریستال.
+            شش فکر خام. شش تا ساختار.
           </h2>
           <p className={styles.desc} data-reveal>
             هر پروژه یک کریستاله — از یک فکرِ خام شروع شده، به یک ساختار رسیده.

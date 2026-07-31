@@ -1,139 +1,38 @@
-/* =========================================================
-   LightThread — نخ بصریِ مسیر آشنایی (Task 39-B)
-   ---------------------------------------------------------
-   A vertical optical thread that runs through <Journey>.
-   The thread is positioned absolutely inside `.journey`
-   (which is `position: relative`) and sits on the
-   reading-start side (RTL → right). It:
-     - draws a faint gradient gold→cream→olive→bright→gold
-     - marks each section with a node that lights up when
-       that section is closest to the viewport centre
-     - carries a sliding pulse dot whose colour follows the
-       same per-section gradient
-   The thread is desktop-only — it disappears below 768px
-   (the linear-journey cue is unnecessary on a stacked
-   mobile layout).
-   ========================================================= */
-
 .thread {
   position: absolute;
   top: 0;
   bottom: 0;
-  /* RTL: place the thread on the reading-start edge so it
-     acts as a marginal annotation, not a centred spine.
-     `inset-inline-start` resolves to `right` in RTL. */
-  inset-inline-start: 6%;
+  right: 32px; /* RTL: right side */
   width: 2px;
   pointer-events: none;
-  z-index: 0;
-  /* Keep the thread within the journey's horizontal padding
-     band on narrow desktops. */
-  max-width: 2px;
+  z-index: 1;
 }
 
-/* ---------- Baseline gradient line ---------- */
-.threadLine {
-  position: absolute;
-  inset: 0;
+.line {
+  width: 100%;
+  height: 100%;
   background: linear-gradient(
     to bottom,
-    var(--accent) 0%,
-    var(--text) 25%,
-    var(--accent-2) 50%,
-    var(--accent-bright) 75%,
-    var(--accent) 100%
+    transparent 0%,
+    var(--accent) 15%,
+    var(--accent-bright) 35%,
+    var(--accent-2) 65%,
+    var(--accent) 85%,
+    transparent 100%
   );
-  opacity: 0.18;
-  border-radius: 2px;
+  opacity: 0.4;
 }
 
-/* A faint halo behind the line — adds the "optical" feel
-   without competing with section content. */
-.threadLine::after {
-  content: "";
-  position: absolute;
-  inset: -2px -6px;
-  background: linear-gradient(
-    to bottom,
-    var(--accent-soft) 0%,
-    transparent 25%,
-    transparent 75%,
-    var(--accent-2-soft) 100%
-  );
-  filter: blur(6px);
-  opacity: 0.6;
-}
-
-/* ---------- Section nodes ---------- */
-.threadNode {
-  position: absolute;
-  inset-inline-start: 50%;
-  transform: translate(-50%, -50%);
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 1.5px solid var(--line);
-  /* Per-node accent available via --node-color (set inline). */
-  color: var(--node-color, var(--accent));
-  transition:
-    background 0.5s var(--ease-out),
-    border-color 0.5s var(--ease-out),
-    box-shadow 0.5s var(--ease-out),
-    transform 0.5s var(--ease-out);
-}
-
-/* Active node: filled with its section colour + glow. */
-.threadNode[data-active="true"] {
-  background: var(--node-color, var(--accent-bright));
-  border-color: var(--node-color, var(--accent-bright));
-  box-shadow:
-    0 0 0 4px var(--accent-soft),
-    0 0 14px var(--node-color, var(--accent-glow)),
-    0 0 28px var(--accent-glow);
-  transform: translate(-50%, -50%) scale(1.35);
-}
-
-/* ---------- Sliding pulse ---------- */
-.threadPulse {
-  position: absolute;
-  inset-inline-start: 50%;
-  top: var(--thread-pulse, 0%);
-  transform: translate(-50%, -50%);
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--pulse-color, var(--accent));
-  box-shadow:
-    0 0 16px var(--pulse-color, var(--accent)),
-    0 0 32px var(--pulse-color, var(--accent)),
-    0 0 0 3px var(--accent-soft);
-  transition:
-    top 0.18s linear,
-    background 0.45s var(--ease-out),
-    box-shadow 0.45s var(--ease-out);
-}
-
-/* ---------- Mobile: thread hidden ---------- */
+/* Mobile: hide the thread — clean vertical stack */
 @media (max-width: 768px) {
   .thread {
     display: none;
   }
 }
 
-/* ---------- Reduced motion: pulse parked, transitions off ---------- */
+/* Reduced motion: no change needed (already static) */
 @media (prefers-reduced-motion: reduce) {
-  .threadPulse {
-    transition: none;
-  }
-  .threadNode {
-    transition: none;
-  }
-}
-
-/* ---------- Wide desktop: nudge thread slightly outward ---------- */
-@media (min-width: 1280px) {
-  .thread {
-    inset-inline-start: 8%;
+  .line {
+    opacity: 0.3;
   }
 }

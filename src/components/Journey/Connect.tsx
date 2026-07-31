@@ -80,8 +80,8 @@ export default function Connect() {
 
       <div className={styles.inner}>
         <h2 id="connect-title" className={styles.connectTitle} style={delay(0)}>
-          <span className={styles.titleLine1}>حالا که تا اینجا آمدی —</span>
-          <span className={styles.titleLine2}>بیا وصل بشیم.</span>
+          <span className={styles.titleLine1}>حالا که تا این‌جا اومدی —</span>
+          <span className={styles.titleLine2}>بیا وصل شیم.</span>
         </h2>
 
         <p className={styles.connectSub} style={delay(140)}>

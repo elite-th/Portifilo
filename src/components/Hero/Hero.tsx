@@ -151,6 +151,24 @@ export default function Hero() {
             ۲:۱۴ صبح
           </span>
 
+          <span
+            className={styles.eyebrow}
+            style={{
+              fontSize: "0.7rem",
+              padding: "3px 12px",
+              marginTop: "-10px",
+              borderWidth: "1px",
+              borderColor: "transparent",
+              background: "transparent",
+              backdropFilter: "none",
+              color: "var(--muted-2)",
+              letterSpacing: "0.04em",
+              animationDelay: "0.12s",
+            }}
+          >
+            علوم انسانی × AI Engineer
+          </span>
+
           <h1 className={styles.headline}>
             جایی که اندیشه،
             <br />
@@ -158,13 +176,9 @@ export default function Hero() {
           </h1>
 
           <p className={styles.description}>
-            من <strong>طاها</strong> هستم. شانزده سالم است، در تهران بزرگ می‌شوم.
+            فلسفه می‌خونم که بفهمم چرا؛ کد می‌زنم که بسازم چطور.
             <br />
-            روزها علوم انسانی می‌خوانم، شب‌ها کد می‌زنم.
-            <br />
-            بین این دو، چیزی می‌سازم که نه کاملاً فلسفه است، نه کاملاً مهندسی —
-            <br />
-            چیزی شبیه کیمیاگری.
+            این‌جا جاییه که این دوتا با هم قاطی می‌شن.
           </p>
 
           <div className={styles.actions}>
@@ -173,13 +187,13 @@ export default function Hero() {
               className={styles.ctaPrimary}
               onClick={handleEnterLab}
             >
-              برو پایین — بیشتر بخون
+              بیا آشناتر شیم
               <span className={styles.ctaArrow} aria-hidden="true">
                 ←
               </span>
             </a>
-            <a href="#path" className={styles.ctaSecondary}>
-              ببین چی ساختم
+            <a href="#projects" className={styles.ctaSecondary}>
+              برو سراغِ ساخته‌ها
               <span className={styles.ctaSecondaryArrow} aria-hidden="true">
                 ←
               </span>
