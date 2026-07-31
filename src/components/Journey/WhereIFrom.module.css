@@ -2,21 +2,18 @@
    WhereIFrom — §۳ «از کجا میام» (Separation)
    accent: var(--accent-2) — olive
    ---------------------------------------------------------
-   "Living Tehran Night" — animated SVG city (Task 39-C).
+   "Minimal Tehran Night" — animated SVG (Task 45-B).
 
-   CLASS-NAME REGISTRY (owned by Worker C — see Task 38 §6.2):
-     .cityMap, .stars, .star, .moon, .clock,
-     .buildings, .window, .tahaWindow,
-     .train, .tahaDot, .tahaRing, .label
-   Worker B: do NOT override these in @media queries — only
-   touch layout classes (.mapWrap, .fromGrid, .fromText,
-   .fromPara, .mapCaption, .kicker, .title, .sectionHeader).
+   Concept: شیک، مینیمال، چشم‌نواز — a quiet Japanese-painting
+   take on Tehran at 02:14 AM. Just sky, a few stars, a crescent
+   moon, one horizon line, and a single lit window.
 
-   OLD CLASSES REMOVED (renamed by Worker C):
-     .map → .cityMap
-     .mapPulse → .tahaDot
-     .mapPulseRing → .tahaRing
-     @keyframes mapPulse, mapPulseRing → tahaPulse, tahaRingExpand
+   CLASS REGISTRY:
+     Layout   — .whereIFrom, .inner, .sectionHeader, .kicker,
+                .kickerDot, .title, .fromGrid, .mapWrap,
+                .mapCaption, .cityMap, .fromText, .fromPara
+     SVG anim — .stars, .star, .moonHalo, .clock,
+                .tahaWindow, .tahaHalo
    ========================================================= */
 
 .whereIFrom {
@@ -105,7 +102,7 @@
   align-items: center;
 }
 
-/* ===================== Map wrap (layout — owned by B) ===================== */
+/* ===================== Map wrap (layout) ===================== */
 .mapWrap {
   position: relative;
   background: var(--bg-elevated);
@@ -152,7 +149,7 @@
   z-index: 1;
 }
 
-/* ===================== City SVG (owned by C — Task 39-C) ===================== */
+/* ===================== City SVG ===================== */
 .cityMap {
   display: block;
   width: 100%;
@@ -164,7 +161,7 @@
 
 /* ---- Layer 1: Night sky ---- */
 
-/* Stars — twinkle (independent of scroll) */
+/* Stars — twinkle (independent of scroll, staggered delays) */
 .star {
   animation: starTwinkle 3s ease-in-out infinite;
   will-change: opacity;
@@ -174,17 +171,17 @@
   50%      { opacity: 1; }
 }
 
-/* Moon — soft halo glow */
-.moon {
-  animation: moonGlow 4s ease-in-out infinite;
-  will-change: filter;
+/* Moon halo — soft opacity breath (5s slow inhale/exhale) */
+.moonHalo {
+  animation: moonGlow 5s ease-in-out infinite;
+  will-change: opacity;
 }
 @keyframes moonGlow {
-  0%, 100% { filter: drop-shadow(0 0 2px var(--accent)); }
-  50%      { filter: drop-shadow(0 0 6px var(--accent)); }
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
 }
 
-/* 02:14 clock stamp — subtle blink */
+/* 02:14 clock stamp — subtle blink (matches the prose beat) */
 .clock {
   animation: clockBlink 4s ease-in-out infinite;
   will-change: opacity;
@@ -194,81 +191,37 @@
   50%      { opacity: 0.85; }
 }
 
-/* ---- Layer 2: Skyline ---- */
+/* ---- Layer 3: Taha's lit window + halo ---- */
 
-/* Building windows — twinkle (varied delays via inline style) */
-.window {
-  animation: windowTwinkle 4s ease-in-out infinite;
-  will-change: opacity;
-}
-@keyframes windowTwinkle {
-  0%, 100% { opacity: 0.2; }
-  50%      { opacity: 0.9; }
-}
-
-/* Taha's lit window — larger, gold, with pulsing halo (2.6s
-   matches the original mapPulse rhythm so the city breathes
-   at the same tempo as before) */
+/* Taha's window — opacity + drop-shadow pulse (2.5s heartbeat,
+   matches the prose's "ایده تا صبح شکل می‌گیره" rhythm) */
 .tahaWindow {
-  animation: tahaWindowPulse 2.6s ease-in-out infinite;
-  will-change: filter, opacity;
+  animation: windowPulse 2.5s ease-in-out infinite;
+  will-change: opacity, filter;
 }
-@keyframes tahaWindowPulse {
+@keyframes windowPulse {
   0%, 100% {
-    opacity: 1;
+    opacity: 0.75;
     filter: drop-shadow(0 0 2px var(--accent));
   }
   50% {
-    opacity: 0.85;
+    opacity: 1;
     filter: drop-shadow(0 0 5px var(--accent));
   }
 }
 
-/* ---- Layer 3: Metro line + train + Taha's pulse ---- */
-
-/* Train — travels along the metro line. Starts at x=20 (left
-   end of line) and translates 280px to x=300 (right end).
-   12s = slow, peaceful night metro. */
-.train {
-  animation: metroTravel 12s linear infinite;
-  will-change: transform;
+/* Taha's window halo — expands outward and fades (3s out-breath).
+   transform-box: fill-box + transform-origin: center make the
+   SVG <rect> scale around its own center, not the SVG origin. */
+.tahaHalo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: haloExpand 3s ease-out infinite;
+  will-change: opacity, transform;
 }
-@keyframes metroTravel {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(280px); }
-}
-
-/* Taha's pulse dot — radius + opacity pulse (uses CSS r
-   property on SVG circle, supported in modern browsers:
-   Chrome 77+, Firefox 70+, Safari 13.1+) */
-.tahaDot {
-  animation: tahaPulse 2s ease-in-out infinite;
-  will-change: r, opacity;
-}
-@keyframes tahaPulse {
-  0%, 100% { r: 3; opacity: 1; }
-  50%      { r: 5; opacity: 0.7; }
-}
-
-/* Taha's pulse ring — expands outward and fades (synchronized
-   with tahaPulse's 2s cycle) */
-.tahaRing {
-  animation: tahaRingExpand 2s ease-out infinite;
-  will-change: r, opacity;
-}
-@keyframes tahaRingExpand {
-  0%   { r: 5;  opacity: 0.6; }
-  100% { r: 14; opacity: 0; }
-}
-
-/* "من اینجام" label — gentle fade (synchronized with tahaWindowPulse) */
-.label {
-  animation: labelFade 2.6s ease-in-out infinite;
-  will-change: opacity;
-}
-@keyframes labelFade {
-  0%, 100% { opacity: 0.7; }
-  50%      { opacity: 1; }
+@keyframes haloExpand {
+  0%   { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0;   transform: scale(1.6); }
 }
 
 /* ===================== Text ===================== */
@@ -302,9 +255,7 @@
   font-weight: 700;
 }
 
-/* ===================== Responsive (Worker C — initial breakpoints) =====================
-   Worker B may extend/consolidate these into the canonical
-   480 / 768 / 1024 / 1280min scale (see Task 38 §4.2.5). */
+/* ===================== Responsive ===================== */
 @media (max-width: 768px) {
   .fromGrid {
     grid-template-columns: 1fr;
@@ -326,11 +277,6 @@
   .mapWrap {
     padding: 1.25rem;
   }
-  /* Hide "من اینجام" label on very small screens to avoid
-     overlap with the pulse dot / building windows. */
-  .label {
-    display: none;
-  }
 }
 
 /* ===================== Reduced motion ===================== */
@@ -345,34 +291,22 @@
     transition: none !important;
   }
 
-  /* City animations: halt — keep SVG static and legible */
+  /* Night-scene animations: halt — keep SVG static and legible */
   .star,
-  .moon,
+  .moonHalo,
   .clock,
-  .window,
   .tahaWindow,
-  .train,
-  .tahaDot,
-  .tahaRing,
-  .label {
+  .tahaHalo {
     animation: none !important;
   }
 
   /* Static visual states — every element still visible */
   .star      { opacity: 0.7; }
-  .moon      { filter: drop-shadow(0 0 3px var(--accent)); }
+  .moonHalo  { opacity: 0.7; }
   .clock     { opacity: 0.7; }
-  .window    { opacity: 0.5; }
   .tahaWindow {
     opacity: 1;
     filter: drop-shadow(0 0 3px var(--accent));
   }
-  .tahaDot   { opacity: 1; }
-  .tahaRing  { opacity: 0.4; }
-  .label     { opacity: 0.85; }
-
-  /* Train parked mid-journey so users still see it on the line */
-  .train {
-    transform: translateX(140px);
-  }
+  .tahaHalo  { opacity: 0.4; }
 }

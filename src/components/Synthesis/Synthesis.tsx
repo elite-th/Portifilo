@@ -30,17 +30,43 @@ function useCrucibleCanvas(canvasRef: RefObject<HTMLCanvasElement | null>) {
     window.addEventListener("resize", resize);
 
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const count = isMobile ? 18 : 36;
+    const count = isMobile ? 30 : 70;
 
-    const particles = Array.from({ length: count }, () => ({
-      x: Math.random(),
-      y: Math.random(),
-      vx: (Math.random() - 0.5) * 0.0004,
-      vy: -Math.random() * 0.0006 - 0.0001,
-      r: Math.random() * 1.4 + 0.4,
-      alpha: Math.random() * 0.4 + 0.15,
-      twinkle: Math.random() * Math.PI * 2,
-    }));
+    // سه خانواده‌ی رنگ برای ذرات: طلا (accent)، زیتون (accent-2)، مس (danger)
+    type Hue = "gold" | "olive" | "copper";
+    const hueMap: Record<Hue, [number, number, number]> = {
+      gold: [212, 175, 106],
+      olive: [122, 148, 114],
+      copper: [224, 147, 90],
+    };
+    const hues: Hue[] = ["gold", "gold", "gold", "olive", "copper"];
+
+    type Particle = {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      r: number;
+      alpha: number;
+      twinkle: number;
+      twinkleSpeed: number;
+      hue: Hue;
+    };
+
+    const particles: Particle[] = Array.from({ length: count }, () => {
+      const hue = hues[Math.floor(Math.random() * hues.length)] ?? "gold";
+      return {
+        x: Math.random(),
+        y: Math.random(),
+        vx: (Math.random() - 0.5) * 0.0006,
+        vy: -Math.random() * 0.0009 - 0.0001,
+        r: Math.random() * 1.6 + 0.3,
+        alpha: Math.random() * 0.45 + 0.15,
+        twinkle: Math.random() * Math.PI * 2,
+        twinkleSpeed: 0.015 + Math.random() * 0.03,
+        hue,
+      };
+    });
 
     let raf = 0;
     let last = performance.now();
@@ -56,7 +82,7 @@ function useCrucibleCanvas(canvasRef: RefObject<HTMLCanvasElement | null>) {
         if (!reduced) {
           p.x += p.vx * dt;
           p.y += p.vy * dt;
-          p.twinkle += 0.02;
+          p.twinkle += p.twinkleSpeed;
           if (p.x < -0.02) p.x = 1.02;
           if (p.x > 1.02) p.x = -0.02;
           if (p.y < -0.05) p.y = 1.05;
@@ -65,11 +91,20 @@ function useCrucibleCanvas(canvasRef: RefObject<HTMLCanvasElement | null>) {
         const py = p.y * h;
         const twinkleAlpha = reduced
           ? p.alpha
-          : p.alpha * (0.7 + 0.3 * Math.sin(p.twinkle));
-        ctx.fillStyle = `rgba(212, 175, 106, ${twinkleAlpha.toFixed(3)})`;
+          : p.alpha * (0.55 + 0.45 * Math.sin(p.twinkle));
+        const [r1, g1, b1] = hueMap[p.hue] ?? hueMap.gold;
+        ctx.fillStyle = `rgba(${r1}, ${g1}, ${b1}, ${twinkleAlpha.toFixed(3)})`;
         ctx.beginPath();
         ctx.arc(px, py, p.r, 0, Math.PI * 2);
         ctx.fill();
+
+        // halo نازک برای ذراتِ روشن‌تر
+        if (p.r > 1.2 && twinkleAlpha > 0.35) {
+          ctx.fillStyle = `rgba(${r1}, ${g1}, ${b1}, ${(twinkleAlpha * 0.18).toFixed(3)})`;
+          ctx.beginPath();
+          ctx.arc(px, py, p.r * 2.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
 
       raf = requestAnimationFrame(render);
@@ -83,11 +118,55 @@ function useCrucibleCanvas(canvasRef: RefObject<HTMLCanvasElement | null>) {
   }, [canvasRef]);
 }
 
+type HexVariant = "accent" | "text" | "accent-2";
+
 interface Pillar {
   label: string;
   title: string;
   desc: string;
   icon: ReactNode;
+  hexVariant: HexVariant;
+}
+
+/* ============================================================
+ * HexagonIcon — شش‌ضلعیِ کیمیاگری
+ * ------------------------------------------------------------
+ * هر pillar یک hexagon با رنگ متفاوت. ضلع‌های اصلی با stroke-dash
+ * رسم می‌شوند و سپس ملایم می‌چرخند. لایه‌ی داخلی pulse می‌کند.
+ * ============================================================ */
+function HexagonIcon({ variant }: { variant: HexVariant }) {
+  return (
+    <svg
+      viewBox="0 0 60 60"
+      width="48"
+      height="48"
+      fill="none"
+      stroke="currentColor"
+      aria-hidden="true"
+      className={styles.hexSvg}
+      data-hex-variant={variant}
+    >
+      <polygon
+        points="30,4 52,17 52,43 30,56 8,43 8,17"
+        strokeWidth="1.5"
+        className={styles.hexShape}
+      />
+      <polygon
+        points="30,4 52,17 52,43 30,56 8,43 8,17"
+        strokeWidth="0.5"
+        opacity="0.4"
+        className={styles.hexInner}
+      />
+      <circle
+        cx="30"
+        cy="30"
+        r="1.8"
+        fill="currentColor"
+        stroke="none"
+        className={styles.hexCore}
+      />
+    </svg>
+  );
 }
 
 export default function Synthesis() {
@@ -103,66 +182,22 @@ export default function Synthesis() {
       label: "چرا؟",
       title: "Humanities as OS",
       desc: "قبل از اینکه چیزی بسازی، باید بدانی چرا. فلسفه specification می‌دهد، کد پیاده می‌کند. علوم انسانی، سیستم‌عاملِ ذهنِ منه.",
-      icon: (
-        <svg
-          viewBox="0 0 48 48"
-          width="32"
-          height="32"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          aria-hidden="true"
-        >
-          <polygon points="24,4 42,14 42,34 24,44 6,34 6,14" />
-          <line x1="24" y1="4" x2="24" y2="44" />
-          <line x1="6" y1="14" x2="42" y2="34" />
-          <line x1="42" y1="14" x2="6" y2="34" />
-        </svg>
-      ),
+      hexVariant: "accent",
+      icon: <HexagonIcon variant="accent" />,
     },
     {
       label: "چگونه؟",
       title: "Code as Hermeneutics",
       desc: "هر تابع یک قرائت است. هر API یک قاعده‌ی هرمنوتیک. کد، تفسیرِ دنیاست — فقط به زبونِ صفر و یک.",
-      icon: (
-        <svg
-          viewBox="0 0 48 48"
-          width="32"
-          height="32"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          aria-hidden="true"
-        >
-          <polygon points="24,6 42,24 24,42 6,24" />
-          <polygon points="24,14 34,24 24,34 14,24" />
-          <line x1="24" y1="6" x2="24" y2="14" />
-          <line x1="42" y1="24" x2="34" y2="24" />
-          <line x1="24" y1="42" x2="24" y2="34" />
-          <line x1="6" y1="24" x2="14" y2="24" />
-        </svg>
-      ),
+      hexVariant: "text",
+      icon: <HexagonIcon variant="text" />,
     },
     {
       label: "چیست؟",
       title: "Structure as Freedom",
       desc: "typeها، schemaها، offline-first — همه محدودیت‌اند. ولی تازه همین محدودیت‌ها جاییه که خلاقیت می‌تونه نفس بکشه. آزادی بدون ساختار، فقط اضطرابه.",
-      icon: (
-        <svg
-          viewBox="0 0 48 48"
-          width="32"
-          height="32"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          aria-hidden="true"
-        >
-          <polygon points="24,4 44,24 24,44 4,24" />
-          <line x1="24" y1="4" x2="24" y2="44" strokeDasharray="2 3" />
-          <line x1="4" y1="24" x2="44" y2="24" strokeDasharray="2 3" />
-          <circle cx="24" cy="24" r="4" fill="currentColor" stroke="none" />
-        </svg>
-      ),
+      hexVariant: "accent-2",
+      icon: <HexagonIcon variant="accent-2" />,
     },
   ];
 
@@ -176,7 +211,9 @@ export default function Synthesis() {
     >
       {/* Crucible پس‌زمینه */}
       <div className={styles.crucibleBg} aria-hidden="true">
+        <div className={styles.crucibleMolten} />
         <div className={styles.crucibleGlow} />
+        <div className={styles.crucibleStars} />
         <canvas ref={canvasRef} className={styles.crucibleCanvas} aria-hidden="true" />
         <div className={styles.crucibleRing} />
       </div>
@@ -185,7 +222,7 @@ export default function Synthesis() {
         <header className={styles.header}>
           <span className={styles.kicker} data-reveal>
             <span className={styles.kickerDot} aria-hidden="true" />
-            §تبلور
+            تبلور
           </span>
           <h2 id="synthesis-title" className={styles.title} data-reveal>
             از پرسش تا ساخت — منطقِ کارِ من.
@@ -207,7 +244,6 @@ export default function Synthesis() {
         >
           <div className={styles.term} data-reveal>
             <span className={styles.termBox}>
-              <span className={styles.termIcon} aria-hidden="true">❓</span>
               <span className={styles.termLabel}>مسئله‌ی انسانی</span>
             </span>
             <span className={styles.termSub}>«چرا؟»</span>
@@ -219,7 +255,6 @@ export default function Synthesis() {
 
           <div className={styles.term} data-reveal>
             <span className={styles.termBox}>
-              <span className={styles.termIcon} aria-hidden="true">⚙</span>
               <span className={styles.termLabel}>راهکارِ الگوریتمی</span>
             </span>
             <span className={styles.termSub}>«چگونه؟»</span>
@@ -231,7 +266,6 @@ export default function Synthesis() {
 
           <div className={`${styles.term} ${styles.termResult}`} data-reveal>
             <span className={styles.termBox}>
-              <span className={styles.termIcon} aria-hidden="true">✦</span>
               <span className={styles.termLabel}>ابزارِ معنادار</span>
             </span>
             <span className={styles.termSub}>«چیست؟»</span>
@@ -275,7 +309,7 @@ export default function Synthesis() {
               className={styles.pillarCard}
               data-reveal
             >
-              <span className={styles.pillarIcon} aria-hidden="true">
+              <span className={styles.pillarIcon} aria-hidden="true" data-hex-variant={pillar.hexVariant}>
                 {pillar.icon}
               </span>
               <span className={styles.pillarLabel}>{pillar.label}</span>

@@ -155,7 +155,15 @@
 }
 
 /* ============================================================
-   Crystal seed — hexagon SVG
+   Crystal seed — hexagon SVG (animated)
+   ------------------------------------------------------------
+   زنجیره‌ی انیمیشن — hexagon زنده می‌شود: ضلع‌ها و زوایا حرکت می‌کنند.
+   1. .crystalSeed (div): slow rotation 28s — پس از reveal شروع می‌شود
+   2. .crystalSvg   (svg): breathe (scale pulse 5s) — استقلال از rotation
+   3. .crystalShape (outer hexagon): stroke draw روی reveal (one-shot)
+   4. .crystalInner (inner hexagon): opacity pulse (5s) — حسِ عمق
+   5. .crystalFacet (۶ line): twinkle (4s, staggered 0..2.5s)
+   hover: rotation سریع‌تر (9s) + drop-shadow glow.
    ============================================================ */
 .crystalSeed {
   display: flex;
@@ -164,19 +172,80 @@
   width: 60px;
   height: 60px;
   margin-bottom: 2px;
-}
-
-.crystalShape {
   transform-origin: center;
-  animation: crystalRotate 14s linear infinite;
+  transition: filter 0.5s var(--ease-out);
+  will-change: transform, filter;
 }
 
-@keyframes crystalRotate {
+/* چرخشِ ملایم — فقط پس از reveal اجرا می‌شود تا قبل از ورود CPU مصرف نکند */
+.card[data-revealed="true"] .crystalSeed {
+  animation: hexRotate 28s linear infinite;
+}
+
+/* hover: چرخشِ سریع‌تر + هاله‌ی طلایی */
+.card:hover .crystalSeed {
+  animation-duration: 9s;
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+}
+
+@keyframes hexRotate {
   to { transform: rotate(360deg); }
 }
 
-.card:hover .crystalShape {
-  animation-duration: 5s;
+/* SVG: نفس کشیدن (scale pulse) — روی element ای جداگانه تا
+   تغییرِ duration چرخش روی hover، این انیمیشن را restart نکند */
+.crystalSvg {
+  transform-origin: center;
+  animation: hexBreathe 5s ease-in-out infinite;
+}
+
+@keyframes hexBreathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+
+/* ضلع‌های اصلی hexagon — رسمِ خط (stroke draw) روی reveal */
+.crystalShape {
+  transform-origin: center;
+  /* محیطِ hexagon ≈ ۱۵۹ → dasharray ۱۶۰ کل ضلع را پوشش می‌دهد */
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+}
+
+.card[data-revealed="true"] .crystalShape {
+  animation: hexDraw 2s var(--ease-out) forwards;
+}
+
+@keyframes hexDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* hexagon داخلی — پالسِ opacity برای حسِ عمق */
+.crystalInner {
+  animation: crystalInnerPulse 5s ease-in-out infinite;
+}
+
+@keyframes crystalInnerPulse {
+  0%, 100% { opacity: 0.12; }
+  50%      { opacity: 0.28; }
+}
+
+/* خطوطِ facet — twinkle با stagger (ضلع‌ها یکی‌یکی روشن می‌شوند) */
+.crystalFacet {
+  opacity: 0.3;
+  animation: facetTwinkle 4s ease-in-out infinite;
+}
+
+.crystalFacet:nth-of-type(1) { animation-delay: 0s; }
+.crystalFacet:nth-of-type(2) { animation-delay: 0.5s; }
+.crystalFacet:nth-of-type(3) { animation-delay: 1s; }
+.crystalFacet:nth-of-type(4) { animation-delay: 1.5s; }
+.crystalFacet:nth-of-type(5) { animation-delay: 2s; }
+.crystalFacet:nth-of-type(6) { animation-delay: 2.5s; }
+
+@keyframes facetTwinkle {
+  0%, 100% { opacity: 0.25; }
+  50%      { opacity: 0.9; }
 }
 
 /* ============================================================
@@ -461,9 +530,29 @@
     transition: none !important;
   }
 
+  .crystalSeed,
+  .crystalSvg,
   .crystalShape,
+  .crystalInner,
+  .crystalFacet,
   .arrow {
     animation: none !important;
+  }
+
+  /* عناصرِ hexagon در حالتِ visible نگه داشته شوند (نه در حالتِ pre-draw) */
+  .crystalShape {
+    stroke-dashoffset: 0 !important;
+  }
+  .crystalInner {
+    opacity: 0.16 !important;
+  }
+  .crystalFacet {
+    opacity: 0.6 !important;
+  }
+
+  /* بدون hover glow */
+  .card:hover .crystalSeed {
+    filter: none !important;
   }
 
   .link,
