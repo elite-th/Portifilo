@@ -5,12 +5,9 @@ import styles from "./Connect.module.css";
 import { useScrollReveal } from "./useScrollReveal";
 
 /* =========================================================
- * Connect — §۵ «بیا وصل بشیم»  (Coagulation → Gold)
- * accent: gradient from --accent (gold) to --accent-2 (olive)
+ * Connect — §۵ «بیا وصل بشیم»
  * ---------------------------------------------------------
- * Final convergence point of the journey. Three contact
- * cards (email, github, twitter) stagger in, capped by a
- * large gradient CTA: «بیا وصل بشیم».
+ * Final section: راه‌های ارتباطی ساده.
  * ========================================================= */
 
 const delay = (ms: number): CSSProperties =>
@@ -85,11 +82,7 @@ export default function Connect() {
         </h2>
 
         <p className={styles.connectSub} style={delay(140)}>
-          ایمیل بزن، issue باز کن، یه فکر بفرست. هر کانالی که راحتی.
-          <br />
-          من همیشه جواب می‌دم — شاید چند ساعت بعد، ولی جواب می‌دم.
-          <br />
-          اگر در ساخت چیزی هستی و گیر کردی، بیشتر از هر وقت دیگری مزاحمش نکن.
+          ایمیل بزن، issue باز کن، فکر بفرست.
         </p>
 
         <div className={styles.connectGrid}>
@@ -113,12 +106,7 @@ export default function Connect() {
           ))}
         </div>
 
-        <p className={styles.connectPostscript} style={delay(620)}>
-          همون‌جا بالا گفتم: جایی که اندیشه، کالبد می‌یابد.
-          <br />
-          حالا نوبتِ توئه — بذار اندیشه‌ات کالبد بگیره.
-        </p>
-      </div>
+        </div>
     </section>
   );
 }

@@ -28,8 +28,7 @@ const ITEMS: BuildItem[] = [
   {
     id: "taskino",
     name: "Taskino",
-    desc:
-      "تسک‌لیست‌ها برای مغزی ساخته شدن که خطی فکر می‌کنه. مغزِ من خطی نیست. توی Taskino تسک‌ها به هم وصلن؛ اولویت از تویِ شبکه بیرون میاد، نه از شماره‌ی ردیف.",
+    desc: "تسک‌ها رو به‌جای لیست، روی گراف می‌چینه. اولویت از رابطه‌ها میاد، نه از ردیف.",
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <polygon points="24,6 40,15 40,33 24,42 8,33 8,15" />
@@ -47,7 +46,7 @@ const ITEMS: BuildItem[] = [
     id: "mind2",
     name: "Mind 2.0",
     desc:
-      "هزار یادداشت، هیچی پیدا نمی‌شه. توی Mind 2.0 هر یادداشت می‌دونه از کجا اومده و کجا باید بره.",
+      "یادداشت‌هایی که فاز، منبع و مقصد دارند — نه فقط یک انبار متن.",
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <polygon points="24,4 44,24 24,44 4,24" />
@@ -63,7 +62,7 @@ const ITEMS: BuildItem[] = [
     id: "humxcode",
     name: "Humanities × Code",
     desc:
-      "کد ادامه‌ی فلسفه‌ست، با ابزارِ دیگه. هر دوتا می‌پرسن «چرا» و «چطور». من این دوتا رو به هم وصل می‌کنم.",
+      "کد ادامه‌ی فلسفه‌ست، با ابزاری دیگه. هر دو یه سوال رو از زاویه‌ی متفاوت می‌پرسن.",
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
         <circle cx="18" cy="24" r="12" />
@@ -93,7 +92,7 @@ export default function WhatIBuild() {
         <header className={styles.sectionHeader}>
           <span className={styles.kicker} style={delay(0)}>
             <span className={styles.kickerDot} aria-hidden="true" />
-            §۲ · چی می‌سازم
+            چی می‌سازم
           </span>
           <h2 id="build-title" className={styles.title} style={delay(120)}>
             سه پروژه. سه سؤال. هر کدام جوابِ یکی است، سؤالِ دیگری.

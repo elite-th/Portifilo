@@ -1,42 +1,26 @@
 /* =========================================================
-   Connect — §۵ «بیا وصل بشیم» (Coagulation → Gold)
-   accent: gradient from --accent (gold) to --accent-2 (olive)
+   Connect — §۵ «بیا وصل بشیم»
    ---------------------------------------------------------
-   Final convergence. Three contact cards + postscript.
-   A large gradient title acts as the CTA.
+   راه‌های ارتباطی ساده.
    ========================================================= */
 
 .connect {
   position: relative;
-  padding: clamp(4rem, 8vw, 6.5rem) 0 clamp(5rem, 10vw, 7rem);
+  padding: clamp(5rem, 10vw, 8rem) 0;
   color: var(--text);
   text-align: center;
   overflow: hidden;
 }
 
-/* Coagulation glow — particles converging to the center */
-.coagulationGlow {
+/* Glow background subtle */
+.connect::before {
+  content: "";
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70vw;
-  max-width: 800px;
-  height: 70vw;
-  max-height: 800px;
+  inset: 0;
   background:
-    radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, var(--accent-2-soft) 0%, transparent 70%);
-  filter: blur(60px);
+    radial-gradient(circle at 50% 50%, rgba(212, 175, 106, 0.06) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
-  opacity: 0.7;
-  animation: coagulate 6s var(--ease-out) infinite alternate;
-}
-
-@keyframes coagulate {
-  0% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
-  100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.08); }
 }
 
 .inner {
@@ -266,30 +250,7 @@
   transform: translate(0, 0);
 }
 
-/* ===================== Postscript ===================== */
-.connectPostscript {
-  font-size: 0.95rem;
-  line-height: 1.9;
-  color: var(--ink-raw);
-  max-width: 50ch;
-  margin: 1.5rem 0 0;
-  font-style: italic;
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 1s var(--ease-out),
-    transform 1s var(--ease-out);
-  transition-delay: var(--reveal-delay, 0s);
-  will-change: opacity, transform;
-}
-
-.connect[data-revealed="true"] .connectPostscript {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ===================== Responsive (Task 39-B) ===================== */
-/* Unified breakpoints: 1024 (md), 768 (sm→md, card stack), 480 (xs). */
+/* ===================== Responsive ===================== */
 @media (max-width: 1024px) {
   .connectGrid {
     gap: 0.85rem;
@@ -335,12 +296,6 @@
   .connectCard:focus-visible .connectArrow {
     transform: translate(0, -50%);
   }
-  /* Reduce the coagulation-glow's blur radius on mobile for
-     performance (per Planner §3.2.6). */
-  .coagulationGlow {
-    opacity: 0.4;
-    filter: blur(40px);
-  }
   .connectTitle {
     font-size: clamp(1.7rem, 7vw, 2.4rem);
   }
@@ -358,10 +313,6 @@
     font-size: 0.95rem;
     line-height: 1.75;
   }
-  .connectPostscript {
-    font-size: 0.85rem;
-    line-height: 1.7;
-  }
   .connectCard {
     padding: 1rem 0.85rem;
   }
@@ -374,8 +325,7 @@
 @media (prefers-reduced-motion: reduce) {
   .connectTitle,
   .connectSub,
-  .connectCard,
-  .connectPostscript {
+  .connectCard {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
@@ -383,9 +333,5 @@
   .connectCard:hover,
   .connectCard:focus-visible {
     transform: none !important;
-  }
-  .coagulationGlow {
-    animation: none !important;
-    opacity: 0.5 !important;
   }
 }

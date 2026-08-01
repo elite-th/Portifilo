@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
 import dynamic from "next/dynamic";
 import styles from "./Hero.module.css";
 
@@ -11,97 +10,16 @@ const ThoughtCluster = dynamic(() => import("./ThoughtCluster").then((mod) => mo
   loading: () => <div className={styles.scatterOverlay} aria-hidden="true" />,
 });
 
-/* =========================================================
- * Hero — "Knowledge Alchemy"
- * --------------------------------
- * Centered layout — text in the geometric heart of the hero,
- * six chips scattered around as a transparent overlay.
- *
- * JSON-LD: Person + WebSite + ProfilePage (comprehensive SEO)
- * ========================================================= */
-
-const JSON_LD = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "@id": "https://taha-hosseini.dev/#person",
-    name: "طاها حسینی",
-    jobTitle: "سازنده‌ی Taskino و معمار Mind 2.0",
-    url: "https://taha-hosseini.dev",
-    sameAs: [
-      "https://github.com/taha-hosseini",
-      "https://twitter.com/taha_hosseini",
-      "https://linkedin.com/in/taha-hosseini",
-    ],
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "تهران",
-      addressCountry: "IR",
-    },
-    knowsAbout: [
-      "Taskino",
-      "Mind 2.0",
-      "Knowledge Alchemy",
-      "علوم انسانی",
-      "مهندسی نرم‌افزار",
-      "یادداشت‌برداری",
-      "Offline-First Architecture",
-      "Circadian Creativity",
-    ],
-    description:
-      "سنتز علوم انسانی و مهندسی نرم‌افزار. طاها حسینی؛ جست‌وجوگری در قلمرو اندیشه و معمار سیستم‌های دیجیتال. تبدیل ایده‌های انتزاعی به ساختار و پروژه‌های واقعی.",
-    potentialAction: {
-      "@type": "ViewAction",
-      target: "https://taha-hosseini.dev",
-      name: "نمایش پورتوفولیو",
-    },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": "https://taha-hosseini.dev/#website",
-    url: "https://taha-hosseini.dev",
-    name: "طاها حسینی — پورتوفولیو",
-    description: "سنتز علوم انسانی و مهندسی نرم‌افزار. تبدیل شهودهای انسانی به ساختار و پروژه.",
-    publisher: { "@id": "https://taha-hosseini.dev/#person" },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: { "@type": "EntryPoint", urlTemplate: "https://taha-hosseini.dev/search?q={search_term_string}" },
-      "query-input": "required name=search_term_string",
-    },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "ProfilePage",
-    "@id": "https://taha-hosseini.dev/#profilepage",
-    url: "https://taha-hosseini.dev",
-    name: "طاها حسینی — پروفایل",
-    description: "پروفایل طاها حسینی، دانش‌آموز علوم انسانی و معمار سیستم‌های دیجیتال.",
-    mainEntity: { "@id": "https://taha-hosseini.dev/#person" },
-    breadcrumb: {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "خانه", item: "https://taha-hosseini.dev" },
-        { "@type": "ListItem", position: 2, name: "پروفایل", item: "https://taha-hosseini.dev" },
-      ],
-    },
-  },
-];
+/* JSON-LD: حداقل لازم برای SEO بدون bloat */
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "طاها حسینی",
+  url: "https://taha-hosseini.dev",
+  description: "شانزده ساله از تهران — روزها هگل و فوکو می‌خونم، شب‌ها کد می‌زنم.",
+};
 
 export default function Hero() {
-  // Primary CTA now opens the linear journey (§۱ WhoAmI) first, so the
-  // reader meets Taha before seeing his work. Planner §1.1 (Task 37).
-  const handleEnterLab = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault();
-      const target = document.getElementById("whoami");
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    },
-    []
-  );
-
   return (
     <div className={styles.page}>
       <script
@@ -138,63 +56,26 @@ export default function Hero() {
         {/* Text block — centered, z-index 10, above background chips
             (z=2/3 raw/trace). Active chips (z=50) pop above this. */}
         <div className={styles.textBlock}>
-          <span className={styles.eyebrow}>
-            <span className={styles.eyebrowDot} aria-hidden="true" />
-            ۱۶ سال
-            <span className={styles.eyebrowSlash} aria-hidden="true">
-              /
-            </span>
-            تهران
-            <span className={styles.eyebrowSlash} aria-hidden="true">
-              /
-            </span>
-            ۲:۱۴ صبح
-          </span>
-
-          <span
-            className={styles.eyebrow}
-            style={{
-              fontSize: "0.7rem",
-              padding: "3px 12px",
-              marginTop: "-10px",
-              borderWidth: "1px",
-              borderColor: "transparent",
-              background: "transparent",
-              backdropFilter: "none",
-              color: "var(--muted-2)",
-              letterSpacing: "0.04em",
-              animationDelay: "0.12s",
-            }}
-          >
-            علوم انسانی × AI Engineer
-          </span>
 
           <h1 className={styles.headline}>
-            جایی که اندیشه،
+            می‌سازمش،
             <br />
-            <span className={styles.headlineAccent}>کالبد</span> می‌یابد.
+            چون می‌بینمش.
           </h1>
 
           <p className={styles.description}>
-            فلسفه می‌خونم که بفهمم چرا؛ کد می‌زنم که بسازم چطور.
+            روزها هگل و فوکو می‌خونم، شب‌ها کد می‌زنم. این‌جا جایی‌ست که
             <br />
-            این‌جا جاییه که این دوتا با هم قاطی می‌شن.
+            سوال‌های فلسفی تبدیل می‌شن به ساختار — و ساختارها حل می‌کنن مسئله‌های واقعی رو.
           </p>
 
           <div className={styles.actions}>
             <a
-              href="#whoami"
+              href="#projects"
               className={styles.ctaPrimary}
-              onClick={handleEnterLab}
             >
-              بیا آشناتر شیم
-              <span className={styles.ctaArrow} aria-hidden="true">
-                ←
-              </span>
-            </a>
-            <a href="#projects" className={styles.ctaSecondary}>
               برو سراغِ ساخته‌ها
-              <span className={styles.ctaSecondaryArrow} aria-hidden="true">
+              <span className={styles.ctaArrow} aria-hidden="true">
                 ←
               </span>
             </a>
@@ -203,10 +84,6 @@ export default function Hero() {
       </main>
 
       <footer className={styles.footer}>
-        <span className={styles.footerMeta}>
-          <span className={styles.footerPulse} aria-hidden="true" />
-          تهران · ۱۶ سال · علوم انسانی
-        </span>
         <span>© {new Date().getFullYear()} طاها حسینی</span>
       </footer>
     </div>

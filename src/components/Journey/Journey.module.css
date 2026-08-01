@@ -9,12 +9,6 @@
   background: var(--bg);
   color: var(--text);
   padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 4vw, 2.5rem) clamp(5rem, 10vw, 8rem);
-  /* Subtle vertical gradient so the journey feels like a descent
-     from the hero into the synthesis — gold warmth at the top
-     cooling toward neutral at the bottom. */
-  background-image:
-    radial-gradient(60% 30% at 50% 0%, rgba(212, 175, 106, 0.06), transparent 70%),
-    radial-gradient(50% 25% at 50% 100%, rgba(122, 148, 114, 0.05), transparent 70%);
   overflow: hidden;
 }
 

@@ -1,44 +1,73 @@
-/* =========================================================
-   WhereIFrom — §۳ «از کجا میام» (Separation)
-   accent: var(--accent-2) — olive
-   ---------------------------------------------------------
-   "Living Tehran Night" — animated SVG city (Task 39-C).
-
-   CLASS-NAME REGISTRY (owned by Worker C — see Task 38 §6.2):
-     .cityMap, .stars, .star, .moon, .clock,
-     .buildings, .window, .tahaWindow,
-     .train, .tahaDot, .tahaRing, .label
-   Worker B: do NOT override these in @media queries — only
-   touch layout classes (.mapWrap, .fromGrid, .fromText,
-   .fromPara, .mapCaption, .kicker, .title, .sectionHeader).
-
-   OLD CLASSES REMOVED (renamed by Worker C):
-     .map → .cityMap
-     .mapPulse → .tahaDot
-     .mapPulseRing → .tahaRing
-     @keyframes mapPulse, mapPulseRing → tahaPulse, tahaRingExpand
-   ========================================================= */
+/* ============================================================
+   WhereIFrom — «از کجا میام» — نقشه‌ی مینیمال ایران + تهران
+   ============================================================ */
 
 .whereIFrom {
   position: relative;
-  padding: clamp(3rem, 7vw, 5.5rem) 0;
+  padding: clamp(5rem, 10vw, 8rem) 0;
   color: var(--text);
+  overflow: hidden;
+  isolation: isolate;
 }
 
 .inner {
-  max-width: 1080px;
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
   margin: 0 auto;
-}
-
-/* ===================== Header ===================== */
-.sectionHeader {
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  text-align: center;
+  gap: 1.25rem;
 }
+
+/* ===================== نقشه‌ی ایران ===================== */
+
+.mapBg {
+  position: absolute;
+  inset: -8%;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.mapSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.mapSvg path {
+  will-change: auto;
+}
+
+/* نقطه تهران — glow ملایم */
+.tehranGroup {
+  filter: drop-shadow(0 0 10px rgba(212, 175, 106, 0.3));
+}
+
+.tehranDot {
+  animation: tehranDotGlow 3.5s ease-in-out infinite;
+}
+
+@keyframes tehranDotGlow {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+
+/* حلقه‌های پالس طلایی روی تهران */
+.mapPulse {
+  animation: mapPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes mapPulse {
+  0%, 100% { opacity: 0.15; }
+  50%      { opacity: 0.45; }
+}
+
+/* ===================== Kicker ===================== */
 
 .kicker {
   display: inline-flex;
@@ -46,11 +75,11 @@
   gap: 0.6rem;
   font-size: 0.8rem;
   letter-spacing: 0.06em;
-  color: var(--accent-2);
+  color: var(--accent);
   padding: 0.4rem 0.9rem;
-  border: 1px solid var(--accent-2-soft);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--accent-2-soft);
+  background: var(--accent-soft);
   backdrop-filter: blur(6px);
   opacity: 0;
   transform: translateY(12px);
@@ -70,9 +99,11 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--accent-2);
-  box-shadow: 0 0 10px var(--accent-2-soft);
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
 }
+
+/* ===================== Title ===================== */
 
 .title {
   font-family: var(--font-display, var(--font-vazirmatn)), serif;
@@ -97,188 +128,16 @@
   transform: translateY(0);
 }
 
-/* ===================== Grid ===================== */
-.fromGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 5vw, 3.5rem);
-  align-items: center;
-}
-
-/* ===================== Map wrap (layout — owned by B) ===================== */
-.mapWrap {
-  position: relative;
-  background: var(--bg-elevated);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  color: var(--accent-2);
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(24px) scale(0.97);
-  transition:
-    opacity 0.9s var(--ease-out),
-    transform 0.9s var(--ease-out);
-  transition-delay: var(--reveal-delay, 0s);
-  will-change: opacity, transform;
-}
-
-.whereIFrom[data-revealed="true"] .mapWrap {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.mapWrap::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at 53% 52%,
-    var(--accent-2-soft) 0%,
-    transparent 60%
-  );
-  pointer-events: none;
-}
-
-.mapCaption {
-  display: block;
-  margin-top: 1rem;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  color: var(--ink-raw);
-  text-align: center;
-  position: relative;
-  z-index: 1;
-}
-
-/* ===================== City SVG (owned by C — Task 39-C) ===================== */
-.cityMap {
-  display: block;
-  width: 100%;
-  height: auto;
-  position: relative;
-  z-index: 1;
-  overflow: visible;
-}
-
-/* ---- Layer 1: Night sky ---- */
-
-/* Stars — twinkle (independent of scroll) */
-.star {
-  animation: starTwinkle 3s ease-in-out infinite;
-  will-change: opacity;
-}
-@keyframes starTwinkle {
-  0%, 100% { opacity: 0.3; }
-  50%      { opacity: 1; }
-}
-
-/* Moon — soft halo glow */
-.moon {
-  animation: moonGlow 4s ease-in-out infinite;
-  will-change: filter;
-}
-@keyframes moonGlow {
-  0%, 100% { filter: drop-shadow(0 0 2px var(--accent)); }
-  50%      { filter: drop-shadow(0 0 6px var(--accent)); }
-}
-
-/* 02:14 clock stamp — subtle blink */
-.clock {
-  animation: clockBlink 4s ease-in-out infinite;
-  will-change: opacity;
-}
-@keyframes clockBlink {
-  0%, 100% { opacity: 0.55; }
-  50%      { opacity: 0.85; }
-}
-
-/* ---- Layer 2: Skyline ---- */
-
-/* Building windows — twinkle (varied delays via inline style) */
-.window {
-  animation: windowTwinkle 4s ease-in-out infinite;
-  will-change: opacity;
-}
-@keyframes windowTwinkle {
-  0%, 100% { opacity: 0.2; }
-  50%      { opacity: 0.9; }
-}
-
-/* Taha's lit window — larger, gold, with pulsing halo (2.6s
-   matches the original mapPulse rhythm so the city breathes
-   at the same tempo as before) */
-.tahaWindow {
-  animation: tahaWindowPulse 2.6s ease-in-out infinite;
-  will-change: filter, opacity;
-}
-@keyframes tahaWindowPulse {
-  0%, 100% {
-    opacity: 1;
-    filter: drop-shadow(0 0 2px var(--accent));
-  }
-  50% {
-    opacity: 0.85;
-    filter: drop-shadow(0 0 5px var(--accent));
-  }
-}
-
-/* ---- Layer 3: Metro line + train + Taha's pulse ---- */
-
-/* Train — travels along the metro line. Starts at x=20 (left
-   end of line) and translates 280px to x=300 (right end).
-   12s = slow, peaceful night metro. */
-.train {
-  animation: metroTravel 12s linear infinite;
-  will-change: transform;
-}
-@keyframes metroTravel {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(280px); }
-}
-
-/* Taha's pulse dot — radius + opacity pulse (uses CSS r
-   property on SVG circle, supported in modern browsers:
-   Chrome 77+, Firefox 70+, Safari 13.1+) */
-.tahaDot {
-  animation: tahaPulse 2s ease-in-out infinite;
-  will-change: r, opacity;
-}
-@keyframes tahaPulse {
-  0%, 100% { r: 3; opacity: 1; }
-  50%      { r: 5; opacity: 0.7; }
-}
-
-/* Taha's pulse ring — expands outward and fades (synchronized
-   with tahaPulse's 2s cycle) */
-.tahaRing {
-  animation: tahaRingExpand 2s ease-out infinite;
-  will-change: r, opacity;
-}
-@keyframes tahaRingExpand {
-  0%   { r: 5;  opacity: 0.6; }
-  100% { r: 14; opacity: 0; }
-}
-
-/* "من اینجام" label — gentle fade (synchronized with tahaWindowPulse) */
-.label {
-  animation: labelFade 2.6s ease-in-out infinite;
-  will-change: opacity;
-}
-@keyframes labelFade {
-  0%, 100% { opacity: 0.7; }
-  50%      { opacity: 1; }
-}
-
 /* ===================== Text ===================== */
-.fromText {
+
+.textBlock {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
+  max-width: 56ch;
 }
 
-.fromPara {
+.para {
   font-size: 1.05rem;
   line-height: 1.9;
   color: var(--muted);
@@ -292,87 +151,69 @@
   will-change: opacity, transform;
 }
 
-.whereIFrom[data-revealed="true"] .fromPara {
+.whereIFrom[data-revealed="true"] .para {
   opacity: 1;
   transform: translateY(0);
 }
 
-.fromPara:first-child::first-letter {
-  color: var(--accent-2);
-  font-weight: 700;
-}
+/* ===================== Responsive ===================== */
 
-/* ===================== Responsive (Worker C — initial breakpoints) =====================
-   Worker B may extend/consolidate these into the canonical
-   480 / 768 / 1024 / 1280min scale (see Task 38 §4.2.5). */
 @media (max-width: 768px) {
-  .fromGrid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  .whereIFrom {
+    padding: clamp(2.5rem, 7vw, 4rem) 0;
   }
-  .mapWrap {
-    order: 2;
+  .inner {
+    gap: 1rem;
   }
-  .fromText {
-    order: 1;
+  .title {
+    font-size: clamp(1.4rem, 6vw, 1.8rem);
+  }
+  .para {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .mapBg {
+    inset: -4%;
   }
 }
 
 @media (max-width: 480px) {
-  .fromPara {
-    font-size: 1rem;
+  .whereIFrom {
+    padding: 2.25rem 0;
+  }
+  .inner {
+    padding: 0 16px;
+    gap: 0.85rem;
+  }
+  .kicker {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.8rem;
+  }
+  .title {
+    font-size: 1.4rem;
+  }
+  .para {
+    font-size: 0.95rem;
     line-height: 1.8;
   }
-  .mapWrap {
-    padding: 1.25rem;
-  }
-  /* Hide "من اینجام" label on very small screens to avoid
-     overlap with the pulse dot / building windows. */
-  .label {
-    display: none;
+  .mapBg {
+    inset: -2%;
+    opacity: 0.7;
   }
 }
 
 /* ===================== Reduced motion ===================== */
+
 @media (prefers-reduced-motion: reduce) {
-  /* Scroll-reveal transitions: snap to final state */
   .kicker,
   .title,
-  .mapWrap,
-  .fromPara {
+  .para {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
   }
-
-  /* City animations: halt — keep SVG static and legible */
-  .star,
-  .moon,
-  .clock,
-  .window,
-  .tahaWindow,
-  .train,
-  .tahaDot,
-  .tahaRing,
-  .label {
+  .mapPulse,
+  .tehranDot {
     animation: none !important;
-  }
-
-  /* Static visual states — every element still visible */
-  .star      { opacity: 0.7; }
-  .moon      { filter: drop-shadow(0 0 3px var(--accent)); }
-  .clock     { opacity: 0.7; }
-  .window    { opacity: 0.5; }
-  .tahaWindow {
-    opacity: 1;
-    filter: drop-shadow(0 0 3px var(--accent));
-  }
-  .tahaDot   { opacity: 1; }
-  .tahaRing  { opacity: 0.4; }
-  .label     { opacity: 0.85; }
-
-  /* Train parked mid-journey so users still see it on the line */
-  .train {
-    transform: translateX(140px);
   }
 }

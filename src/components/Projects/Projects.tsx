@@ -89,7 +89,7 @@ export default function Projects() {
         <header className={styles.header}>
           <span className={styles.kicker} data-reveal>
             <span className={styles.kickerDot} aria-hidden="true" />
-            §آزمایشگاه
+            آزمایشگاه
           </span>
           <h2 id="projects-title" className={styles.title} data-reveal>
             شش فکر خام. شش تا ساختار.
