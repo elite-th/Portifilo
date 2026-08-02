@@ -37,7 +37,7 @@
   max-width: 800px;
   transform: rotateX(55deg) scale(1.1);
   transform-style: preserve-3d;
-  opacity: 0.5;
+  opacity: 0.55;
   filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.5));
 }
 
@@ -47,26 +47,26 @@
   display: block;
 }
 
-/* ===================== استان‌ها ===================== */
-
-/* تمام استان‌ها — خاکستری تیره */
-.allProvinces path,
-.allProvinces polygon {
+/* ===================== outline ایران ===================== */
+/* تمام استان‌های غیر تهران — fill یکپارچه برای شکل کلی ایران */
+.iranOutline path,
+.iranOutline polygon {
   fill: var(--bg-elevated);
   stroke: var(--line);
-  stroke-width: 0.8;
+  stroke-width: 0.6;
   stroke-linejoin: round;
-  opacity: 0.6;
+  stroke-linecap: round;
 }
 
-/* استان تهران — طلایی ملایم */
+/* ===================== استان تهران ===================== */
+/* طلایی ملایم — متمایز از بقیه */
 .tehranProvince path,
 .tehranProvince polygon {
-  fill: rgba(212, 175, 106, 0.15);
+  fill: rgba(212, 175, 106, 0.18);
   stroke: var(--accent);
-  stroke-width: 1;
+  stroke-width: 1.2;
   stroke-linejoin: round;
-  opacity: 0.8;
+  stroke-linecap: round;
 }
 
 /* ===================== نشانگر طلایی ===================== */
@@ -100,7 +100,7 @@
     width: 95%;
     max-width: 500px;
     transform: rotateX(50deg) scale(1);
-    opacity: 0.35;
+    opacity: 0.4;
   }
   .shadow {
     width: 85%;
@@ -112,7 +112,7 @@
   .mapWrapper {
     width: 100%;
     transform: rotateX(45deg) scale(0.85);
-    opacity: 0.28;
+    opacity: 0.32;
   }
 }
 

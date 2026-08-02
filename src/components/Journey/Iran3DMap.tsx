@@ -4,10 +4,10 @@ import styles from "./Iran3DMap.module.css";
 import { PROVINCES, type ProvincePath } from "./iranPaths";
 
 /* ============================================================
- * Iran3DMap — نقشه‌ی کامل ایران 3D خوابیده روی میز
+ * Iran3DMap — نقشه‌ی ایران 3D خوابیده روی میز
  * ------------------------------------------------------------
- * - ۳۱ استان با تمام شهرستان‌ها
- * - استان تهران طلایی، بقیه خاکستری تیره
+ * - outline کلی ایران از union تمام استان‌ها
+ * - فقط مرزهای استانی تهران طلایی
  * - نشانگر طلایی 3D روی تهران (x≈386, y≈683)
  * - perspective 1200px + rotateX(55deg)
  * viewBox: "30 200 1020 955"
@@ -26,7 +26,11 @@ function renderPath(p: ProvincePath, key: number) {
 }
 
 export default function Iran3DMap() {
-  const provinceNames = Object.keys(PROVINCES);
+  // همه‌ی استان‌ها به‌جز تهران — این‌ها outline ایران را می‌سازند
+  const otherProvinces = Object.keys(PROVINCES).filter(
+    (name) => name !== TEHRAN_PROVINCE
+  );
+  const tehranPaths = PROVINCES[TEHRAN_PROVINCE] ?? [];
 
   return (
     <div className={styles.scene}>
@@ -50,20 +54,18 @@ export default function Iran3DMap() {
             </radialGradient>
           </defs>
 
-          {/* تمام استان‌ها — خاکستری تیره */}
-          <g className={styles.allProvinces}>
-            {provinceNames.map((provName) =>
+          {/* outline ایران — تمام استان‌های غیر تهران با fill یکپارچه */}
+          <g className={styles.iranOutline}>
+            {otherProvinces.map((provName, pi) =>
               PROVINCES[provName].map((p, i) =>
-                renderPath(p, provinceNames.length * 100 + i)
+                renderPath(p, pi * 100 + i)
               )
             )}
           </g>
 
-          {/* استان تهران — طلایی */}
+          {/* استان تهران — طلایی ملایم */}
           <g className={styles.tehranProvince}>
-            {PROVINCES[TEHRAN_PROVINCE]?.map((p, i) =>
-              renderPath(p, i)
-            )}
+            {tehranPaths.map((p, i) => renderPath(p, i))}
           </g>
 
           {/* نشانگر طلایی 3D روی تهران */}
