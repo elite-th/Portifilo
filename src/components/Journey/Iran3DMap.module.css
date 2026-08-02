@@ -1,0 +1,102 @@
+/* ============================================================
+   Iran3DMap — نقشه‌ی ایران 3D خوابیده روی میز
+   ============================================================ */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+/* سایه زیر نقشه */
+.shadow {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 75%;
+  height: 18%;
+  background: radial-gradient(
+    ellipse 70% 90% at 50% 50%,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.2) 40%,
+    transparent 80%
+  );
+  filter: blur(12px);
+}
+
+/* wrapper نقشه با transform 3D */
+.mapWrapper {
+  width: 75%;
+  max-width: 700px;
+  transform: rotateX(60deg) scale(1.15);
+  transform-style: preserve-3d;
+  opacity: 0.45;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
+}
+
+.mapSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===================== نقطه طلایی تهران ===================== */
+
+.pinGroup {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* سایه بیضوی زیر نقطه — float */
+.pinShadow {
+  animation: shadowFloat 3s ease-in-out infinite;
+}
+
+/* نقطه طلایی */
+.pin {
+  animation: pinFloat 3s ease-in-out infinite;
+}
+
+@keyframes pinFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+@keyframes shadowFloat {
+  0%, 100% { transform: translateX(0) scale(1); opacity: 0.4; }
+  50%      { transform: translateX(0) scale(0.85); opacity: 0.25; }
+}
+
+/* ===================== Responsive ===================== */
+
+@media (max-width: 768px) {
+  .mapWrapper {
+    width: 95%;
+    max-width: 500px;
+    transform: rotateX(55deg) scale(1.05);
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 480px) {
+  .mapWrapper {
+    width: 100%;
+    transform: rotateX(50deg) scale(0.9);
+    opacity: 0.28;
+  }
+}
+
+/* ===================== Reduced motion ===================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .pin,
+  .pinShadow {
+    animation: none !important;
+  }
+}
