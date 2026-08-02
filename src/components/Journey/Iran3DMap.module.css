@@ -11,8 +11,11 @@
 }
 
 .mapSvg {
-  width: 100%;
+  /* viewBox is 1310x1600 (ratio ~0.82) — constrain by height,
+     let width follow the aspect ratio so nothing is cropped */
   height: 100%;
+  width: auto;
+  max-width: 100%;
   opacity: 0.85;
   filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
 }
