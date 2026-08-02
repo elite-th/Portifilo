@@ -21,7 +21,7 @@ export default function Iran3DMap() {
     <div className={styles.scene}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="-200 -300 1550 1950"
+        viewBox="0 50 1310 1600"
         className={styles.mapSvg}
         aria-hidden="true"
       >
