@@ -48,14 +48,16 @@
 }
 
 /* ===================== outline ایران ===================== */
-/* تمام استان‌های غیر تهران — fill یکپارچه برای شکل کلی ایران */
+/* تمام استان‌های غیر تهران — فقط fill، بدون stroke داخلی.
+   drop-shadow روی group فقط لبه‌ی بیرونی ایران را نشان می‌دهد. */
+.iranOutline {
+  filter: drop-shadow(0 0 1px rgba(212, 175, 106, 0.25));
+}
+
 .iranOutline path,
 .iranOutline polygon {
   fill: var(--bg-elevated);
-  stroke: var(--line);
-  stroke-width: 0.6;
-  stroke-linejoin: round;
-  stroke-linecap: round;
+  stroke: none;
 }
 
 /* ===================== استان تهران ===================== */
