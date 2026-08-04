@@ -26,17 +26,19 @@
   top: 0;
   bottom: 0;
   left: 50%;
-  width: 1px;
+  width: 2px;
   transform: translateX(-50%);
+  filter: blur(0.5px);
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(212, 175, 106, 0.18) 12%,
-    rgba(212, 175, 106, 0.10) 40%,
-    rgba(122, 148, 114, 0.12) 70%,
+    rgba(212, 175, 106, 0.22) 10%,
+    rgba(212, 175, 106, 0.14) 35%,
+    rgba(58, 107, 107, 0.16) 65%,
+    rgba(212, 175, 106, 0.08) 90%,
     transparent 100%
   );
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .ambientGlow {
@@ -53,7 +55,8 @@
     rgba(212, 175, 106, 0.08) 0%,
     transparent 60%
   );
-  filter: blur(40px);
+  filter: blur(60px);
+  opacity: 0.7;
 }
 
 /* Each section sits above the ambient layer. */

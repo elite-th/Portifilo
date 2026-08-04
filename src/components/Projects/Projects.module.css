@@ -15,12 +15,12 @@
   --muted: #c8c0b0;
   --ink-raw: #8e8a82;
   --muted-2: #75716a;
-  --accent: #d4af6a;
-  --accent-bright: #e6c585;
-  --accent-deep: #b08d4a;
+  --accent: #3A6B6B;
+  --accent-bright: #4DB8B8;
+  --accent-deep: #2D5555;
   --accent-2: #7a9472;
-  --accent-soft: rgba(var(--gold-rgb) / 0.16);
-  --accent-glow: rgba(var(--gold-rgb) / 0.32);
+  --accent-soft: rgba(58, 107, 107, 0.16);
+  --accent-glow: rgba(58, 107, 107, 0.32);
   --line: rgba(var(--gold-rgb) / 0.22);
   --line-strong: rgba(var(--gold-rgb) / 0.4);
   --danger: #e0935a;

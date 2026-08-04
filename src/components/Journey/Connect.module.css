@@ -17,7 +17,20 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 40%, rgba(var(--gold-rgb) / 0.04) 0%, transparent 60%);
+    radial-gradient(circle at 50% 40%, rgba(212, 175, 106, 0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.connect::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(212, 175, 106, 0.02) 30%,
+    rgba(10, 11, 14, 0.8) 100%
+  );
   pointer-events: none;
   z-index: 0;
 }
