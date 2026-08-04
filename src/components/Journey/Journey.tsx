@@ -6,12 +6,13 @@ import WhoAmI from "./WhoAmI";
 import WhatIBuild from "./WhatIBuild";
 import WhereIFrom from "./WhereIFrom";
 import WhereIGo from "./WhereIGo";
+import OpenQuestions from "./OpenQuestions";
 import Connect from "./Connect";
 
 /* =========================================================
  * Journey — مسیر آشنایی با طاها
  * ---------------------------------------------------------
- * Five-section narrative inserted between <Hero /> and
+ * Six-section narrative inserted between <Hero /> and
  * <Synthesis />. Each section is a step in the alchemy
  * metaphor (calcination → coagulation) with its own accent.
  *
@@ -20,7 +21,8 @@ import Connect from "./Connect";
  *   2. WhatIBuild (چی می‌سازم) — accent cream
  *   3. WhereIFrom (از کجا میام) — accent olive
  *   4. WhereIGo (کجا میرم) — accent bright gold
- *   5. Connect  (بیا وصل بشیم) — gold→olive gradient
+ *   5. OpenQuestions (چیزهایی که هنوز نمی‌دونم) — ochre
+ *   6. Connect  (بیا وصل بشیم) — gold→olive gradient
  *
  * Each subsection owns its own scroll-reveal + CSS module.
  * This container only owns vertical rhythm + horizontal
@@ -36,7 +38,7 @@ export default function Journey() {
         <div className={styles.ambientGlow} />
       </div>
 
-      {/* نخ بصری — vertical optical thread that binds the five
+      {/* نخ بصری — vertical optical thread that binds the six
           sections into a single linear path (Task 39-B).
           Desktop-only — renders null on mobile via CSS. */}
       <LightThread />
@@ -45,6 +47,7 @@ export default function Journey() {
       <WhatIBuild />
       <WhereIFrom />
       <WhereIGo />
+      <OpenQuestions />
       <Connect />
     </div>
   );

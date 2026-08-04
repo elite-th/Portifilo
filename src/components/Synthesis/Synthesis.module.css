@@ -1,11 +1,11 @@
 /* ============================================================
-   Synthesis.module.css — Knowledge Alchemy Crucible
+   Synthesis.module.css — کوره‌ی تبلور (The Crystallization Forge)
    ------------------------------------------------------------
-   طراحی‌شده برای palette طلایی/زیتونی (Knowledge Alchemy).
-   توکن‌های محلی به‌عنوان fallback تعریف شده‌اند تا این بخش
-   حتی اگر globals.css هنوز به palette جدید به‌روز نشده باشد،
-   درست نشان داده شود. وقتی Worker A globals.css را به‌روز
-   کند، مقادیر global با این fallback‌ها هم‌خوان می‌شوند.
+   روایتِ بخش: مادّه‌ی خام → حرارتِ خلاق → بلور.
+   سه کارت، سه حالتِ مادّه. هر کارت با data-state علامت خورده
+   و --heat آن، شدّتِ نور و عرضِ نوارِ حرارت را می‌راند.
+
+   حرکت: هر چیزی که حلقه می‌زند، یک lifecycle دارد؛ ورود ← پایان.
    ============================================================ */
 
 .synthesis {
@@ -21,13 +21,13 @@
   --accent-bright: #e6c585;
   --accent-deep: #b08d4a;
   --accent-2: #7a9472;
-  --accent-soft: rgba(212, 175, 106, 0.16);
-  --accent-glow: rgba(212, 175, 106, 0.32);
-  --line: rgba(212, 175, 106, 0.22);
-  --line-strong: rgba(212, 175, 106, 0.4);
+  --accent-soft: rgba(var(--gold-rgb) / 0.16);
+  --accent-glow: rgba(var(--gold-rgb) / 0.32);
+  --line: rgba(var(--gold-rgb) / 0.22);
+  --line-strong: rgba(var(--gold-rgb) / 0.4);
   --danger: #e0935a;
   --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 40px rgba(212, 175, 106, 0.12);
+  --shadow-glow: 0 0 40px rgba(var(--gold-rgb) / 0.12);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -35,18 +35,32 @@
   --radius-lg: 18px;
   --radius-md: 12px;
 
+  /* رنگِ حرارت — از خاکستر تا سفیدِ داغ */
+  --hot: #ffe0a4;
+  --ash: #766248;
+
+  /* رنگِ درزِ مشترک با بخشِ آزمایشگاه.
+     هر دو بخش دقیقاً به همین مقدار می‌رسند، پس مرزِ بین آن‌ها
+     دیده نمی‌شود و دو بخش یک فضای پیوسته می‌شوند.
+     اگر این را عوض کردی، در Projects.module.css هم عوض کن. */
+  --seam: #0e0d11;
+
   position: relative;
-  padding: clamp(80px, 12vw, 160px) 0;
-  background: var(--bg);
+  /* padding پایین حذف شد: ناودانِ خروجی خودش همان فاصله را می‌سازد */
+  padding: clamp(72px, 11vw, 140px) 0 0;
+  background: linear-gradient(
+    to bottom,
+    var(--bg) 0%,
+    var(--bg) 58%,
+    var(--seam) 92%,
+    var(--seam) 100%
+  );
   overflow: hidden;
   isolation: isolate;
   direction: rtl;
 }
 
-/* === Scroll-Reveal پایه (global، برای data-reveal داخل این section) === */
-/* استفاده از useScrollReveal Worker A: data-revealed روی container ست می‌شود.
-   children با [data-reveal] نشانه‌گذاری می‌شوند و stagger از طریق
-   transition-delay در انتخابگرهای پایین‌تر اعمال می‌شود. */
+/* === Scroll-Reveal پایه === */
 .synthesis :global([data-reveal]) {
   opacity: 0;
   transform: translateY(24px) scale(0.98);
@@ -64,25 +78,26 @@
   filter: none;
 }
 
-/* === Stagger — transition-delay per child === */
+/* === Stagger === */
 .synthesis[data-revealed="true"] .kicker    { transition-delay: 0ms; }
 .synthesis[data-revealed="true"] .title     { transition-delay: 100ms; }
 .synthesis[data-revealed="true"] .subtitle  { transition-delay: 200ms; }
 
 .synthesis[data-revealed="true"] .equation > *:nth-child(1) { transition-delay: 300ms; }
 .synthesis[data-revealed="true"] .equation > *:nth-child(2) { transition-delay: 400ms; }
-.synthesis[data-revealed="true"] .equation > *:nth-child(3) { transition-delay: 500ms; }
-.synthesis[data-revealed="true"] .equation > *:nth-child(4) { transition-delay: 600ms; }
-.synthesis[data-revealed="true"] .equation > *:nth-child(5) { transition-delay: 700ms; }
+.synthesis[data-revealed="true"] .equation > *:nth-child(3) { transition-delay: 460ms; }
+.synthesis[data-revealed="true"] .equation > *:nth-child(4) { transition-delay: 560ms; }
+.synthesis[data-revealed="true"] .equation > *:nth-child(5) { transition-delay: 620ms; }
 
-.synthesis[data-revealed="true"] .pillars > *:nth-child(1) { transition-delay: 320ms; }
-.synthesis[data-revealed="true"] .pillars > *:nth-child(2) { transition-delay: 440ms; }
-.synthesis[data-revealed="true"] .pillars > *:nth-child(3) { transition-delay: 560ms; }
+/* کارت‌ها بعد از ریختنِ مذاب می‌آیند */
+.synthesis[data-revealed="true"] .stages > *:nth-child(1) { transition-delay: 1.5s; }
+.synthesis[data-revealed="true"] .stages > *:nth-child(2) { transition-delay: 1.68s; }
+.synthesis[data-revealed="true"] .stages > *:nth-child(3) { transition-delay: 1.86s; }
 
 /* ============================================================
-   Crucible پس‌زمینه
+   کوره — پس‌زمینه
    ============================================================ */
-.crucibleBg {
+.forge {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -90,69 +105,68 @@
   overflow: hidden;
 }
 
-.crucibleGlow {
+/* حرارتِ کفِ کوره — از پایین می‌تابد، نه از مرکز.
+   دو لایه با ضربانِ متفاوت تا تناوبِ ماشینی حس نشود. */
+.forgeFloor {
   position: absolute;
   inset: 0;
   background:
     radial-gradient(
-      ellipse 55% 50% at 50% 45%,
-      var(--accent-soft) 0%,
-      transparent 65%
+      ellipse 70% 42% at 50% 104%,
+      rgba(255, 224, 164, 0.14) 0%,
+      rgba(var(--gold-rgb) / 0.07) 38%,
+      transparent 72%
     ),
     radial-gradient(
-      ellipse 30% 25% at 50% 50%,
-      rgba(230, 197, 133, 0.18) 0%,
-      transparent 60%
+      ellipse 120% 55% at 50% 118%,
+      rgba(var(--gold-rgb) / 0.1) 0%,
+      transparent 70%
     );
-  opacity: 0.85;
-  animation: crucibleHeat 8s ease-in-out infinite;
+  animation: forgeBreath 11s ease-in-out infinite;
 }
 
-.crucibleCanvas {
+/* لایه‌ی دوم — تپشِ کوره، آهسته‌تر و کم‌دامنه‌تر */
+.forgeFloor::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 34% 26% at 50% 100%,
+    rgba(255, 224, 164, 0.12) 0%,
+    transparent 68%
+  );
+  animation: forgeEmber 7.3s ease-in-out infinite;
+}
+
+.forgeCanvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.7;
 }
 
-.crucibleRing {
+/* لبه‌ها را می‌بندد تا ذرات از کادر بیرون نزنند.
+   پایین باز می‌ماند — بستنِ آن، درزِ مشترک با آزمایشگاه را
+   به یک خطِ افقیِ تیره تبدیل می‌کرد. */
+.forgeVignette {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: clamp(280px, 50vw, 560px);
-  height: clamp(280px, 50vw, 560px);
-  transform: translate(-50%, -50%);
-  border: 1px dashed var(--line);
-  border-radius: 50%;
-  opacity: 0.35;
-  animation: crucibleSpin 60s linear infinite;
+  inset: -1px;
+  background:
+    radial-gradient(ellipse 78% 66% at 50% 46%, transparent 42%, var(--bg) 100%),
+    linear-gradient(to bottom, var(--bg) 0%, transparent 15%);
+  /* خودِ vignette هم به سمتِ پایین محو می‌شود */
+  mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 96%);
 }
 
-.crucibleRing::before,
-.crucibleRing::after {
-  content: "";
-  position: absolute;
-  inset: 8%;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  opacity: 0.5;
+@keyframes forgeBreath {
+  0%, 100% { opacity: 0.72; transform: translateY(0) scale(1); }
+  50%      { opacity: 1;    transform: translateY(-1.2%) scale(1.03); }
 }
 
-.crucibleRing::after {
-  inset: 18%;
-  border-style: dashed;
-  border-color: var(--accent-soft);
-  opacity: 0.7;
-}
-
-@keyframes crucibleHeat {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50%      { opacity: 0.95; transform: scale(1.04); }
-}
-
-@keyframes crucibleSpin {
-  to { transform: translate(-50%, -50%) rotate(360deg); }
+@keyframes forgeEmber {
+  0%, 100% { opacity: 0.4; }
+  42%      { opacity: 0.9; }
+  70%      { opacity: 0.58; }
 }
 
 /* ============================================================
@@ -171,7 +185,7 @@
    ============================================================ */
 .header {
   text-align: center;
-  margin-bottom: clamp(48px, 7vw, 80px);
+  margin-bottom: clamp(40px, 6vw, 64px);
 }
 
 .kicker {
@@ -217,10 +231,11 @@
   max-width: 620px;
   margin: 0 auto;
   line-height: 1.85;
+  text-wrap: balance;
 }
 
 /* ============================================================
-   Equation — معادله‌ی بصری زنده
+   Equation — معادله‌ی بصری
    ============================================================ */
 .equation {
   display: flex;
@@ -228,7 +243,6 @@
   justify-content: center;
   gap: clamp(12px, 2.4vw, 28px);
   flex-wrap: wrap;
-  margin-bottom: clamp(24px, 4vw, 40px);
   direction: rtl;
 }
 
@@ -244,7 +258,7 @@
   align-items: center;
   gap: 12px;
   padding: 14px 22px;
-  background: rgba(212, 175, 106, 0.06);
+  background: rgba(var(--gold-rgb) / 0.06);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   color: var(--text);
@@ -256,21 +270,30 @@
     background 0.4s var(--ease-out),
     transform 0.4s var(--ease-out),
     box-shadow 0.4s var(--ease-out);
+  /* پیشوندِ ‎-webkit‎ را دستی ننویس: Lightning CSS هر دو را در
+     همان یکی ادغام می‌کند و blur روی مرورگرهای غیرwebkit می‌افتد. */
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 .termBox:hover {
   border-color: var(--accent);
-  background: rgba(212, 175, 106, 0.1);
+  background: rgba(var(--gold-rgb) / 0.1);
   box-shadow: var(--shadow-glow);
   transform: translateY(-2px);
 }
 
 .termIcon {
-  font-size: var(--step-1, 1.2rem);
-  line-height: 1;
-  filter: drop-shadow(0 0 8px var(--accent-glow));
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--accent);
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+  transition: transform 0.5s var(--ease-out), filter 0.4s var(--ease-out);
+}
+
+.termBox:hover .termIcon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 12px var(--accent-glow));
 }
 
 .termLabel {
@@ -279,20 +302,21 @@
 
 .termResult .termBox {
   border-color: var(--accent);
-  background: rgba(212, 175, 106, 0.14);
+  background: rgba(var(--gold-rgb) / 0.14);
   box-shadow: var(--shadow-glow);
   color: var(--accent-bright);
 }
 
 .termResult .termIcon {
+  color: var(--accent-bright);
   filter: drop-shadow(0 0 14px var(--accent-glow));
 }
 
 .termSub {
-  font-family: var(--font-vazirmatn, system-ui, sans-serif);
-  font-size: var(--step--1, 0.83rem);
-  color: var(--muted-2);
-  font-style: italic;
+  font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
+  font-size: var(--step--2, 0.75rem);
+  color: var(--ink-raw);
+  letter-spacing: 0.06em;
 }
 
 .operator {
@@ -302,199 +326,498 @@
   opacity: 0.7;
   font-weight: 400;
   user-select: none;
+  /* «=» با نتیجه هم‌تراز می‌ماند، نه با زیرنویس */
+  margin-bottom: 26px;
 }
 
 /* ============================================================
-   خط نوری — gold trace که ۳ ستون را وصل می‌کند
+   ریختنِ مذاب — طلا از معادله به سه قالب می‌ریزد
    ============================================================ */
-.lightLine {
-  position: relative;
-  height: 60px;
-  margin: 0 auto clamp(24px, 4vw, 40px);
+.pour {
+  height: clamp(44px, 6vw, 72px);
+  margin: clamp(8px, 1.5vw, 16px) auto 0;
   max-width: 1000px;
-  opacity: 0.7;
 }
 
-.lightLineSvg {
+.pourSvg {
+  display: block;
   width: 100%;
   height: 100%;
   overflow: visible;
 }
 
-.lightLinePath {
-  stroke-dasharray: 1200;
-  stroke-dashoffset: 1200;
-  transition: stroke-dashoffset 2.4s var(--ease-out-expo) 0.4s;
+.pourPath {
+  fill: none;
+  stroke: url(#synthesis-pour);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  transition: stroke-dashoffset 1.1s var(--ease-out-expo) 0.75s;
 }
 
-.lightLineDot {
+.pourDot {
   fill: var(--accent-bright);
   opacity: 0;
-  transform-origin: center;
-  transition: opacity 0.6s var(--ease-out) 1.8s;
+  transition: opacity 0.5s var(--ease-out) 1.5s;
 }
 
-/* وقتی section revealed شد، خط رسم می‌شود */
-.synthesis[data-revealed="true"] .lightLinePath {
+.synthesis[data-revealed="true"] .pourPath {
   stroke-dashoffset: 0;
 }
 
-.synthesis[data-revealed="true"] .lightLineDot {
+.synthesis[data-revealed="true"] .pourDot {
   opacity: 1;
+  /* قطره وقتی رسید، یک بار پخش می‌شود و می‌ایستد */
+  animation: dropLand 0.9s var(--ease-out) 1.5s both;
 }
 
-.synthesis[data-revealed="true"] .lightLineDot:nth-child(2) {
-  transition-delay: 2s;
-}
-.synthesis[data-revealed="true"] .lightLineDot:nth-child(3) {
-  transition-delay: 2.2s;
+@keyframes dropLand {
+  0%   { r: 1; filter: drop-shadow(0 0 0 var(--accent-glow)); }
+  45%  { r: 4.5; filter: drop-shadow(0 0 12px var(--accent-glow)); }
+  100% { r: 2.5; filter: drop-shadow(0 0 5px var(--accent-glow)); }
 }
 
 /* ============================================================
-   ستون‌ها — ۳ pillar card
+   سه مرحله — کارت‌های حالتِ مادّه
    ============================================================ */
-.pillars {
+.stages {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: clamp(20px, 3vw, 32px);
-  margin-top: clamp(24px, 4vw, 40px);
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2.4vw, 28px);
+  margin: clamp(4px, 1vw, 12px) 0 0;
+  padding: 0;
+  list-style: none;
+  align-items: stretch;
 }
 
-.pillarCard {
+.stageCard {
+  --card-bg: rgba(245, 240, 228, 0.028);
+
   position: relative;
-  padding: clamp(24px, 3vw, 36px);
-  background: rgba(245, 240, 228, 0.03);
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 2.6vw, 34px) clamp(20px, 2.4vw, 30px) clamp(28px, 3vw, 36px);
+  background: var(--card-bg);
   border: 1px solid var(--line);
-  border-radius: var(--radius-xl);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition:
-    transform 0.5s var(--ease-out),
-    border-color 0.4s var(--ease-out),
-    box-shadow 0.5s var(--ease-out),
-    background 0.4s var(--ease-out);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(14px);
   overflow: hidden;
   isolation: isolate;
+  /* نور از پایین به بالای کارت می‌رود — گرمایی که از کف می‌آید.
+     شدّتش با --heat مرحله تنظیم می‌شود. */
+  transition:
+    transform 0.55s var(--ease-out),
+    border-color 0.45s var(--ease-out),
+    box-shadow 0.55s var(--ease-out),
+    background 0.45s var(--ease-out);
 }
 
-.pillarCard::before {
+/* درخششِ حرارت از کفِ کارت */
+.stageCard::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0;
-  transition: opacity 0.4s var(--ease-out);
-}
-
-.pillarCard::after {
-  content: "";
-  position: absolute;
-  bottom: -40%;
-  left: -10%;
-  right: -10%;
-  height: 80%;
+  inset: auto -20% -45% -20%;
+  height: 75%;
   background: radial-gradient(
-    ellipse 50% 100% at 50% 100%,
-    var(--accent-soft) 0%,
-    transparent 70%
+    ellipse 55% 100% at 50% 100%,
+    rgba(var(--gold-rgb) / calc(0.1 + var(--heat, 0.5) * 0.22)) 0%,
+    transparent 72%
   );
-  opacity: 0;
-  transition: opacity 0.5s var(--ease-out);
+  opacity: calc(0.45 + var(--heat, 0.5) * 0.55);
+  transition: opacity 0.6s var(--ease-out);
   pointer-events: none;
   z-index: -1;
 }
 
-.pillarCard:hover {
+/* خطِ نوریِ لبه‌ی بالا — با گرما پررنگ‌تر */
+.stageCard::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--hot) calc(var(--heat, 0.5) * 100%), var(--accent)),
+    transparent
+  );
+  opacity: calc(0.3 + var(--heat, 0.5) * 0.5);
+  transition: opacity 0.5s var(--ease-out), left 0.6s var(--ease-out), right 0.6s var(--ease-out);
+}
+
+.stageCard:hover {
   transform: translateY(-6px);
   border-color: var(--accent);
   background: rgba(245, 240, 228, 0.05);
   box-shadow: var(--shadow-soft), 0 0 0 1px var(--accent-soft);
 }
 
-.pillarCard:hover::before {
+.stageCard:hover::before {
   opacity: 1;
 }
 
-.pillarCard:hover::after {
+.stageCard:hover::after {
+  left: 0;
+  right: 0;
   opacity: 1;
 }
 
-.pillarCard:focus-within {
+.stageCard:focus-within {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px var(--accent), 0 0 30px var(--accent-glow);
 }
 
-.pillarIcon {
-  display: block;
-  color: var(--accent);
-  margin-bottom: 18px;
-  transition:
-    transform 0.5s var(--ease-out),
-    filter 0.5s var(--ease-out),
-    color 0.4s var(--ease-out);
-  filter: drop-shadow(0 0 6px var(--accent-glow));
+/* برقِ سطح — یک بار روی hover عبور می‌کند، بی‌پایان نمی‌چرخد */
+.sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 224, 164, 0.09) 48%,
+    rgba(255, 255, 255, 0.05) 52%,
+    transparent 62%
+  );
+  transform: translateX(-120%);
+  pointer-events: none;
+  z-index: 2;
 }
 
-.pillarCard:hover .pillarIcon {
-  transform: rotate(8deg) scale(1.1);
-  filter: drop-shadow(0 0 14px var(--accent-glow));
-  color: var(--accent-bright);
+.stageCard:hover .sheen {
+  animation: sheenSweep 1.1s var(--ease-out-expo);
 }
 
-.pillarLabel {
-  display: block;
+@keyframes sheenSweep {
+  to { transform: translateX(120%); }
+}
+
+/* --- سرِ کارت: شماره‌ی مرحله + دما --- */
+.stageMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
   font-size: var(--step--2, 0.75rem);
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  margin-bottom: 8px;
+  letter-spacing: 0.1em;
+  margin-bottom: clamp(18px, 2.4vw, 26px);
 }
 
-.pillarTitle {
-  font-family: var(--font-vazirmatn, system-ui, sans-serif);
+.stageNum {
+  color: var(--ink-raw);
+}
+
+.stageTemp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  /* دما رنگِ حرارت را می‌گیرد، ولی پایه‌اش --muted است نه --muted-2:
+     با --muted-2 مرحله‌ی سردِ ۲۲° به ۱.۰۶:۱ می‌رسید و ناخوانا بود. */
+  color: color-mix(in oklab, var(--hot) calc(var(--heat, 0.5) * 100%), var(--muted));
+  font-variant-numeric: tabular-nums;
+}
+
+.tempDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 calc(3px + var(--heat, 0.5) * 9px) currentColor;
+}
+
+/* گرم‌ترین مرحله، ضربان دارد */
+.stageCard[data-state="کوره"] .tempDot {
+  animation: tempPulse 1.9s ease-in-out infinite;
+}
+
+@keyframes tempPulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.35); }
+}
+
+/* --- نشانِ حالتِ مادّه --- */
+.glyph {
+  display: block;
+  width: clamp(46px, 5vw, 56px);
+  height: clamp(46px, 5vw, 56px);
+  margin-bottom: clamp(16px, 2vw, 22px);
+  color: color-mix(in oklab, var(--hot) calc(var(--heat, 0.5) * 70%), var(--accent));
+  filter: drop-shadow(0 0 calc(3px + var(--heat, 0.5) * 10px) var(--accent-glow));
+  transition: transform 0.6s var(--ease-out), filter 0.5s var(--ease-out);
+}
+
+.glyph svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.stageCard:hover .glyph {
+  transform: scale(1.07);
+  filter: drop-shadow(0 0 calc(8px + var(--heat, 0.5) * 14px) var(--accent-glow));
+}
+
+/* خطوطِ نشان وقتی کارت دیده می‌شود «کشیده» می‌شوند */
+.glyph :global(.glyphDraw) {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  transition: stroke-dashoffset 1.6s var(--ease-out-expo);
+}
+
+.synthesis[data-revealed="true"] .stages > *:nth-child(1) .glyph :global(.glyphDraw) { transition-delay: 1.8s; }
+.synthesis[data-revealed="true"] .stages > *:nth-child(2) .glyph :global(.glyphDraw) { transition-delay: 1.98s; }
+.synthesis[data-revealed="true"] .stages > *:nth-child(3) .glyph :global(.glyphDraw) { transition-delay: 2.16s; }
+
+.synthesis[data-revealed="true"] .glyph :global(.glyphDraw) {
+  stroke-dashoffset: 0;
+}
+
+/* خام: ذرات آرام و بی‌هدف می‌لرزند */
+.glyph :global(.glyphDots) circle {
+  animation: dotsJitter 5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.glyph :global(.glyphDots) circle:nth-child(2) { animation-delay: -1.1s; }
+.glyph :global(.glyphDots) circle:nth-child(3) { animation-delay: -2.3s; }
+.glyph :global(.glyphDots) circle:nth-child(4) { animation-delay: -3.4s; }
+.glyph :global(.glyphDots) circle:nth-child(5) { animation-delay: -0.6s; }
+
+@keyframes dotsJitter {
+  0%, 100% { transform: translate(0, 0); opacity: 0.55; }
+  30%      { transform: translate(1.4px, -1.6px); opacity: 0.9; }
+  65%      { transform: translate(-1.2px, 1px); opacity: 0.7; }
+}
+
+/* کوره: مذاب جاری‌ست */
+.glyph :global(.glyphFlow) path {
+  animation: moltenFlow 3.6s ease-in-out infinite;
+}
+.glyph :global(.glyphFlow) path:nth-child(2) { animation-delay: -1.4s; }
+
+@keyframes moltenFlow {
+  0%, 100% { transform: translateX(0); opacity: 0.75; }
+  50%      { transform: translateX(2.5px); opacity: 1; }
+}
+
+/* کوره: زبانه‌های حرارت بالا می‌روند و محو می‌شوند */
+.glyph :global(.glyphHeat) path {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: heatLick 2.4s ease-in-out infinite;
+}
+.glyph :global(.glyphHeat) path:nth-child(2) { animation-delay: -0.8s; }
+.glyph :global(.glyphHeat) path:nth-child(3) { animation-delay: -1.6s; }
+
+@keyframes heatLick {
+  0%   { transform: scaleY(0.5) translateY(0); opacity: 0; }
+  35%  { opacity: 0.9; }
+  100% { transform: scaleY(1.1) translateY(-3px); opacity: 0; }
+}
+
+/* بلور: وجه‌ها قفل‌اند، هسته می‌تپد */
+.glyph :global(.glyphCore) {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: coreGleam 4.5s ease-in-out infinite;
+}
+
+@keyframes coreGleam {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.12); }
+}
+
+/* --- متنِ کارت --- */
+.stageState {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  padding: 3px 10px;
+  margin-bottom: 12px;
+  font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
+  font-size: var(--step--2, 0.75rem);
+  letter-spacing: 0.08em;
+  color: color-mix(in oklab, var(--hot) calc(var(--heat, 0.5) * 80%), var(--accent));
+  background: rgba(var(--gold-rgb) / calc(0.05 + var(--heat, 0.5) * 0.07));
+  border: 1px solid color-mix(in oklab, var(--accent) calc(30% + var(--heat, 0.5) * 45%), transparent);
+  border-radius: 999px;
+}
+
+.stageTitle {
+  /* Crimson Pro — عنوان‌های انگلیسی، لحنِ نسخه‌ی خطی */
+  font-family: var(--font-crimson-pro, var(--font-display, Georgia, serif));
   font-size: var(--step-2, 1.44rem);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text);
   margin: 0 0 12px;
-  line-height: 1.3;
-  letter-spacing: -0.005em;
+  line-height: 1.28;
+  letter-spacing: 0.002em;
+  direction: ltr;
+  text-align: right;
 }
 
-.pillarDesc {
+.stageDesc {
   font-family: var(--font-vazirmatn, system-ui, sans-serif);
   font-size: var(--step--1, 0.83rem);
   color: var(--muted);
   line-height: 1.85;
-  margin: 0;
+  margin: 0 0 clamp(18px, 2.4vw, 24px);
 }
 
-.pillarIndex {
+.stageQuestion {
+  margin-top: auto;
+  font-family: var(--font-vazirmatn, system-ui, sans-serif);
+  font-size: var(--step-1, 1.2rem);
+  font-weight: 600;
+  color: color-mix(in oklab, var(--hot) calc(var(--heat, 0.5) * 60%), var(--accent));
+  opacity: 0.85;
+  transition: opacity 0.4s var(--ease-out);
+}
+
+.stageCard:hover .stageQuestion {
+  opacity: 1;
+}
+
+/* --- نوارِ حرارت --- */
+.heatBar {
   position: absolute;
-  top: 18px;
-  left: 22px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(245, 240, 228, 0.05);
+  overflow: hidden;
+}
+
+.heatFill {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(
+    90deg,
+    var(--ash) 0%,
+    var(--accent) 45%,
+    var(--hot) 100%
+  );
+  box-shadow: 0 0 12px var(--accent-glow);
+  transition: width 1.3s var(--ease-out-expo);
+}
+
+/* هر نوار تا گرمای مرحله‌ی خودش پر می‌شود */
+.synthesis[data-revealed="true"] .heatFill {
+  width: calc(var(--heat, 0.5) * 100%);
+}
+
+.synthesis[data-revealed="true"] .stages > *:nth-child(1) .heatFill { transition-delay: 2s; }
+.synthesis[data-revealed="true"] .stages > *:nth-child(2) .heatFill { transition-delay: 2.18s; }
+.synthesis[data-revealed="true"] .stages > *:nth-child(3) .heatFill { transition-delay: 2.36s; }
+
+/* ============================================================
+   ناودانِ خروجی — پیوندِ کوره به آزمایشگاه
+   ------------------------------------------------------------
+   ریلِ عمودی از کفِ کوره پایین می‌رود و در بخشِ آزمایشگاه
+   ادامه پیدا می‌کند. قطره‌ی طلا وقتی این بخش دیده شد یک بار
+   مسیر را طی می‌کند: خروجیِ کوره = ورودیِ میزِ آزمایش.
+   ============================================================ */
+.outflow {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: clamp(84px, 11vw, 132px);
+  margin-top: clamp(32px, 5vw, 56px);
+}
+
+.outflowRail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--accent) 22%,
+    var(--accent-bright) 62%,
+    var(--accent) 100%
+  );
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition:
+    transform 1.1s var(--ease-out-expo) 2.4s,
+    opacity 0.6s var(--ease-out) 2.4s;
+}
+
+.synthesis[data-revealed="true"] .outflowRail {
+  opacity: 0.45;
+  transform: scaleY(1);
+}
+
+/* قطره‌ی مذاب — یک سفر، بدون حلقه */
+.outflowDrop {
+  position: absolute;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: var(--hot);
+  box-shadow: 0 0 12px var(--accent-glow);
+  opacity: 0;
+}
+
+.synthesis[data-revealed="true"] .outflowDrop {
+  animation: dropDescend 1.5s var(--ease-out) 3.1s forwards;
+}
+
+@keyframes dropDescend {
+  0%   { top: 0;    opacity: 0; transform: scale(0.5); }
+  14%  { opacity: 1; transform: scale(1); }
+  86%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; transform: scale(0.7); }
+}
+
+.outflowLabel {
+  position: absolute;
+  bottom: 2px;
+  right: 50%;
+  margin-right: 14px;
   font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
   font-size: var(--step--2, 0.75rem);
+  letter-spacing: 0.16em;
   color: var(--ink-raw);
-  letter-spacing: 0.1em;
-  opacity: 0.6;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-out) 3.6s;
+}
+
+.synthesis[data-revealed="true"] .outflowLabel {
+  opacity: 1;
 }
 
 /* ============================================================
-   Responsive (Task 39-B unified breakpoints)
+   Responsive
    ============================================================ */
 @media (max-width: 1024px) {
-  .synthesis {
-    padding: clamp(64px, 10vw, 120px) 0;
+  .stages {
+    gap: clamp(14px, 2vw, 20px);
   }
-  .pillars {
-    gap: clamp(16px, 2.5vw, 24px);
+}
+
+@media (max-width: 860px) {
+  .stages {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+    margin-inline: auto;
   }
-  .pillarCard {
-    padding: clamp(20px, 2.5vw, 28px);
+
+  /* در حالتِ ستونی، مذاب مستقیم پایین می‌ریزد */
+  .pour {
+    max-width: 120px;
+    height: 40px;
   }
 }
 
@@ -518,35 +841,9 @@
     font-size: var(--step--1, 0.94rem);
   }
 
-  /* Hide the light-line SVG on mobile — it doesn't survive the
-     column-stack equation and competes with the crucible glow. */
-  .lightLine {
-    display: none;
-  }
-
-  .crucibleRing {
-    width: 80vw;
-    height: 80vw;
-  }
-
-  /* Performance: dim the crucible canvas on small screens so the
-     GPU doesn't have to composite dozens of particles over a
-     narrow viewport. The glow + ring still carry the metaphor. */
-  .crucibleCanvas {
-    opacity: 0.45;
-  }
-
-  .pillarIndex {
-    top: 14px;
-    left: 16px;
-  }
-
-  .pillars {
-    grid-template-columns: 1fr;
-    gap: 14px;
-    max-width: 540px;
-    margin-left: auto;
-    margin-right: auto;
+  /* روی موبایل canvas سبک‌تر می‌شود؛ نورِ کف روایت را نگه می‌دارد */
+  .forgeCanvas {
+    opacity: 0.6;
   }
 }
 
@@ -558,7 +855,7 @@
     padding: 0 16px;
   }
   .header {
-    margin-bottom: 36px;
+    margin-bottom: 32px;
   }
   .title {
     font-size: var(--step-3, 1.73rem);
@@ -577,22 +874,23 @@
   }
   .operator {
     font-size: 1.1rem;
+    margin-bottom: 0;
   }
-  .pillarCard {
-    padding: 18px;
-    border-radius: var(--radius-lg);
+  .stageCard {
+    padding: 20px 18px 26px;
+    border-radius: var(--radius-md);
   }
-  .pillarTitle {
+  .stageTitle {
     font-size: var(--step-1, 1.2rem);
   }
-  .pillarDesc {
+  .stageDesc {
     font-size: 0.85rem;
     line-height: 1.7;
   }
 }
 
 /* ============================================================
-   Reduced motion
+   Reduced motion — همه‌چیز در حالتِ نهایی، بدون حلقه
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   .synthesis :global([data-reveal]) {
@@ -602,28 +900,60 @@
     transition: none !important;
   }
 
-  .crucibleGlow,
-  .crucibleRing,
-  .kickerDot {
+  .kickerDot,
+  .forgeFloor,
+  .forgeFloor::after,
+  .tempDot,
+  .glyph :global(.glyphDots) circle,
+  .glyph :global(.glyphFlow) path,
+  .glyph :global(.glyphHeat) path,
+  .glyph :global(.glyphCore),
+  .sheen {
     animation: none !important;
   }
 
-  .lightLinePath,
-  .lightLineDot {
+  /* زبانه‌های حرارت بدون انیمیشن دیده نمی‌شوند — ثابتشان می‌کنیم */
+  .glyph :global(.glyphHeat) path {
+    opacity: 0.7;
+  }
+
+  .stageCard,
+  .termBox,
+  .glyph,
+  .heatFill,
+  .pourPath,
+  .pourDot,
+  .outflowRail,
+  .outflowLabel {
     transition: none !important;
   }
 
-  .lightLinePath {
-    stroke-dashoffset: 0 !important;
+  /* ناودان در حالتِ نهایی: ریل کامل، قطره ساکن در میانه */
+  .outflowRail {
+    opacity: 0.45 !important;
+    transform: scaleY(1) !important;
   }
 
-  .lightLineDot {
+  .outflowLabel {
     opacity: 1 !important;
   }
 
-  .pillarCard,
-  .termBox,
-  .pillarIcon {
-    transition: none !important;
+  .outflowDrop {
+    animation: none !important;
+    opacity: 0.9;
+    top: 46%;
+  }
+
+  .pourPath {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .pourDot {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  .glyph :global(.glyphDraw) {
+    stroke-dashoffset: 0 !important;
   }
 }

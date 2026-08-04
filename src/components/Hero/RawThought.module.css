@@ -73,9 +73,9 @@
      flip to --danger in one place. */
   --chip-accent: var(--accent);
   --chip-accent-soft: var(--accent-soft);
-  --chip-line-raw: rgba(139, 0, 0, 0.14);   /* line @ ~0.4 opacity */
+  --chip-line-raw: rgba(var(--accent-2-rgb) / 0.14);   /* line @ ~0.4 opacity */
   --chip-line-active: var(--chip-accent);
-  --chip-line-trace: rgba(139, 0, 0, 0.10);
+  --chip-line-trace: rgba(var(--accent-2-rgb) / 0.10);
 
   position: absolute;
   transform: rotate(var(--rot, 0deg));
@@ -112,10 +112,9 @@
 
   transition:
     transform 0.3s var(--ease-out),
-    translate 0.2s ease-out,         /* B8: magnetic pull */
-    scale 0.6s var(--ease-out),      /* B1: entrance scale-in */
-    opacity 0.6s var(--ease-out),    /* B1: was 0.2s, now 0.6s for entrance */
-    filter 0.5s ease-out,            /* B1: entrance blur-out */
+    scale 0.6s var(--ease-out),
+    opacity 0.6s var(--ease-out),
+    filter 0.5s ease-out,
     border-color 0.3s var(--ease-out),
     background 0.3s var(--ease-out),
     box-shadow 0.3s var(--ease-out);
@@ -129,11 +128,11 @@
   --chip-line-trace: rgba(255, 77, 77, 0.12);
 }
 
-/* Halo behind chip — radial glow that appears on hover (Phase 1) */
+/* Halo behind chip — radial glow that appears on eyefish proximity + hover */
 .thoughtChip::before {
   content: "";
   position: absolute;
-  inset: -24px;
+  inset: -12px;
   background: radial-gradient(
     circle at center,
     var(--chip-accent-soft) 0%,
@@ -143,7 +142,12 @@
   z-index: -1;
   pointer-events: none;
   border-radius: 50%;
-  transition: opacity 0.3s var(--ease-out);
+  transition: opacity 0.2s var(--ease-out);
+}
+
+/* Eyefish halo: glow strengthens when chip is near cursor (high fish-scale) */
+.thoughtChip[data-state="raw"]::before {
+  opacity: calc((var(--fish-opacity, 0.88) - 0.55) / 0.45 * 0.4);
 }
 
 .thoughtChip:focus-visible {
@@ -168,125 +172,17 @@
 .thoughtChip[data-state="raw"] {
   border-color: var(--chip-line-raw);
   background: var(--surface);
-  /* Loop-4 (Task 12 §6.1): explicit z-index 2 (matches base, حومه layer).
-     opacity: 0.88 inherited from base — slightly dimmed. */
   z-index: 2;
-  /* B3: ambient halo — static fallback. haloPulse animation (in the
-     [data-entered="true"] rule below) drives the pulsing. */
-  box-shadow: 0 0 12px var(--chip-accent-soft);
-  /* B8: magnetic pull via CSS individual `translate` property (composes
-     with drift's transform without conflict). --mx/--my set by Worker A
-     on mousemove; fallback 0px when not set or in non-raw states. */
-  translate: var(--mx, 0px) var(--my, 0px);
-  /* default drift — overridden per-id below for irregular rhythm (§4.1).
-     B1+B2+B3: when entered, drift + breathing + haloPulse run together. */
-  animation: thoughtDriftY 4.2s ease-in-out infinite alternate;
-}
-
-.thoughtChip[data-id="t1"][data-state="raw"] {
-  animation: thoughtDriftY 4.2s ease-in-out infinite alternate;
-}
-.thoughtChip[data-id="t2"][data-state="raw"] {
-  animation: thoughtDriftRot 6s ease-in-out infinite alternate;
-}
-.thoughtChip[data-id="t3"][data-state="raw"] {
-  animation: thoughtDriftX 5.4s ease-in-out infinite alternate;
-}
-.thoughtChip[data-id="t4"][data-state="raw"] {
-  animation: thoughtDriftY 4.8s ease-in-out infinite alternate;
-}
-.thoughtChip[data-id="t5"][data-state="raw"] {
-  animation: thoughtDriftRot 5.8s ease-in-out infinite alternate;
-}
-.thoughtChip[data-id="t6"][data-state="raw"] {
-  animation: thoughtDriftX 6.4s ease-in-out infinite alternate;
-}
-
-/* B1+B2+B3: combined drift + breathing + haloPulse for entered raw chips.
-   Three independent CSS properties (transform / scale / box-shadow) —
-   no conflict between them. Per-chip breathing/halo durations create
-   async rhythm across the 6 chips (no frame-perfect sync).
-   t3 (data-danger) uses haloPulseDanger with the --danger rgba.
-   These rules are MORE specific than the per-id [data-state="raw"]
-   rules above (extra [data-entered] attribute selector) so they win
-   for entered chips; the simpler rules remain as fallback for the
-   brief pre-entrance window when data-entered has not yet flipped. */
-.thoughtChip[data-state="raw"][data-entered="true"] {
-  animation:
-    thoughtDriftY 4.2s ease-in-out infinite alternate,
-    breathing 5.2s ease-in-out infinite,
-    haloPulse 5.2s ease-in-out infinite;
-}
-.thoughtChip[data-id="t1"][data-state="raw"][data-entered="true"] {
-  animation:
-    thoughtDriftY 4.2s ease-in-out infinite alternate,
-    breathing 5.2s ease-in-out infinite,
-    haloPulse 5.2s ease-in-out infinite;
-}
-.thoughtChip[data-id="t2"][data-state="raw"][data-entered="true"] {
-  animation:
-    thoughtDriftRot 6s ease-in-out infinite alternate,
-    breathing 6.8s ease-in-out infinite,
-    haloPulse 6.8s ease-in-out infinite;
-}
-.thoughtChip[data-id="t3"][data-state="raw"][data-entered="true"] {
-  animation:
-    thoughtDriftX 5.4s ease-in-out infinite alternate,
-    breathing 5.6s ease-in-out infinite,
-    haloPulseDanger 5.6s ease-in-out infinite;
-}
-.thoughtChip[data-id="t4"][data-state="raw"][data-entered="true"] {
-  animation:
-    thoughtDriftY 4.8s ease-in-out infinite alternate,
-    breathing 5.0s ease-in-out infinite,
-    haloPulse 5.0s ease-in-out infinite;
-}
-.thoughtChip[data-id="t5"][data-state="raw"][data-entered="true"] {
-  animation:
-    thoughtDriftRot 5.8s ease-in-out infinite alternate,
-    breathing 6.4s ease-in-out infinite,
-    haloPulse 6.4s ease-in-out infinite;
-}
-.thoughtChip[data-id="t6"][data-state="raw"][data-entered="true"] {
-  animation:
-    thoughtDriftX 6.4s ease-in-out infinite alternate,
-    breathing 4.8s ease-in-out infinite,
-    haloPulse 4.8s ease-in-out infinite;
-}
-
-@keyframes thoughtDriftY {
-  from { transform: rotate(var(--rot, 0deg)) translateY(-2px); }
-  to   { transform: rotate(var(--rot, 0deg)) translateY(2px); }
-}
-@keyframes thoughtDriftRot {
-  from { transform: rotate(calc(var(--rot, 0deg) - 0.3deg)); }
-  to   { transform: rotate(calc(var(--rot, 0deg) + 0.3deg)); }
-}
-@keyframes thoughtDriftX {
-  from { transform: rotate(var(--rot, 0deg)) translateX(-1.5px); }
-  to   { transform: rotate(var(--rot, 0deg)) translateX(1.5px); }
-}
-
-/* B2: breathing — subtle scale pulse on CSS individual `scale` property
-   (independent of drift's transform). 1.5% scale = barely visible but
-   enough to feel "alive". Per-chip durations (4.8s–6.8s) desync the
-   breaths so the 6 chips don't pulse in lockstep. */
-@keyframes breathing {
-  0%, 100% { scale: 1;     }
-  50%      { scale: 1.015; }
-}
-
-/* B3: haloPulse — pulsing box-shadow (the ambient halo). Hardcoded rgba
-   per design spec (regular: gold 212,175,106; danger: orange 224,147,90).
-   Two keyframes instead of one var-driven keyframe because the design
-   spec calls for different alpha stops per color variant. */
-@keyframes haloPulse {
-  0%, 100% { box-shadow: 0 0 12px rgba(139, 0, 0, 0.10); }
-  50%      { box-shadow: 0 0 14px rgba(139, 0, 0, 0.18); }
-}
-@keyframes haloPulseDanger {
-  0%, 100% { box-shadow: 0 0 12px rgba(255, 77, 77, 0.12); }
-  50%      { box-shadow: 0 0 14px rgba(255, 77, 77, 0.20); }
+  /* Eyefish lens: scale, blur, opacity driven by mousemove via CSS vars */
+  scale: var(--fish-scale, 1);
+  filter: blur(var(--fish-blur, 0px));
+  opacity: var(--fish-opacity, 0.88);
+  /* faster transition for mousemove responsiveness */
+  transition:
+    scale 0.15s ease-out,
+    filter 0.15s ease-out,
+    opacity 0.15s ease-out,
+    transform 0.15s ease-out;
 }
 
 /* -------------------- Phase 1 — Refining (hover/focus enter) -------------------- */
@@ -1021,26 +917,7 @@
    caret hidden, refined text snaps to opacity 1.
    ========================================================= */
 @media (prefers-reduced-motion: reduce) {
-  /* The base `.thoughtChip` selector disables animation on ALL chips,
-     which covers B1 (entrance — no animation anyway), B2 (breathing),
-     and B3 (haloPulse). The per-id + [data-state="raw"] selectors are
-     kept for explicitness and to win over the [data-entered="true"]
-     combined-animation rules. */
-  .thoughtChip,
-  .thoughtChip[data-state="raw"],
-  .thoughtChip[data-state="raw"][data-entered="true"],
-  .thoughtChip[data-id="t1"][data-state="raw"],
-  .thoughtChip[data-id="t1"][data-state="raw"][data-entered="true"],
-  .thoughtChip[data-id="t2"][data-state="raw"],
-  .thoughtChip[data-id="t2"][data-state="raw"][data-entered="true"],
-  .thoughtChip[data-id="t3"][data-state="raw"],
-  .thoughtChip[data-id="t3"][data-state="raw"][data-entered="true"],
-  .thoughtChip[data-id="t4"][data-state="raw"],
-  .thoughtChip[data-id="t4"][data-state="raw"][data-entered="true"],
-  .thoughtChip[data-id="t5"][data-state="raw"],
-  .thoughtChip[data-id="t5"][data-state="raw"][data-entered="true"],
-  .thoughtChip[data-id="t6"][data-state="raw"],
-  .thoughtChip[data-id="t6"][data-state="raw"][data-entered="true"] {
+  .thoughtChip {
     animation: none !important;
   }
 

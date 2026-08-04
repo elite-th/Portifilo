@@ -117,6 +117,10 @@ export interface RawThoughtProps {
    * CSS var is needed.
    */
   entered: boolean;
+  /** Cluster registers/unregisters this chip's DOM node for the shared
+   *  eyefish mousemove listener (FIX-8). Called via the button's ref
+   *  callback. */
+  onRegister?: (el: HTMLButtonElement | null) => void;
   /** Whether the hero has entered the viewport and the chip can crystallize in. */
   scrollRevealed: boolean;
 }

@@ -36,7 +36,7 @@
   background:
     radial-gradient(
       55% 45% at 75% 18%,
-      rgba(139, 0, 0, 0.08) 0%,
+      rgba(var(--accent-2-rgb) / 0.08) 0%,
       transparent 70%
     ),
     radial-gradient(
@@ -46,7 +46,7 @@
     ),
     radial-gradient(
       50% 40% at 50% 100%,
-      rgba(139, 0, 0, 0.04) 0%,
+      rgba(var(--accent-2-rgb) / 0.04) 0%,
       transparent 65%
     );
   pointer-events: none;
@@ -58,8 +58,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(139, 0, 0, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139, 0, 0, 0.02) 1px, transparent 1px);
+    linear-gradient(rgba(var(--accent-2-rgb) / 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-2-rgb) / 0.02) 1px, transparent 1px);
   background-size: 64px 64px;
   background-position: center;
   mask-image: radial-gradient(80% 80% at 50% 40%, black 30%, transparent 90%);

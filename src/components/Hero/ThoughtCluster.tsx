@@ -3,7 +3,9 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
+  useRef,
   useState,
   useSyncExternalStore,
 } from "react";
@@ -52,7 +54,7 @@ const DESKTOP_MIN = 1180;
 const NARROW_MIN = 1010;
 
 const HINT_INTRO_DELAY = 600;
-const HINT_AUTO_HIDE = 8000;
+const HINT_AUTO_HIDE = 16_000;
 const AUTO_DEMO_DELAY = 1200;
 
 /* =========================================================
@@ -176,6 +178,50 @@ export default function ThoughtCluster() {
     setResonancePairs(newResonance);
   }, [traceIds]);
 
+  // Beam endpoints — measured in layout effect (FIX-9), not in render.
+  // Coordinates are field-relative so the SVG layer (absolute inside the
+  // scatter field) shares the chips' coordinate space; recomputed on resize.
+  const [beams, setBeams] = useState<{
+    key: string;
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+  }[]>([]);
+
+  useLayoutEffect(() => {
+    if (reducedMotion || resonancePairs.size === 0) {
+      setBeams([]);
+      return;
+    }
+    const measure = () => {
+      const field = fieldRef.current;
+      if (!field) return;
+      const fieldRect = field.getBoundingClientRect();
+      const next: typeof beams = [];
+      RESONANCE_PAIRS.forEach(([id1, id2]) => {
+        const pairKey = `${id1}-${id2}`;
+        if (!resonancePairs.has(pairKey)) return;
+        const c1 = chipEls.current.get(id1);
+        const c2 = chipEls.current.get(id2);
+        if (!c1 || !c2) return;
+        const r1 = c1.getBoundingClientRect();
+        const r2 = c2.getBoundingClientRect();
+        next.push({
+          key: pairKey,
+          x1: r1.left - fieldRect.left + r1.width / 2,
+          y1: r1.top - fieldRect.top + r1.height / 2,
+          x2: r2.left - fieldRect.left + r2.width / 2,
+          y2: r2.top - fieldRect.top + r2.height / 2,
+        });
+      });
+      setBeams(next);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [reducedMotion, resonancePairs]);
+
   // Scroll-reveal state: chips crystallize when hero enters viewport
   const scrollRevealed = useSyncExternalStore(
     subscribeScrollReveal,
@@ -273,6 +319,75 @@ export default function ThoughtCluster() {
     setResetSignal((s) => s + 1);
   }, []);
 
+  // --- Shared eyefish listener (FIX-8) ----------------------------------
+  // One window mousemove listener + one rAF per frame, instead of six
+  // per-chip listeners each calling getBoundingClientRect on every move.
+  // Chip DOM nodes register here via onRegister; rects are cached and
+  // recomputed only on resize/scroll. Reads `data-state` from the DOM so
+  // non-raw chips (overridden by their state CSS) are skipped.
+  const fieldRef = useRef<HTMLElement | null>(null);
+  const chipEls = useRef(new Map<string, HTMLButtonElement>());
+
+  const registerChip = useCallback((id: string, el: HTMLButtonElement | null) => {
+    if (el) chipEls.current.set(id, el);
+    else chipEls.current.delete(id);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion || layout === "mobile") return;
+    const els = chipEls.current;
+    const rects = new Map<string, { cx: number; cy: number }>();
+    const pointer = { x: 0, y: 0 };
+    let raf = 0;
+    let rectsDirty = true;
+    const MAX_DIST = 400;
+
+    const measure = () => {
+      rectsDirty = false;
+      for (const [id, el] of els) {
+        const r = el.getBoundingClientRect();
+        rects.set(id, { cx: r.left + r.width / 2, cy: r.top + r.height / 2 });
+      }
+    };
+
+    const applyFish = () => {
+      raf = 0;
+      if (rectsDirty) measure();
+      for (const [id, el] of els) {
+        if (el.dataset.state !== "raw") continue;
+        const c = rects.get(id);
+        if (!c) continue;
+        const dx = pointer.x - c.cx;
+        const dy = pointer.y - c.cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const t = Math.max(0, 1 - dist / MAX_DIST);
+        el.style.setProperty("--fish-scale", `${0.85 + t * t * 0.33}`);
+        el.style.setProperty("--fish-blur", `${(1 - t) * 2}px`);
+        el.style.setProperty("--fish-opacity", `${0.55 + t * 0.45}`);
+      }
+    };
+
+    const onMove = (e: MouseEvent) => {
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      if (!raf) raf = requestAnimationFrame(applyFish);
+    };
+
+    const invalidateRects = () => {
+      rectsDirty = true;
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("resize", invalidateRects);
+    window.addEventListener("scroll", invalidateRects, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("resize", invalidateRects);
+      window.removeEventListener("scroll", invalidateRects);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [reducedMotion, layout]);
+
   // Memoize the sr-only fallback paragraph content so it stays stable
   // across re-renders (it's static anyway).
   const srOnlySummary = useMemo(() => {
@@ -284,6 +399,7 @@ export default function ThoughtCluster() {
 
   return (
     <section
+      ref={fieldRef}
       className={styles.scatterField}
       data-layout={layout}
       data-mobile={layout === "mobile" ? "grid" : undefined}
@@ -307,6 +423,7 @@ export default function ThoughtCluster() {
               reducedMotion={reducedMotion}
               entered={reducedMotion ? scrollRevealed : enteredIds.has(thought.id)}
               scrollRevealed={scrollRevealed}
+              onRegister={(el) => registerChip(thought.id, el)}
             />
           </li>
         ))}
@@ -339,63 +456,36 @@ export default function ThoughtCluster() {
         فکرهای پخته‌شده‌ی طاها حسینی: {srOnlySummary}
       </p>
 
-      {/* Resonance Beams (Ley Lines) — Design Spec §4.5 */}
-      {resonancePairs.size > 0 && !reducedMotion && (
+      {/* Resonance Beams (Ley Lines) — Design Spec §4.5.
+          SVG is absolute inside the scatter field so it shares the chips'
+          coordinate space; endpoints come from `beams` state (FIX-9). */}
+      {beams.length > 0 && (
         <svg
           className={styles.resonanceLayer}
           aria-hidden="true"
           style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
             pointerEvents: "none",
-            zIndex: 1,
           }}
         >
-          {RESONANCE_PAIRS.map(([id1, id2]) => {
-            const pairKey = `${id1}-${id2}`;
-            const isActive = resonancePairs.has(pairKey);
-            if (!isActive) return null;
-
-            // Get chip elements to calculate positions
-            const chip1 = document.querySelector(
-              `[data-id="${id1}"]`
-            ) as HTMLElement | null;
-            const chip2 = document.querySelector(
-              `[data-id="${id2}"]`
-            ) as HTMLElement | null;
-
-            if (!chip1 || !chip2) return null;
-
-            const rect1 = chip1.getBoundingClientRect();
-            const rect2 = chip2.getBoundingClientRect();
-
-            const x1 = rect1.left + rect1.width / 2;
-            const y1 = rect1.top + rect1.height / 2;
-            const x2 = rect2.left + rect2.width / 2;
-            const y2 = rect2.top + rect2.height / 2;
-
-            const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-            const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
-
-            return (
-              <line
-                key={pairKey}
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                className={styles.resonanceBeam}
-                style={{
-                  transformOrigin: `${x1}px ${y1}px`,
-                  strokeWidth: 1,
-                  strokeLinecap: "round",
-                }}
-              />
-            );
-          })}
+          {beams.map((b) => (
+            <line
+              key={b.key}
+              x1={b.x1}
+              y1={b.y1}
+              x2={b.x2}
+              y2={b.y2}
+              className={styles.resonanceBeam}
+              style={{
+                transformOrigin: `${b.x1}px ${b.y1}px`,
+                strokeWidth: 1,
+                strokeLinecap: "round",
+              }}
+            />
+          ))}
         </svg>
       )}
     </section>

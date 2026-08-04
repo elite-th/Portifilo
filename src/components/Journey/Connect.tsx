@@ -4,12 +4,6 @@ import { type CSSProperties, type ReactNode } from "react";
 import styles from "./Connect.module.css";
 import { useScrollReveal } from "./useScrollReveal";
 
-/* =========================================================
- * Connect — §۵ «بیا وصل بشیم»
- * ---------------------------------------------------------
- * Final section: راه‌های ارتباطی ساده.
- * ========================================================= */
-
 const delay = (ms: number): CSSProperties =>
   ({ "--reveal-delay": `${ms}ms` }) as CSSProperties;
 
@@ -45,8 +39,8 @@ const CONTACTS: ContactLink[] = [
     ),
   },
   {
-    href: "https://twitter.com/taha_hosseini",
-    label: "توییتر",
+    href: "https://x.com/taha_hosseini",
+    label: "ایکس",
     value: "@taha_hosseini",
     external: true,
     icon: (
@@ -56,6 +50,12 @@ const CONTACTS: ContactLink[] = [
     ),
   },
 ];
+
+/* دکمه‌ی تماس مستقیم — بزرگ و جسور */
+const CTA_BUTTON = {
+  href: "mailto:hi@taha-hosseini.dev?subject=بیا%20صحبت%20کنیم",
+  label: "بریم برای یه کد، یه قهوه",
+};
 
 export default function Connect() {
   const { ref } = useScrollReveal<HTMLDivElement>({
@@ -69,44 +69,49 @@ export default function Connect() {
       id="connect"
       ref={ref}
       className={styles.connect}
-      data-journey-section="5"
-      aria-labelledby="connect-title"
+      data-journey-section="6"
+      aria-label="بیا وصل بشیم"
     >
-      {/* Coagulation glow — particles converging to center */}
-      <div className={styles.coagulationGlow} aria-hidden="true" />
-
       <div className={styles.inner}>
-        <h2 id="connect-title" className={styles.connectTitle} style={delay(0)}>
-          <span className={styles.titleLine1}>حالا که تا این‌جا اومدی —</span>
-          <span className={styles.titleLine2}>بیا وصل شیم.</span>
-        </h2>
+        <div className={styles.connectDivider} aria-hidden="true" />
 
-        <p className={styles.connectSub} style={delay(140)}>
-          ایمیل بزن، issue باز کن، فکر بفرست.
+        <p className={styles.connectLead} style={delay(0)}>
+          <span className={styles.leadNote}>
+            اگه جواب یکی از اون سوال‌ها رو داری —
+          </span>
+          <span className={styles.leadAction}>همون یکی رو برام بنویس.</span>
         </p>
 
-        <div className={styles.connectGrid}>
-          {CONTACTS.map((c, i) => (
+        <a
+          href={CTA_BUTTON.href}
+          className={styles.ctaBig}
+          style={delay(120)}
+        >
+          <span className={styles.ctaBigLabel}>{CTA_BUTTON.label}</span>
+          <span className={styles.ctaBigArrow} aria-hidden="true">→</span>
+          <span className={styles.ctaBigHint}>immediate response zone</span>
+        </a>
+
+        <div className={styles.connectDividerSmall} aria-hidden="true">
+          <span className={styles.dividerText}>or stalk me here</span>
+        </div>
+
+        <div className={styles.socialGrid} style={delay(240)}>
+          {CONTACTS.map((c) => (
             <a
               key={c.label}
               href={c.href}
-              className={styles.connectCard}
-              style={delay(260 + i * 100)}
+              className={styles.socialChip}
               {...(c.external
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}
             >
-              <span className={styles.connectIcon} aria-hidden="true">
-                {c.icon}
-              </span>
-              <span className={styles.connectLabel}>{c.label}</span>
-              <span className={styles.connectValue}>{c.value}</span>
-              <span className={styles.connectArrow} aria-hidden="true">↗</span>
+              <span className={styles.chipIcon}>{c.icon}</span>
+              <span className={styles.chipLabel}>{c.label}</span>
             </a>
           ))}
         </div>
-
-        </div>
+      </div>
     </section>
   );
 }

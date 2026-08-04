@@ -1,11 +1,28 @@
 /* =========================================================
    WhereIGo — §۴ «کجا میرم» (Conjunction)
-   accent: var(--accent-bright) — bright gold
+   accent: var(--accent-bright)
    ---------------------------------------------------------
-   Horizontal timeline that draws RTL on reveal.
-   On narrow screens collapses to a vertical rail drawing
-   top-to-bottom.
+   Redesign: the footnote claims each waypoint fills a circle,
+   so the dots ARE circles that fill — a conic-gradient progress
+   ring (100% → 66% → 33% → 0%). The old shrink-and-dash read as
+   "less important" rather than "less complete".
+
+   Rail is a single gradient line that fades toward the goal end
+   (the future is less certain) and draws RTL once. No traveling
+   beam, no spring pop — one calm staggered rise.
+
+   Collapses to a vertical rail below 860px.
    ========================================================= */
+
+/* Animatable custom property for the ring fill. Namespaced to
+   avoid collisions with other modules. Browsers without
+   @property still apply the value — it just snaps instead of
+   animating, which degrades cleanly. */
+@property --wig-fill {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
 
 .whereIGo {
   position: relative;
@@ -19,13 +36,14 @@
 }
 
 /* ===================== Header ===================== */
+
 .sectionHeader {
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  margin-bottom: clamp(3rem, 6vw, 4.5rem);
 }
 
 .kicker {
@@ -43,23 +61,22 @@
   opacity: 0;
   transform: translateY(12px);
   transition:
-    opacity 0.8s var(--ease-out),
-    transform 0.8s var(--ease-out);
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
   transition-delay: var(--reveal-delay, 0s);
-  will-change: opacity, transform;
+}
+
+.kickerDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  opacity: 0.8;
 }
 
 .whereIGo[data-revealed="true"] .kicker {
   opacity: 1;
   transform: translateY(0);
-}
-
-.kickerDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-bright);
-  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .title {
@@ -77,7 +94,6 @@
     opacity 0.8s var(--ease-out),
     transform 0.8s var(--ease-out);
   transition-delay: var(--reveal-delay, 0s);
-  will-change: opacity, transform;
 }
 
 .whereIGo[data-revealed="true"] .title {
@@ -85,72 +101,69 @@
   transform: translateY(0);
 }
 
-/* ===================== Timeline wrap ===================== */
+/* ===================== Timeline shell ===================== */
+
 .timelineWrap {
   position: relative;
-  padding: 2rem 0;
+  --wig-gap: 1rem;
 }
 
-/* ===================== Rail (horizontal on desktop) ===================== */
+/* Track: spans ring-center to ring-center. A 4-column grid puts
+   the outer centers at W/8 from each edge MINUS 3*gap/8, since
+   the gaps shrink each column. Hence the calc — using a bare
+   12.5% leaves the line short by exactly 3*gap/8. */
 .rail {
   position: absolute;
-  top: 2.5rem; /* aligned with the dot row */
-  left: 0;
-  right: 0;
-  height: 2px;
+  top: 13px; /* ring radius — aligns line with ring centers */
+  right: calc(12.5% - var(--wig-gap) * 3 / 8);
+  left: calc(12.5% - var(--wig-gap) * 3 / 8);
+  height: 1px;
   background: var(--line);
-  /* RTL: the fill grows from the right edge */
-  direction: rtl;
-  pointer-events: none;
+  overflow: hidden;
 }
 
+/* Draws from the "الان" end (right, RTL) outward. Fades toward
+   the goal so the far end reads as unresolved. */
 .railFill {
   position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 0%;
+  inset: 0;
   background: linear-gradient(
     270deg,
     var(--accent-bright) 0%,
-    var(--accent) 60%,
-    var(--accent-2) 100%
+    var(--accent) 45%,
+    transparent 100%
   );
-  box-shadow: 0 0 12px var(--accent-glow);
-  transition: width 1.6s var(--ease-out);
-  transition-delay: 0.2s;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 1.4s var(--ease-out-expo);
+  transition-delay: 260ms;
 }
 
 .whereIGo[data-revealed="true"] .railFill {
-  width: 100%;
+  transform: scaleX(1);
 }
 
-/* ===================== Timeline list ===================== */
 .timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 var(--wig-gap);
+  align-items: stretch;
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  position: relative;
 }
 
 .timelineItem {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: 1rem;
-  padding-top: 2.5rem; /* leave room for the dot above */
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(18px);
   transition:
-    opacity 0.8s var(--ease-out),
-    transform 0.8s var(--ease-out);
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
   transition-delay: var(--reveal-delay, 0s);
-  will-change: opacity, transform;
 }
 
 .whereIGo[data-revealed="true"] .timelineItem {
@@ -158,50 +171,109 @@
   transform: translateY(0);
 }
 
-/* ===================== Dot ===================== */
+/* ===================== Progress ring ===================== */
+
 .timelineDot {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: none;
+  /* Empty track behind the fill. */
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+/* The filled arc. Masked into a ring so the section background
+   (and the ambient light-line behind it) shows through. */
+.timelineDot::before {
+  content: "";
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%) scale(0);
-  width: 14px;
-  height: 14px;
+  inset: 0;
+  border-radius: 50%;
+  --wig-fill: 0;
+  background: conic-gradient(
+    var(--accent-bright) calc(var(--wig-fill) * 1turn),
+    transparent 0
+  );
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 2px),
+    #000 calc(100% - 2px)
+  );
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 2px),
+    #000 calc(100% - 2px)
+  );
+  transition: --wig-fill 1.2s var(--ease-out);
+  transition-delay: calc(var(--reveal-delay, 0s) + 200ms);
+}
+
+.whereIGo[data-revealed="true"] .timelineItem[data-step="0"] .timelineDot::before {
+  --wig-fill: 1;
+}
+.whereIGo[data-revealed="true"] .timelineItem[data-step="1"] .timelineDot::before {
+  --wig-fill: 0.66;
+}
+.whereIGo[data-revealed="true"] .timelineItem[data-step="2"] .timelineDot::before {
+  --wig-fill: 0.33;
+}
+/* step 3 ("هدف") stays at 0 — the empty circle the footnote names. */
+
+.timelineItem[data-step="3"] .timelineDot {
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  border: 1px dashed var(--accent);
+}
+
+/* Center disc — "you are here". Only on الان. */
+.dotCore {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--accent-bright);
-  box-shadow:
-    0 0 0 5px var(--accent-soft),
-    0 0 24px var(--accent-glow);
-  opacity: 0;
+  transform: scale(0);
+  transition: transform 0.5s var(--ease-out);
+  transition-delay: calc(var(--reveal-delay, 0s) + 500ms);
+}
+
+.whereIGo[data-revealed="true"] .timelineItem[data-step="0"] .dotCore {
+  transform: scale(1);
+}
+
+/* ===================== Card ===================== */
+
+.timelineCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  height: 100%;
+  margin-top: 1.4rem;
+  padding: 1.4rem 1rem;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(245, 240, 228, 0.02), transparent);
+  border: 1px solid transparent;
   transition:
-    opacity 0.6s var(--ease-spring, var(--ease-out)),
-    transform 0.7s var(--ease-spring, var(--ease-out));
-  transition-delay: var(--reveal-delay, 0s);
+    transform 0.45s var(--ease-out),
+    border-color 0.35s var(--ease-out),
+    background 0.35s var(--ease-out);
 }
 
-.whereIGo[data-revealed="true"] .timelineDot {
-  opacity: 1;
-  transform: translateX(-50%) scale(1);
+.timelineItem:hover .timelineCard,
+.timelineItem:focus-within .timelineCard {
+  transform: translateY(-4px);
+  border-color: var(--line);
+  background: rgba(245, 240, 228, 0.04);
 }
 
-.timelineItem:hover .timelineDot,
-.timelineItem:focus-within .timelineDot {
-  transform: translateX(-50%) scale(1.25);
-  box-shadow:
-    0 0 0 8px var(--accent-soft),
-    0 0 32px var(--accent-glow);
-}
-
-/* ===================== Content ===================== */
 .timelineContent {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  transition: transform 0.4s var(--ease-out);
-}
-
-.timelineItem:hover .timelineContent,
-.timelineItem:focus-within .timelineContent {
-  transform: translateY(-3px);
+  text-align: center;
 }
 
 .timelineYear {
@@ -213,105 +285,133 @@
   border: 1px solid var(--accent-soft);
   border-radius: 999px;
   align-self: center;
-  background: var(--accent-soft);
 }
 
 .timelineTitle {
   font-family: var(--font-display, var(--font-vazirmatn)), serif;
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: 600;
+  line-height: 1.4;
   color: var(--text);
   margin: 0;
-  line-height: 1.4;
 }
 
+/* --ink-raw, not --muted: keeps the 5.75:1 contrast floor. */
 .timelineDesc {
-  font-size: 0.85rem;
-  line-height: 1.7;
-  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--ink-raw);
   margin: 0;
 }
 
-/* ===================== Responsive (Task 39-B) ===================== */
-/* Unified breakpoints: 1024 (md), 768 (sm→md, vertical rail), 480 (xs).
-   At ≤768 the horizontal 4-up timeline collapses to a vertical rail
-   so each waypoint gets a full row. */
-@media (max-width: 1024px) {
-  .timeline {
-    gap: 0.75rem;
-  }
-  .timelineTitle {
-    font-size: 1rem;
-  }
-  .timelineDesc {
-    font-size: 0.82rem;
-  }
+.timelineFootnote {
+  margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+  max-width: 46ch;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--ink-raw);
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
 }
 
-@media (max-width: 768px) {
+.whereIGo[data-revealed="true"] .timelineFootnote {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===================== Vertical (≤860px) =====================
+   Switches straight from 4-up to vertical — a 2×2 grid would
+   leave the rail connecting nothing.
+
+   The shared rail is dropped here: it can only span a fixed
+   inset, but card heights vary, so it overshot the last ring.
+   Each item instead draws its own segment down to the NEXT
+   ring, which is correct for any card height. */
+
+@media (max-width: 860px) {
   .whereIGo {
-    padding: clamp(2.5rem, 7vw, 4rem) 0;
+    padding: clamp(3rem, 8vw, 5rem) 0;
   }
 
   .rail {
-    top: 0;
-    bottom: 0;
-    left: 1.25rem;
-    right: auto;
-    width: 1px;
-    height: auto;
-    direction: ltr;
-  }
-  .railFill {
-    top: 0;
-    right: auto;
-    left: 0;
-    width: 100% !important;
-    height: 0%;
-    background: linear-gradient(
-      180deg,
-      var(--accent-bright) 0%,
-      var(--accent) 60%,
-      var(--accent-2) 100%
-    );
-    transition: height 1.6s var(--ease-out);
-  }
-  .whereIGo[data-revealed="true"] .railFill {
-    height: 100%;
-    width: 100% !important;
+    display: none;
   }
 
   .timeline {
+    --wig-vgap: 1.75rem;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding-inline-start: 3rem;
+    gap: var(--wig-vgap) 0;
   }
 
   .timelineItem {
-    align-items: flex-start;
-    text-align: start;
-    padding-top: 0;
-    padding-bottom: 1.5rem;
-    transform: translateX(20px);
-  }
-  .whereIGo[data-revealed="true"] .timelineItem {
-    transform: translateX(0);
+    position: relative;
+    display: grid;
+    /* auto column first = inline-start = right in RTL, so the
+       rail reads on the side the text starts from. */
+    grid-template-columns: auto 1fr;
+    align-items: start;
   }
 
-  /* Smaller dot on the vertical rail so it doesn't dominate. */
+  /* Connector: from this ring's center to the next ring's center.
+     100% + gap tall, so it lands exactly on the next center
+     regardless of how tall this card is. */
+  .timelineItem:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    top: 13px;
+    bottom: calc(-1 * (var(--wig-vgap) + 13px));
+    inset-inline-start: calc(13px - 0.5px);
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent-bright), var(--accent));
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: transform 0.7s var(--ease-out);
+    transition-delay: calc(var(--reveal-delay, 0s) + 220ms);
+  }
+
+  .whereIGo[data-revealed="true"] .timelineItem:not(:last-child)::before {
+    transform: scaleY(1);
+  }
+
+  /* Echo the ring fade — later segments sit further in the future. */
+  .timelineItem[data-step="1"]::before {
+    opacity: 0.7;
+  }
+  .timelineItem[data-step="2"]::before {
+    opacity: 0.45;
+  }
+
   .timelineDot {
-    top: 0.3rem;
-    left: -1.85rem;
-    width: 10px;
-    height: 10px;
-    transform: translateX(0) scale(0);
+    grid-column: 1;
+    position: relative;
+    z-index: 1;
   }
-  .whereIGo[data-revealed="true"] .timelineDot {
-    transform: translateX(0) scale(1);
+
+  .timelineCard {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 0;
+    padding: 0 0 0.25rem;
+    padding-inline-start: 1rem;
+    align-items: flex-start;
+    background: none;
   }
-  .timelineItem:hover .timelineDot,
-  .timelineItem:focus-within .timelineDot {
-    transform: translateX(0) scale(1.2);
+
+  .timelineItem:hover .timelineCard,
+  .timelineItem:focus-within .timelineCard {
+    transform: none;
+    border-color: transparent;
+    background: none;
+  }
+
+  .timelineContent {
+    text-align: start;
+    align-items: flex-start;
   }
 
   .timelineYear {
@@ -326,7 +426,6 @@
   .title {
     font-size: clamp(1.4rem, 5vw, 1.8rem);
   }
-  /* Year + title share one row to save vertical space. */
   .timelineContent {
     gap: 0.35rem;
   }
@@ -335,41 +434,37 @@
     padding: 0.15rem 0.5rem;
   }
   .timelineTitle {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
   .timelineDesc {
-    font-size: 0.8rem;
-    line-height: 1.65;
+    font-size: 0.88rem;
   }
 }
 
 /* ===================== Reduced motion ===================== */
+
 @media (prefers-reduced-motion: reduce) {
   .kicker,
   .title,
   .timelineItem,
-  .timelineDot {
+  .timelineFootnote {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
   }
-  .timelineDot {
-    transform: translateX(-50%) scale(1) !important;
-  }
-  .railFill {
-    transition: none !important;
-    width: 100% !important;
-    height: 100% !important;
-  }
-}
 
-/* Reduced motion on mobile (vertical rail): the dot loses its
-   translateX(-50%) and the items lose their entry offset. */
-@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
-  .timelineDot {
-    transform: translateX(0) scale(1) !important;
-  }
-  .timelineItem {
+  .railFill {
     transform: none !important;
+    transition: none !important;
+  }
+
+  .timelineDot::before,
+  .dotCore {
+    transition: none !important;
+  }
+
+  .timelineItem:hover .timelineCard,
+  .timelineItem:focus-within .timelineCard {
+    transform: none;
   }
 }

@@ -53,24 +53,7 @@ const RESETTING_PHASE_MS = 1200;
 // a full reset (no trace dot, no lingering). Reduced-motion = instant.
 const ABORTING_PHASE_MS = 600;
 
-/* =========================================================
- * Loop-8 (animation 4): magnetic pull constants.
- *
- * When the mouse is within `MAGNETIC_RADIUS` px of a chip's center,
- * the chip translates toward the cursor by up to `MAGNETIC_MAX_PULL` px.
- * The pull scales linearly from 0 (at radius edge) to MAX (at center).
- *
- * The offset is written via direct DOM manipulation (no React state) to
- * avoid re-renders: `chip.style.setProperty("--mx", ...)` and `"--my"`.
- * Worker B's CSS reads them via `translate: var(--mx, 0px) var(--my, 0px);`
- * which is independent of the existing `transform: rotate(...) ...` drift
- * (CSS `translate` and `transform` are separate properties — no conflict).
- *
- * Only active in `data-state="raw"`, on desktop layouts, when the user
- * hasn't requested reduced motion.
- * ========================================================= */
-const MAGNETIC_RADIUS = 60; // px — influence radius around chip center
-const MAGNETIC_MAX_PULL = 3; // px — maximum offset toward cursor
+/* Eyefish lens effect — see mousemove handler below. */
 // Ink-spread delay: ink spread runs 150ms + 80ms fade = 230ms before
 // the type-write starts, so the ink line "writes" the path the type-write
 // then "fills". See useTypewriter's `startDelay` parameter.
@@ -103,6 +86,7 @@ export default function RawThought({
   resetSignal,
   entered,
   scrollRevealed,
+  onRegister,
 }: RawThoughtProps) {
   const {
     id,
@@ -226,63 +210,6 @@ export default function RawThought({
     return () => clearTimeout(t);
   }, [state, reducedMotion]);
 
-  // --- Loop-8 (animation 4): magnetic pull ---------------------------
-  // Listens to `mousemove` on `window` (one listener per chip — cheap
-  // because getBoundingClientRect is fast and only 6 chips exist). Writes
-  // `--mx` / `--my` CSS vars directly on the chip element (no React state,
-  // no re-render). Worker B's CSS reads them via `translate: var(--mx, 0px) var(--my, 0px);`.
-  //
-  // Disabled when:
-  //  - reducedMotion is true (a11y)
-  //  - layout === "mobile" (touch — no mousemove)
-  //  - state !== "raw" (chip is being interacted with — don't fight CSS state transitions)
-  //
-  // The effect's deps include `state` so the listener re-binds on each
-  // state change. The cleanup resets `--mx`/`--my` to 0 so no leftover
-  // pull persists when the chip transitions out of raw.
-  useEffect(() => {
-    if (reducedMotion || layout === "mobile") return;
-    const btn = buttonRef.current;
-    if (!btn) return;
-
-    // If not in raw state, ensure magnetic pull is reset and don't bind.
-    if (state !== "raw") {
-      btn.style.setProperty("--mx", "0px");
-      btn.style.setProperty("--my", "0px");
-      return;
-    }
-
-    const handleMouseMove = (e: MouseEvent): void => {
-      const rect = btn.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const dx = e.clientX - cx;
-      const dy = e.clientY - cy;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < MAGNETIC_RADIUS) {
-        // Strength falls off linearly from MAX at center → 0 at radius edge.
-        const strength = (1 - dist / MAGNETIC_RADIUS) * MAGNETIC_MAX_PULL;
-        // Normalized direction (avoid divide-by-zero at exact center).
-        const inv = dist > 0.001 ? 1 / dist : 0;
-        const mx = dx * inv * strength;
-        const my = dy * inv * strength;
-        btn.style.setProperty("--mx", `${mx}px`);
-        btn.style.setProperty("--my", `${my}px`);
-      } else {
-        btn.style.setProperty("--mx", "0px");
-        btn.style.setProperty("--my", "0px");
-      }
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      // Reset on cleanup so no leftover pull persists across state transitions.
-      btn.style.setProperty("--mx", "0px");
-      btn.style.setProperty("--my", "0px");
-    };
-  }, [reducedMotion, layout, state]);
-
   // --- Handlers ------------------------------------------------------
 
   const handleActivate = useCallback(() => {
@@ -298,13 +225,6 @@ export default function RawThought({
       document.activeElement === buttonRef.current
     ) {
       return;
-    }
-    // Loop-8 (animation 4): reset magnetic pull when the cursor leaves
-    // the chip. The CSS transition on `translate` smoothly animates the
-    // chip back to its anchor.
-    if (buttonRef.current && !reducedMotion && layout !== "mobile") {
-      buttonRef.current.style.setProperty("--mx", "0px");
-      buttonRef.current.style.setProperty("--my", "0px");
     }
     onDeactivate();
   }, [onDeactivate, reducedMotion, layout]);
@@ -357,10 +277,11 @@ export default function RawThought({
   //    paint (no FOUC where the chip is shifted before the first mousemove).
   const chipStyle: React.CSSProperties = {
     "--rot": `${rotation}deg`,
-    "--mx": "0px",
-    "--my": "0px",
+    "--fish-scale": "1",
+    "--fish-blur": "0px",
+    "--fish-opacity": "0.88",
     ...positionStyle,
-  } as React.CSSProperties & { "--rot": string; "--mx": string; "--my": string };
+  } as React.CSSProperties & { "--rot": string; "--fish-scale": string; "--fish-blur": string; "--fish-opacity": string };
 
   const isExpanded =
     state === "refined" || state === "trace" || state === "aborting";
@@ -375,7 +296,10 @@ export default function RawThought({
 
   return (
     <button
-      ref={buttonRef}
+      ref={(el) => {
+        buttonRef.current = el;
+        onRegister?.(el);
+      }}
       type="button"
       className={styles.thoughtChip}
       data-id={id}

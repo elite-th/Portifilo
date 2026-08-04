@@ -210,9 +210,9 @@
 .card:hover,
 .card:focus-visible {
   border-color: var(--accent);
-  background-color: rgba(212, 175, 106, 0.06);
+  background-color: rgba(var(--gold-rgb) / 0.06);
   box-shadow:
-    0 14px 36px rgba(212, 175, 106, 0.18),
+    0 14px 36px rgba(var(--gold-rgb) / 0.18),
     0 0 0 1px var(--accent-soft) inset;
   transform: translateY(-4px);
   outline: none;
@@ -316,7 +316,7 @@
 @media (hover: none) {
   .card:active {
     border-color: var(--accent);
-    background-color: rgba(212, 175, 106, 0.06);
+    background-color: rgba(var(--gold-rgb) / 0.06);
     transform: scale(0.99);
   }
   .card:active .icon {

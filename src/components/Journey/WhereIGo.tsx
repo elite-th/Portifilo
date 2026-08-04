@@ -6,14 +6,16 @@ import { useScrollReveal } from "./useScrollReveal";
 
 /* =========================================================
  * WhereIGo — §۴ «کجا میرم»  (Conjunction)
- * accent: var(--accent-bright) — bright gold
+ * accent: var(--accent-bright) — bright verdigris
  * ---------------------------------------------------------
- * Future-facing timeline with four waypoints: now → 1404 → later
- * → ∞. The horizontal line draws from right-to-left (RTL) when
- * the section reveals. Dots pop with spring easing + glow halo.
- * On hover, the halo expands and the content shifts slightly.
- * On narrow screens, the timeline collapses to a vertical rail
- * that draws top-to-bottom.
+ * Future-facing timeline with four waypoints. Labels are
+ * RELATIVE ("امسال", "سال بعد") — never hard years, so the
+ * section can't expire the way a literal "۱۴۰۴" did.
+ *
+ * Horizontal rail draws RTL on reveal; dots are progress rings
+ * filled to a fraction (100% → 66% → 33% → 0%) matching the
+ * footnote's claim. Cards dim via border/background only;
+ * body text keeps a readable contrast floor.
  * ========================================================= */
 
 const delay = (ms: number): CSSProperties =>
@@ -33,16 +35,16 @@ const WAYPOINTS: Waypoint[] = [
       "هر چی ساختم، اول مشکل خودم بوده. اگه برای خودم کار نکنه، برای کسی هم کار نمی‌کنه.",
   },
   {
-    year: "۱۴۰۴",
-    title: "اولین ریلیز عمومی",
+    year: "امسال",
+    title: "چیزی که بشه نشون داد",
     desc:
-      "تا اون موقع Taskino باید جایی برسه که بشه به بقیه نشونش داد.",
+      "Taskino باید از حالت «فقط برای من کار می‌کنه» در بیاد و برسه به جایی که بشه دست کس دیگه‌ای داد.",
   },
   {
-    year: "بعدش",
-    title: "مستند کردن مسیر",
+    year: "دو سال بعد",
+    title: "درس، و مستند کردن مسیر",
     desc:
-      "یادداشت‌های پراکنده رو می‌شه مرتب کرد و تبدیلشون کرد به یه راهنما برای بقیه.",
+      "دو سال آینده بیشتر درس می‌خونم تا کد. ولی یادداشت‌های پراکنده رو می‌شه مرتب کرد و تبدیلشون کرد به یه راهنما برای بقیه.",
   },
   {
     year: "هدف",
@@ -79,7 +81,7 @@ export default function WhereIGo() {
         </header>
 
         <div className={styles.timelineWrap}>
-          {/* Horizontal rail that draws RTL on reveal (vertical on mobile) */}
+          {/* Rail that draws RTL on reveal (vertical on mobile). */}
           <div className={styles.rail} aria-hidden="true">
             <div className={styles.railFill} />
           </div>
@@ -89,19 +91,28 @@ export default function WhereIGo() {
               <li
                 key={wp.year}
                 className={styles.timelineItem}
+                data-step={i}
                 style={delay(200 + i * 140)}
                 role="listitem"
               >
-                <span className={styles.timelineDot} aria-hidden="true" />
-                <div className={styles.timelineContent}>
-                  <span className={styles.timelineYear}>{wp.year}</span>
-                  <h3 className={styles.timelineTitle}>{wp.title}</h3>
-                  <p className={styles.timelineDesc}>{wp.desc}</p>
+                <span className={styles.timelineDot} aria-hidden="true">
+                  <span className={styles.dotCore} />
+                </span>
+                <div className={styles.timelineCard}>
+                  <div className={styles.timelineContent}>
+                    <span className={styles.timelineYear}>{wp.year}</span>
+                    <h3 className={styles.timelineTitle}>{wp.title}</h3>
+                    <p className={styles.timelineDesc}>{wp.desc}</p>
+                  </div>
                 </div>
               </li>
             ))}
           </ol>
         </div>
+
+        <p className={styles.timelineFootnote} style={delay(900)}>
+          دایره‌ی «الان» پره، دایره‌ی «هدف» خالیه. کار همینه — پر کردنشون.
+        </p>
       </div>
     </section>
   );

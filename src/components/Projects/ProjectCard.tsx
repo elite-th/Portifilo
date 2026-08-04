@@ -9,7 +9,7 @@ export interface ProjectCardData {
   project: string;
   tags: string[];
   href?: string;
-  /** شماره‌ی کارت در grid — برای crystal gradient ID و index badge */
+  /** شماره‌ی نمونه در آزمایشگاه — برای SPEC ID و stagger */
   index?: number;
 }
 
@@ -25,7 +25,8 @@ export default function ProjectCard({
     threshold: 0.12,
     rootMargin: "0px 0px -10% 0px",
   });
-  const gradId = `crystal-grad-${index}`;
+  const gradId = `specimen-grad-${index}`;
+  const specId = `SPEC-${String(index + 1).padStart(2, "0")}`;
 
   return (
     <article
@@ -35,91 +36,97 @@ export default function ProjectCard({
       data-revealed={revealed ? "true" : undefined}
       style={{ "--card-index": index } as React.CSSProperties}
     >
-      {/* Facet glow (top edge) */}
-      <span className={styles.facetTop} aria-hidden="true" />
+      {/* قابِ ابزار — گوشه‌های نشانه‌گیری */}
+      <span className={styles.frame} aria-hidden="true" />
+      {/* پرتوی اسکن — یک بار روی hover عبور می‌کند */}
+      <span className={styles.scanline} aria-hidden="true" />
 
-      {/* Crystal seed — hexagon SVG که نماینده‌ی پروژه است */}
-      <div className={styles.crystalSeed} aria-hidden="true">
-        <svg viewBox="0 0 60 60" width="52" height="52">
-          <defs>
-            <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="var(--card-accent-bright, #e6c585)" />
-              <stop offset="100%" stopColor="var(--card-accent-deep, #b08d4a)" />
-            </linearGradient>
-          </defs>
-          <polygon
-            points="30,4 54,18 54,42 30,56 6,42 6,18"
-            fill="none"
-            stroke={`url(#${gradId})`}
-            strokeWidth="1.5"
-            className={styles.crystalShape}
-          />
-          <polygon
-            points="30,12 46,21 46,39 30,48 14,39 14,21"
-            fill={`url(#${gradId})`}
-            opacity="0.16"
-          />
-          {/* facet lines */}
-          <line x1="30" y1="4" x2="30" y2="12" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
-          <line x1="54" y1="18" x2="46" y2="21" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
-          <line x1="54" y1="42" x2="46" y2="39" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
-          <line x1="30" y1="56" x2="30" y2="48" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
-          <line x1="6" y1="42" x2="14" y2="39" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
-          <line x1="6" y1="18" x2="14" y2="21" stroke={`url(#${gradId})`} strokeWidth="1" opacity="0.6" />
-        </svg>
+      {/* --- نوارِ ابزار --- */}
+      <div className={styles.instrument}>
+        <span className={styles.specId}>{specId}</span>
+        <span className={styles.readout}>
+          <span className={styles.led} aria-hidden="true" />
+          {tags.length.toLocaleString("fa-IR")} شاخص
+        </span>
       </div>
 
       <header className={styles.cardHeader}>
-        <h3 className={styles.projectName}>{project}</h3>
-        <span className={styles.projectIndex} aria-hidden="true">
-          {String(index + 1).padStart(2, "0")}
-        </span>
-      </header>
-
-      <div className={styles.transformation}>
-        <div className={styles.beforeAfter}>
-          <span className={styles.label}>
-            <span className={styles.labelIcon} aria-hidden="true">⬡</span>
-            اندیشه‌ی ریشه
-          </span>
-          <p className={styles.rootThought}>{rootThought}</p>
-        </div>
-
-        <div className={styles.arrow} aria-hidden="true">
-          <svg width="20" height="40" viewBox="0 0 20 40" fill="none">
-            <line
-              x1="10"
-              y1="2"
-              x2="10"
-              y2="32"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeDasharray="3 3"
-            />
-            <polyline
-              points="4,28 10,36 16,28"
-              stroke="currentColor"
-              strokeWidth="1.5"
+        {/* نمونه — بلورِ زیرِ مشاهده */}
+        <span className={styles.specimen} aria-hidden="true">
+          <svg viewBox="0 0 60 60">
+            <defs>
+              <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="var(--card-accent-bright, #e6c585)" />
+                <stop offset="100%" stopColor="var(--card-accent-deep, #b08d4a)" />
+              </linearGradient>
+            </defs>
+            {/* حلقه‌ی هدف */}
+            <circle
+              className={styles.specimenRing}
+              cx="30"
+              cy="30"
+              r="27"
               fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              stroke="var(--line)"
+              strokeWidth="1"
+              strokeDasharray="3 5"
+            />
+            {/* بدنه‌ی بلور */}
+            <polygon
+              className={styles.specimenBody}
+              points="30,6 51,18 51,42 30,54 9,42 9,18"
+              fill={`url(#${gradId})`}
+              fillOpacity="0.12"
+              stroke={`url(#${gradId})`}
+              strokeWidth="1.4"
+            />
+            {/* وجه‌ها */}
+            <g
+              className={styles.specimenFacets}
+              stroke={`url(#${gradId})`}
+              strokeWidth="0.9"
+              opacity="0.65"
+            >
+              <path d="M30 6 V54" />
+              <path d="M9 18 L51 42" />
+              <path d="M51 18 L9 42" />
+            </g>
+            <circle
+              className={styles.specimenCore}
+              cx="30"
+              cy="30"
+              r="3"
+              fill="var(--card-accent-bright, #e6c585)"
             />
           </svg>
+        </span>
+
+        <h3 className={styles.projectName}>{project}</h3>
+      </header>
+
+      {/* --- ثبتِ آزمایش --- */}
+      <div className={styles.log}>
+        <div className={styles.entry} data-kind="hypothesis">
+          <span className={styles.entryLabel}>فرضیه</span>
+          <p className={styles.hypothesis}>{rootThought}</p>
         </div>
 
-        <div className={styles.beforeAfter}>
-          <span className={styles.label}>
-            <span className={styles.labelIcon} aria-hidden="true">◇</span>
-            ساختارِ ساخته‌شده
-          </span>
-          <p className={styles.builtStructure}>{builtStructure}</p>
+        {/* واکنش — pip یک بار مسیر را طی می‌کند */}
+        <div className={styles.reaction} aria-hidden="true">
+          <span className={styles.reactionTrack} />
+          <span className={styles.reactionPip} />
+        </div>
+
+        <div className={styles.entry} data-kind="observation">
+          <span className={styles.entryLabel}>مشاهده</span>
+          <p className={styles.observation}>{builtStructure}</p>
         </div>
       </div>
 
       <footer className={styles.cardFooter}>
         <div className={styles.tags}>
-          {tags.map((tag, i) => (
-            <span key={i} className={styles.tag}>
+          {tags.map((tag) => (
+            <span key={tag} className={styles.tag}>
               {tag}
             </span>
           ))}

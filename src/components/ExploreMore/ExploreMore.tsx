@@ -38,7 +38,7 @@ const CARDS: ExploreCard[] = [
   {
     title: "همکاری با من",
     desc: "چطور باهام کار کنی، بدونِ حدس‌زدن.",
-    href: "#collab",
+    href: "#connect",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -90,7 +90,7 @@ const CARDS: ExploreCard[] = [
   {
     title: "خلوتگاه",
     desc: "شعر و نوشته. بدونِ توضیح.",
-    href: "#sanctum",
+    href: "#archive",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -139,7 +139,7 @@ export default function ExploreMore() {
         <div className={styles.grid}>
           {CARDS.map((card, i) => (
             <a
-              key={card.href}
+              key={card.title}
               href={card.href}
               className={styles.card}
               style={delay(200 + i * 120)}

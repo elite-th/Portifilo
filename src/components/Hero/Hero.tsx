@@ -33,13 +33,13 @@ export default function Hero() {
           طاها حسینی
         </a>
         <nav className={styles.nav} aria-label="ناوبری اصلی">
-          <a href="#lab" className={styles.navLink}>
+          <a href="#projects" className={styles.navLink}>
             آزمایشگاه
           </a>
-          <a href="#notes" className={styles.navLink}>
+          <a href="#archive" className={styles.navLink}>
             یادداشت‌ها
           </a>
-          <a href="#path" className={styles.navLink}>
+          <a href="#whoami" className={styles.navLink}>
             مسیر فکری
           </a>
         </nav>

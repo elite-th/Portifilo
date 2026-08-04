@@ -3,7 +3,6 @@
 import { type CSSProperties } from "react";
 import styles from "./WhereIFrom.module.css";
 import { useScrollReveal } from "./useScrollReveal";
-import Iran3DMap from "./Iran3DMap";
 
 const delay = (ms: number): CSSProperties =>
   ({ "--reveal-delay": `${ms}ms` }) as CSSProperties;
@@ -23,7 +22,15 @@ export default function WhereIFrom() {
       data-journey-section="3"
       aria-labelledby="from-title"
     >
-      <Iran3DMap />
+      {/* بک‌گراند طلایی ایران */}
+      <div className={styles.mapBg} aria-hidden="true">
+        <img
+          src="/gold-iran.svg"
+          alt=""
+          className={styles.mapImg}
+          loading="lazy"
+        />
+      </div>
 
       <div className={styles.inner}>
         <span className={styles.kicker} style={delay(0)}>

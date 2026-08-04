@@ -1,0 +1,350 @@
+/* =========================================================
+   OpenQuestions — §۵ «چیزهایی که هنوز نمی‌دونم» (Fermentation)
+   accent: var(--highlight) — ochre / gold
+   ---------------------------------------------------------
+   Deliberate visual break from its siblings: ochre instead of
+   verdigris, a single reading column instead of a card grid,
+   hairline rules instead of card borders. The section should
+   feel like the visitor stepped out of a portfolio and into a
+   notebook — it lands right before the CTA, where that shift
+   does the most work.
+   ========================================================= */
+
+.openQuestions {
+  position: relative;
+  padding: clamp(5rem, 10vw, 8rem) 0;
+  color: var(--text);
+}
+
+.inner {
+  max-width: 720px; /* narrower than siblings — this is a reading column */
+  margin: 0 auto;
+}
+
+/* ===================== Header ===================== */
+.sectionHeader {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.14em;
+  color: var(--highlight);
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.openQuestions[data-revealed="true"] .kicker {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.kickerDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--highlight);
+  box-shadow: 0 0 10px var(--highlight-soft);
+  animation: kickerDotPulse 3s ease-in-out infinite;
+}
+
+@keyframes kickerDotPulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+.title {
+  margin: 0.8rem 0 0;
+  font-family: var(--font-display, var(--font-vazirmatn)), serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-bright);
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.openQuestions[data-revealed="true"] .title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lead {
+  margin: 0.9rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--ink-raw);
+  max-width: 56ch;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.openQuestions[data-revealed="true"] .lead {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===================== List ===================== */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.item {
+  position: relative;
+  padding: 1.4rem 0 1.5rem 0;
+  border-bottom: 1px solid var(--line);
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out),
+    border-color 0.4s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.openQuestions[data-revealed="true"] .item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.item:hover {
+  border-bottom-color: var(--highlight-soft);
+}
+
+/* ===================== Item head (marker · date · status) ===================== */
+.itemHead {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+
+.marker {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--highlight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  transition: transform 0.4s var(--ease-out);
+}
+
+.item:hover .marker {
+  transform: scale(1.15);
+}
+
+.markerCore {
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--highlight);
+  transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out);
+}
+
+/* Status encodes fill — but never *only* colour: the text label
+   next to it carries the same information (a11y). */
+.item[data-status="thinking"] .markerCore {
+  width: 6px;
+  height: 6px;
+  opacity: 0.7;
+  animation: markerPulse 3s ease-in-out infinite;
+}
+
+.item[data-status="answered"] .marker {
+  border-color: var(--highlight);
+}
+
+.item[data-status="answered"] .markerCore {
+  width: 8px;
+  height: 8px;
+  box-shadow: 0 0 8px var(--highlight-soft);
+}
+
+@keyframes markerPulse {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 1; }
+}
+
+.date {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-raw);
+}
+
+.status {
+  margin-inline-start: auto;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--ink-raw);
+  white-space: nowrap;
+}
+
+.item[data-status="thinking"] .status {
+  color: var(--highlight);
+  border-color: var(--highlight-soft);
+  background: var(--highlight-soft);
+}
+
+.item[data-status="answered"] .status {
+  color: var(--accent-bright);
+  border-color: var(--accent-soft);
+  background: var(--accent-soft);
+}
+
+/* ===================== Question text ===================== */
+.question {
+  margin: 0;
+  font-family: var(--font-display, var(--font-vazirmatn)), serif;
+  font-size: clamp(1rem, 2.2vw, 1.15rem);
+  font-weight: 600;
+  line-height: 1.75;
+  color: var(--text);
+  transition: color 0.4s var(--ease-out);
+}
+
+/* Answered questions are visibly retired. text-decoration keeps
+   the strike tied to the text itself across line wraps — a
+   pseudo-element line would only span one line. */
+.item[data-status="answered"] .question {
+  color: var(--ink-raw);
+  text-decoration: line-through;
+  text-decoration-color: var(--muted-2);
+  text-decoration-thickness: 1px;
+}
+
+.context {
+  margin: 0.55rem 0 0;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-raw); /* 5.75:1 — --muted measured 4.41:1, below AA */
+}
+
+.answer {
+  display: flex;
+  gap: 0.55rem;
+  margin: 0.85rem 0 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 8px;
+  background: var(--surface);
+  border-inline-start: 2px solid var(--accent-soft);
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--ink-raw);
+}
+
+.answerArrow {
+  flex: 0 0 auto;
+  color: var(--accent-bright);
+}
+
+/* ===================== Footnote ===================== */
+.footnote {
+  margin: 1.8rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: var(--ink-raw); /* 5.75:1 — --muted measured 4.41:1, below AA */
+  font-style: italic;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.openQuestions[data-revealed="true"] .footnote {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 768px) {
+  .openQuestions {
+    padding: clamp(2.5rem, 7vw, 4rem) 0;
+  }
+
+  /* Date and status stack above the question so neither is
+     squeezed on a narrow line. */
+  .itemHead {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .status {
+    margin-inline-start: 0;
+  }
+
+  .question {
+    font-size: 1rem;
+  }
+
+  .answer {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+  }
+  .lead {
+    font-size: 0.9rem;
+  }
+  .item {
+    padding: 1.2rem 0 1.3rem;
+  }
+}
+
+/* ===================== Reduced motion ===================== */
+@media (prefers-reduced-motion: reduce) {
+  .kicker,
+  .title,
+  .lead,
+  .item,
+  .footnote {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .kickerDot,
+  .item[data-status="thinking"] .markerCore {
+    animation: none !important;
+  }
+  .marker,
+  .markerCore {
+    transition: none !important;
+  }
+  .item:hover .marker {
+    transform: none !important;
+  }
+}

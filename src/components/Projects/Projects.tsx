@@ -9,7 +9,8 @@ interface ProjectData {
   builtStructure: string;
   project: string;
   tags: string[];
-  href: string;
+  /** موقتاً غیرفعال — صفحه‌ی اختصاصی هر پروژه هنوز ساخته نشده. */
+  href?: string;
 }
 
 const projects: ProjectData[] = [
@@ -20,7 +21,6 @@ const projects: ProjectData[] = [
       "تسک‌ها روی یه گراف می‌شینن؛ اولویت از رابطه‌ها بیرون میاد.",
     project: "Taskino",
     tags: ["Offline-First", "Local-First", "Priority Network", "Semantic Graph"],
-    href: "/projects/taskino",
   },
   {
     rootThought:
@@ -29,7 +29,6 @@ const projects: ProjectData[] = [
       "هر یادداشت با فاز/منبع/خروجی برچسب می‌خوره.",
     project: "Mind 2.0",
     tags: ["Decision Architecture", "Entropy Reduction", "Cognitive Load", "Second Brain"],
-    href: "/projects/mind2",
   },
   {
     rootThought:
@@ -38,7 +37,6 @@ const projects: ProjectData[] = [
       "پروژه‌ای که کد رو به‌مثابه‌ی تفسیر می‌بینه.",
     project: "Humanities × Code",
     tags: ["Hermeneutics", "Digital Humanities", "Critical Theory", "Code as Interpretation"],
-    href: "/projects/humanities-code",
   },
   {
     rootThought:
@@ -47,7 +45,6 @@ const projects: ProjectData[] = [
       "ضبطِ ایده در لحظه‌ی ظهور، نه بعداً.",
     project: "Circadian Notes",
     tags: ["Circadian Rhythm", "Capture at Dawn", "Fleeting Thoughts", "Biological Clock"],
-    href: "/projects/circadian",
   },
   {
     rootThought:
@@ -56,7 +53,6 @@ const projects: ProjectData[] = [
       "معماریِ آفلاین-اول؛ سینک بعد از وصل‌شدن.",
     project: "Offline-First Architecture",
     tags: ["Offline-First", "Local-First", "Resilience", "CRDTs", "Sync Protocols"],
-    href: "/projects/offline-first",
   },
   {
     rootThought:
@@ -65,7 +61,6 @@ const projects: ProjectData[] = [
       "تبدیلِ ابزارِ شخصی به زیرساختِ عمومی.",
     project: "Meta",
     tags: ["Meta-Tooling", "Composability", "Abstraction", "Framework for Frameworks"],
-    href: "/projects/meta",
   },
 ];
 
@@ -75,6 +70,10 @@ export default function Projects() {
     rootMargin: "0px 0px -10% 0px",
   });
 
+  // اعداد از خودِ داده می‌آیند تا با اضافه‌شدنِ پروژه از هم نپاشند
+  const fa = (n: number) => n.toLocaleString("fa-IR", { minimumIntegerDigits: 2 });
+  const tagCount = projects.reduce((sum, p) => sum + p.tags.length, 0);
+
   return (
     <section
       ref={ref}
@@ -83,9 +82,15 @@ export default function Projects() {
       aria-labelledby="projects-title"
       data-revealed={revealed ? "true" : undefined}
     >
-      <div className={styles.bgGlow} aria-hidden="true" />
+      {/* میزِ آزمایشگاه — کاغذِ شطرنجی + نورِ سقفی */}
+      <div className={styles.bench} aria-hidden="true">
+        <div className={styles.grid1} />
+        <div className={styles.bgGlow} />
+      </div>
 
       <div className={styles.inner}>
+        <div className={styles.threadBridge} aria-hidden="true" />
+
         <header className={styles.header}>
           <span className={styles.kicker} data-reveal>
             <span className={styles.kickerDot} aria-hidden="true" />
@@ -96,9 +101,25 @@ export default function Projects() {
           </h2>
           <p className={styles.desc} data-reveal>
             هر پروژه یک کریستاله — از یک فکرِ خام شروع شده، به یک ساختار رسیده.
-            <br />
-            برو روی هر کدوم تا ببینی این تبدیل چطور اتفاق افتاده.
           </p>
+
+          {/* نوارِ وضعیتِ آزمایشگاه */}
+          <div className={styles.status} data-reveal>
+            <span className={styles.statusItem}>
+              <span className={styles.statusValue}>{fa(projects.length)}</span>
+              <span className={styles.statusKey}>نمونه</span>
+            </span>
+            <span className={styles.statusDivider} aria-hidden="true" />
+            <span className={styles.statusItem}>
+              <span className={styles.statusValue}>{fa(tagCount)}</span>
+              <span className={styles.statusKey}>شاخص</span>
+            </span>
+            <span className={styles.statusDivider} aria-hidden="true" />
+            <span className={styles.statusItem} data-live>
+              <span className={styles.statusPulse} aria-hidden="true" />
+              <span className={styles.statusKey}>در جریان</span>
+            </span>
+          </div>
         </header>
 
         <div className={styles.grid}>
@@ -110,11 +131,6 @@ export default function Projects() {
             />
           ))}
         </div>
-
-        <p className={styles.footerNote} data-reveal>
-          <span className={styles.footerDot} aria-hidden="true">✦</span>
-          هیچ کریستالی بدون پراکندگی شکل نگرفته.
-        </p>
       </div>
     </section>
   );
