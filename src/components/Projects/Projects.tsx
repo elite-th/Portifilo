@@ -97,10 +97,10 @@ export default function Projects() {
             آزمایشگاه
           </span>
           <h2 id="projects-title" className={styles.title} data-reveal>
-            شش فکر خام. شش تا ساختار.
+            چیزهایی که از این ذهن بیرون آمده.
           </h2>
           <p className={styles.desc} data-reveal>
-            هر پروژه یک کریستاله — از یک فکرِ خام شروع شده، به یک ساختار رسیده.
+            این پروژه‌ها ویترین جدا از من نیستند؛ هرکدام ردِ یکی از دغدغه‌هایم‌اند.
           </p>
 
           {/* نوارِ وضعیتِ آزمایشگاه */}

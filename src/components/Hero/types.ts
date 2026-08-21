@@ -47,8 +47,6 @@ export interface Thought {
   rotation: number;
   /** When true, chip uses --danger accent (only t3). */
   usesDanger?: boolean;
-  /** When true, this thought is the auto-demo target (t4). */
-  isAutoDemo?: boolean;
   /** When true, the chip is allowed to escape the field bounds (t6). */
   isEscaped?: boolean;
   /** How long the trace state persists before resetting (ms). */

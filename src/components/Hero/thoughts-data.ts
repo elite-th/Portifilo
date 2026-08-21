@@ -25,11 +25,8 @@ export const THOUGHTS: Thought[] = [
     // مرکز hero 1180×780 است (نه minimax از 380px scatterCol). چیدمان
     // مرکزی: text در مرکز، chips در گوشه‌ها/پهلوها. t1 گوشه‌ی بالا-چپ،
     // gap 35px با eyebrow.
-    positionDesktop: { top: "3.8%", left: "5.1%" },
-    // positionMobile: به‌عنوان backward-compat نگه داشته شده. در موبایل
-    // CSS grid 2-column این مقادیر را override می‌کند (RawThought.tsx
-    // در layout==="mobile" empty object برمی‌گرداند — roadmap §1.3-C).
-    positionMobile: { top: "0%", left: "5%" },
+    positionDesktop: { top: "6%", left: "4%" },
+    positionMobile: { top: "3%", left: "5%" },
   },
   {
     id: "t2",
@@ -43,8 +40,8 @@ export const THOUGHTS: Thought[] = [
     traceDuration: 7500,
     driftDuration: 6000,
     // Loop-4: گوشه‌ی بالا-راست، gap 10px با eyebrow (tight اما OK).
-    positionDesktop: { top: "7.1%", left: "71.2%" },
-    positionMobile: { top: "15%", left: "35%" },
+    positionDesktop: { top: "7.5%", left: "70%" },
+    positionMobile: { top: "13%", left: "56%" },
   },
   {
     id: "t3",
@@ -59,8 +56,8 @@ export const THOUGHTS: Thought[] = [
     traceDuration: 9000,
     driftDuration: 5400,
     // Loop-4: پهلوی چپ، هم‌سطح h1/description، gap 18px با text.
-    positionDesktop: { top: "41.0%", left: "0.5%" },
-    positionMobile: { top: "31%", left: "8%" },
+    positionDesktop: { top: "39%", left: "0%" },
+    positionMobile: { top: "33%", left: "4%" },
   },
   {
     id: "t4",
@@ -71,13 +68,11 @@ export const THOUGHTS: Thought[] = [
     timestamp: "۱۴۰۲/۰۵/۲۷ — ۰۲:۱۴",
     mode: 4,
     rotation: 0,
-    isAutoDemo: true,
     traceDuration: 8000,
     driftDuration: 4800,
     // Loop-4: پهلوی راست، هم‌سطح description، gap 30px با text.
-    // auto-demo target.
-    positionDesktop: { top: "49.4%", left: "76.3%" },
-    positionMobile: { top: "47%", left: "30%" },
+    positionDesktop: { top: "47%", left: "72%" },
+    positionMobile: { top: "47%", left: "56%" },
   },
   {
     id: "t5",
@@ -91,12 +86,8 @@ export const THOUGHTS: Thought[] = [
     traceDuration: 7000,
     driftDuration: 5800,
     // Loop-4: گوشه‌ی پایین-چپ، gap 20px با CTA.
-    // Loop-5 (Task 16): top از 84% به 80% — Reviewer (Task 15) گزارش داد
-    // که در حالت refined، t5 (height ~169px) با footer (top=1011 در 1440×900)
-    // 17px overlap دارد. 4% بالا آوردن، ~31px فضا در hero با ارتفاع 780px
-    // آزاد می‌کند و refined chip داخل hero می‌ماند.
-    positionDesktop: { top: "80.0%", left: "9.3%" },
-    positionMobile: { top: "63%", left: "5%" },
+    positionDesktop: { top: "76%", left: "7%" },
+    positionMobile: { top: "66%", left: "8%" },
   },
   {
     id: "t6",
@@ -110,11 +101,8 @@ export const THOUGHTS: Thought[] = [
     isEscaped: true,
     traceDuration: 10000,
     driftDuration: 6400,
-    // Loop-4: گوشه‌ی پایین-راست. isEscaped override در RawThought.tsx
-    // مقدار bottom: -30px (به‌جای -60px) و left: 73.7% (به‌جای 70%) را
-    // اعمال می‌کند — hero کل viewport است، -30px کافی برای escape بدون
-    // برخورد با footer (z=20).
-    positionDesktop: { top: "91.0%", left: "73.7%" },
-    positionMobile: { top: "79%", left: "32%" },
+    // Loop-4: گوشه‌ی پایین-راست.
+    positionDesktop: { top: "88%", left: "74%" },
+    positionMobile: { top: "78%", left: "54%" },
   },
 ];
