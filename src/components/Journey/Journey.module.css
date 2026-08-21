@@ -1,5 +1,5 @@
-/* =========================================================
-   Journey — container
+﻿/* =========================================================
+   Journey â€” container
    Vertical rhythm + ambient light-line behind all sections.
    Each subsection owns its own scroll-reveal + module CSS.
    ========================================================= */
@@ -7,7 +7,7 @@
 .journey {
   position: relative;
   background:
-    radial-gradient(1100px 700px at 50% 2%, rgba(var(--gold-rgb) / 0.035) 0%, transparent 68%),
+    radial-gradient(1100px 700px at 50% 2%, rgba(var(--gold-rgb), 0.035) 0%, transparent 68%),
     radial-gradient(900px 600px at 85% 92%, rgba(58, 107, 107, 0.025) 0%, transparent 70%),
     var(--bg);
   color: var(--text);
@@ -28,7 +28,7 @@
   z-index: 0;
 }
 
-/* Ambient — sticky light-line that flows behind the whole journey.
+/* Ambient â€” sticky light-line that flows behind the whole journey.
    pointer-events: none so it never steals interaction. */
 .ambient {
   position: absolute;
@@ -82,7 +82,7 @@
 }
 
 /* ===================== Responsive ===================== */
-/* Task 39-B — unified breakpoints (xs ≤480 / sm 481–768 / md 769–1024 / lg ≥1025).
+/* Task 39-B â€” unified breakpoints (xs â‰¤480 / sm 481â€“768 / md 769â€“1024 / lg â‰¥1025).
    Mobile: dim the centre spine so the stacked layout breathes; the
    LightThread component is hidden below 768px via its own module. */
 @media (max-width: 1024px) {

@@ -1,14 +1,14 @@
-/* ============================================================
-   ProjectCard.module.css — نمونه‌ی آزمایشگاهی (Specimen)
+﻿/* ============================================================
+   ProjectCard.module.css â€” Ù†Ù…ÙˆÙ†Ù‡â€ŒÛŒ Ø¢Ø²Ù…Ø§ÛŒØ´Ú¯Ø§Ù‡ÛŒ (Specimen)
    ------------------------------------------------------------
-   هر کارت یک نمونه زیرِ مشاهده است: نوارِ ابزار بالا،
-   بلورِ نمونه، ثبتِ آزمایش (فرضیه → واکنش → مشاهده)، و
-   شاخص‌ها. hover = دستگاه روشن می‌شود: قاب می‌بندد،
-   پرتو اسکن می‌کند، LED می‌تپد.
+   Ù‡Ø± Ú©Ø§Ø±Øª ÛŒÚ© Ù†Ù…ÙˆÙ†Ù‡ Ø²ÛŒØ±Ù Ù…Ø´Ø§Ù‡Ø¯Ù‡ Ø§Ø³Øª: Ù†ÙˆØ§Ø±Ù Ø§Ø¨Ø²Ø§Ø± Ø¨Ø§Ù„Ø§ØŒ
+   Ø¨Ù„ÙˆØ±Ù Ù†Ù…ÙˆÙ†Ù‡ØŒ Ø«Ø¨ØªÙ Ø¢Ø²Ù…Ø§ÛŒØ´ (ÙØ±Ø¶ÛŒÙ‡ â†’ ÙˆØ§Ú©Ù†Ø´ â†’ Ù…Ø´Ø§Ù‡Ø¯Ù‡)ØŒ Ùˆ
+   Ø´Ø§Ø®Øµâ€ŒÙ‡Ø§. hover = Ø¯Ø³ØªÚ¯Ø§Ù‡ Ø±ÙˆØ´Ù† Ù…ÛŒâ€ŒØ´ÙˆØ¯: Ù‚Ø§Ø¨ Ù…ÛŒâ€ŒØ¨Ù†Ø¯Ø¯ØŒ
+   Ù¾Ø±ØªÙˆ Ø§Ø³Ú©Ù† Ù…ÛŒâ€ŒÚ©Ù†Ø¯ØŒ LED Ù…ÛŒâ€ŒØªÙ¾Ø¯.
    ============================================================ */
 
 .card {
-  /* === Knowledge Alchemy — Gold Standard (local fallback) === */
+  /* === Knowledge Alchemy â€” Gold Standard (local fallback) === */
   --bg: #0a0a0c;
   --bg-elevated: #16161a;
   --text: #f5f0e4;
@@ -18,10 +18,10 @@
   --accent: #d4af6a;
   --card-accent-bright: #e6c585;
   --card-accent-deep: #b08d4a;
-  --accent-soft: rgba(var(--gold-rgb) / 0.16);
-  --accent-glow: rgba(var(--gold-rgb) / 0.32);
-  --line: rgba(var(--gold-rgb) / 0.22);
-  --line-strong: rgba(var(--gold-rgb) / 0.4);
+  --accent-soft: rgba(var(--gold-rgb), 0.16);
+  --accent-glow: rgba(var(--gold-rgb), 0.32);
+  --line: rgba(var(--gold-rgb), 0.22);
+  --line-strong: rgba(var(--gold-rgb), 0.4);
   --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.5);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -36,9 +36,9 @@
   gap: 16px;
   padding: 20px 22px 20px;
   background:
-    /* کاغذِ شطرنجیِ آزمایشگاه — ظریف، فقط برای بافت */
-    linear-gradient(rgba(var(--gold-rgb) / 0.028) 1px, transparent 1px) 0 0 / 100% 28px,
-    linear-gradient(90deg, rgba(var(--gold-rgb) / 0.028) 1px, transparent 1px) 0 0 / 28px 100%,
+    /* Ú©Ø§ØºØ°Ù Ø´Ø·Ø±Ù†Ø¬ÛŒÙ Ø¢Ø²Ù…Ø§ÛŒØ´Ú¯Ø§Ù‡ â€” Ø¸Ø±ÛŒÙØŒ ÙÙ‚Ø· Ø¨Ø±Ø§ÛŒ Ø¨Ø§ÙØª */
+    linear-gradient(rgba(var(--gold-rgb), 0.028) 1px, transparent 1px) 0 0 / 100% 28px,
+    linear-gradient(90deg, rgba(var(--gold-rgb), 0.028) 1px, transparent 1px) 0 0 / 28px 100%,
     rgba(245, 240, 228, 0.03);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
@@ -72,7 +72,7 @@
   filter: none;
 }
 
-/* درخششِ پایین — نمونه از زیر نور می‌گیرد */
+/* Ø¯Ø±Ø®Ø´Ø´Ù Ù¾Ø§ÛŒÛŒÙ† â€” Ù†Ù…ÙˆÙ†Ù‡ Ø§Ø² Ø²ÛŒØ± Ù†ÙˆØ± Ù…ÛŒâ€ŒÚ¯ÛŒØ±Ø¯ */
 .card::before {
   content: "";
   position: absolute;
@@ -114,7 +114,7 @@
 }
 
 /* ============================================================
-   قابِ ابزار — چهار گوشه‌ی نشانه‌گیری که روی hover می‌بندند
+   Ù‚Ø§Ø¨Ù Ø§Ø¨Ø²Ø§Ø± â€” Ú†Ù‡Ø§Ø± Ú¯ÙˆØ´Ù‡â€ŒÛŒ Ù†Ø´Ø§Ù†Ù‡â€ŒÚ¯ÛŒØ±ÛŒ Ú©Ù‡ Ø±ÙˆÛŒ hover Ù…ÛŒâ€ŒØ¨Ù†Ø¯Ù†Ø¯
    ============================================================ */
 .frame {
   position: absolute;
@@ -122,7 +122,7 @@
   border-radius: 6px;
   pointer-events: none;
   z-index: 2;
-  /* گوشه‌ها با gradient ساخته می‌شوند — بدون element اضافه */
+  /* Ú¯ÙˆØ´Ù‡â€ŒÙ‡Ø§ Ø¨Ø§ gradient Ø³Ø§Ø®ØªÙ‡ Ù…ÛŒâ€ŒØ´ÙˆÙ†Ø¯ â€” Ø¨Ø¯ÙˆÙ† element Ø§Ø¶Ø§ÙÙ‡ */
   background:
     linear-gradient(var(--accent), var(--accent)) 0 0 / 1px var(--corner, 10px),
     linear-gradient(var(--accent), var(--accent)) 0 0 / var(--corner, 10px) 1px,
@@ -143,7 +143,7 @@
 }
 
 /* ============================================================
-   پرتوی اسکن — یک عبور روی hover
+   Ù¾Ø±ØªÙˆÛŒ Ø§Ø³Ú©Ù† â€” ÛŒÚ© Ø¹Ø¨ÙˆØ± Ø±ÙˆÛŒ hover
    ============================================================ */
 .scanline {
   position: absolute;
@@ -174,7 +174,7 @@
 }
 
 /* ============================================================
-   نوارِ ابزار
+   Ù†ÙˆØ§Ø±Ù Ø§Ø¨Ø²Ø§Ø±
    ============================================================ */
 .instrument {
   display: flex;
@@ -182,7 +182,7 @@
   justify-content: space-between;
   gap: 10px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(var(--gold-rgb) / 0.12);
+  border-bottom: 1px solid rgba(var(--gold-rgb), 0.12);
   font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
   font-size: var(--step--2, 0.75rem);
   letter-spacing: 0.08em;
@@ -216,7 +216,7 @@
   transition: opacity 0.3s var(--ease-out);
 }
 
-/* دستگاه فقط وقتی نمونه زیرِ نگاه است می‌تپد */
+/* Ø¯Ø³ØªÚ¯Ø§Ù‡ ÙÙ‚Ø· ÙˆÙ‚ØªÛŒ Ù†Ù…ÙˆÙ†Ù‡ Ø²ÛŒØ±Ù Ù†Ú¯Ø§Ù‡ Ø§Ø³Øª Ù…ÛŒâ€ŒØªÙ¾Ø¯ */
 .card:hover .led {
   opacity: 1;
   animation: ledBlink 1.4s ease-in-out infinite;
@@ -228,7 +228,7 @@
 }
 
 /* ============================================================
-   Header — نمونه + نام
+   Header â€” Ù†Ù…ÙˆÙ†Ù‡ + Ù†Ø§Ù…
    ============================================================ */
 .cardHeader {
   display: flex;
@@ -248,7 +248,7 @@
   overflow: visible;
 }
 
-/* حلقه‌ی هدف آرام می‌چرخد؛ روی hover تندتر و پررنگ‌تر */
+/* Ø­Ù„Ù‚Ù‡â€ŒÛŒ Ù‡Ø¯Ù Ø¢Ø±Ø§Ù… Ù…ÛŒâ€ŒÚ†Ø±Ø®Ø¯Ø› Ø±ÙˆÛŒ hover ØªÙ†Ø¯ØªØ± Ùˆ Ù¾Ø±Ø±Ù†Ú¯â€ŒØªØ± */
 .specimenRing {
   transform-origin: center;
   animation: ringScan 24s linear infinite;
@@ -265,7 +265,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* بدنه‌ی بلور — نمی‌چرخد. ساختار، ثابت است. */
+/* Ø¨Ø¯Ù†Ù‡â€ŒÛŒ Ø¨Ù„ÙˆØ± â€” Ù†Ù…ÛŒâ€ŒÚ†Ø±Ø®Ø¯. Ø³Ø§Ø®ØªØ§Ø±ØŒ Ø«Ø§Ø¨Øª Ø§Ø³Øª. */
 .specimenBody {
   transform-origin: center;
   transition: fill-opacity 0.45s var(--ease-out), transform 0.6s var(--ease-out);
@@ -305,11 +305,11 @@
   line-height: 1.24;
   direction: ltr;
   text-align: right;
-  text-shadow: 0 0 14px rgba(var(--gold-rgb) / 0.22);
+  text-shadow: 0 0 14px rgba(var(--gold-rgb), 0.22);
 }
 
 /* ============================================================
-   ثبتِ آزمایش — فرضیه → واکنش → مشاهده
+   Ø«Ø¨ØªÙ Ø¢Ø²Ù…Ø§ÛŒØ´ â€” ÙØ±Ø¶ÛŒÙ‡ â†’ ÙˆØ§Ú©Ù†Ø´ â†’ Ù…Ø´Ø§Ù‡Ø¯Ù‡
    ============================================================ */
 .log {
   display: flex;
@@ -327,13 +327,13 @@
   transition: border-color 0.4s var(--ease-out);
 }
 
-/* فرضیه: خطِ چین، هنوز اثبات نشده */
+/* ÙØ±Ø¶ÛŒÙ‡: Ø®Ø·Ù Ú†ÛŒÙ†ØŒ Ù‡Ù†ÙˆØ² Ø§Ø«Ø¨Ø§Øª Ù†Ø´Ø¯Ù‡ */
 .entry[data-kind="hypothesis"] {
   border-right-style: dashed;
-  border-right-color: rgba(var(--gold-rgb) / 0.18);
+  border-right-color: rgba(var(--gold-rgb), 0.18);
 }
 
-/* مشاهده: خطِ ممتدِ طلایی، ثبت‌شده */
+/* Ù…Ø´Ø§Ù‡Ø¯Ù‡: Ø®Ø·Ù Ù…Ù…ØªØ¯Ù Ø·Ù„Ø§ÛŒÛŒØŒ Ø«Ø¨Øªâ€ŒØ´Ø¯Ù‡ */
 .entry[data-kind="observation"] {
   border-right-width: 2px;
   border-right-color: var(--accent);
@@ -347,7 +347,7 @@
   font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
   font-size: var(--step--2, 0.75rem);
   letter-spacing: 0.1em;
-  /* muted-2 روی این پس‌زمینه ۴.۰۸:۱ می‌داد — زیرِ AA برای متنِ ریز */
+  /* muted-2 Ø±ÙˆÛŒ Ø§ÛŒÙ† Ù¾Ø³â€ŒØ²Ù…ÛŒÙ†Ù‡ Û´.Û°Û¸:Û± Ù…ÛŒâ€ŒØ¯Ø§Ø¯ â€” Ø²ÛŒØ±Ù AA Ø¨Ø±Ø§ÛŒ Ù…ØªÙ†Ù Ø±ÛŒØ² */
   color: var(--ink-raw);
 }
 
@@ -372,7 +372,7 @@
   margin: 0;
 }
 
-/* --- واکنش: pip یک بار مسیر را طی می‌کند --- */
+/* --- ÙˆØ§Ú©Ù†Ø´: pip ÛŒÚ© Ø¨Ø§Ø± Ù…Ø³ÛŒØ± Ø±Ø§ Ø·ÛŒ Ù…ÛŒâ€ŒÚ©Ù†Ø¯ --- */
 .reaction {
   position: relative;
   height: 26px;
@@ -387,9 +387,9 @@
   width: 1px;
   background: linear-gradient(
     to bottom,
-    rgba(var(--gold-rgb) / 0.1),
+    rgba(var(--gold-rgb), 0.1),
     var(--accent) 55%,
-    rgba(var(--gold-rgb) / 0.1)
+    rgba(var(--gold-rgb), 0.1)
   );
 }
 
@@ -405,7 +405,7 @@
   opacity: 0;
 }
 
-/* روی hover، واکنش یک بار اجرا می‌شود — نه حلقه‌ی بی‌پایان */
+/* Ø±ÙˆÛŒ hoverØŒ ÙˆØ§Ú©Ù†Ø´ ÛŒÚ© Ø¨Ø§Ø± Ø§Ø¬Ø±Ø§ Ù…ÛŒâ€ŒØ´ÙˆØ¯ â€” Ù†Ù‡ Ø­Ù„Ù‚Ù‡â€ŒÛŒ Ø¨ÛŒâ€ŒÙ¾Ø§ÛŒØ§Ù† */
 .card:hover .reactionPip {
   animation: pipTravel 1s var(--ease-out-expo);
 }
@@ -425,7 +425,7 @@
   flex-direction: column;
   gap: 12px;
   padding-top: 14px;
-  border-top: 1px solid rgba(var(--gold-rgb) / 0.12);
+  border-top: 1px solid rgba(var(--gold-rgb), 0.12);
   margin-top: auto;
 }
 
@@ -439,7 +439,7 @@
   font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
   font-size: var(--step--2, 0.75rem);
   color: var(--muted);
-  background: rgba(var(--gold-rgb) / 0.06);
+  background: rgba(var(--gold-rgb), 0.06);
   border: 1px solid var(--line);
   border-radius: 3px;
   padding: 3px 8px;
@@ -450,7 +450,7 @@
 }
 
 .card:hover .tag {
-  background: rgba(var(--gold-rgb) / 0.12);
+  background: rgba(var(--gold-rgb), 0.12);
   border-color: var(--accent-soft);
   color: var(--card-accent-bright);
 }
@@ -470,7 +470,7 @@
 }
 
 .link svg {
-  /* RTL: فلش به سمت چپ اشاره می‌کند */
+  /* RTL: ÙÙ„Ø´ Ø¨Ù‡ Ø³Ù…Øª Ú†Ù¾ Ø§Ø´Ø§Ø±Ù‡ Ù…ÛŒâ€ŒÚ©Ù†Ø¯ */
   transform: scaleX(-1);
   transition: transform 0.3s var(--ease-out);
 }
@@ -533,7 +533,7 @@
     animation: none !important;
   }
 
-  /* pip بدون حرکت، به‌عنوان نشانه‌ی ثابت وسطِ مسیر می‌ماند */
+  /* pip Ø¨Ø¯ÙˆÙ† Ø­Ø±Ú©ØªØŒ Ø¨Ù‡â€ŒØ¹Ù†ÙˆØ§Ù† Ù†Ø´Ø§Ù†Ù‡â€ŒÛŒ Ø«Ø§Ø¨Øª ÙˆØ³Ø·Ù Ù…Ø³ÛŒØ± Ù…ÛŒâ€ŒÙ…Ø§Ù†Ø¯ */
   .reactionPip {
     top: 11px;
     opacity: 0.9;

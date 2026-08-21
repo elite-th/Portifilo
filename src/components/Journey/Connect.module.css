@@ -1,7 +1,7 @@
-/* ============================================================
-   Connect — «بیا وصل شیم»
+﻿/* ============================================================
+   Connect â€” Â«Ø¨ÛŒØ§ ÙˆØµÙ„ Ø´ÛŒÙ…Â»
    ------------------------------------------------------------
-   پایان مسیر: یه CTA بزرگ + social chips جمع‌وجور.
+   Ù¾Ø§ÛŒØ§Ù† Ù…Ø³ÛŒØ±: ÛŒÙ‡ CTA Ø¨Ø²Ø±Ú¯ + social chips Ø¬Ù…Ø¹â€ŒÙˆØ¬ÙˆØ±.
    ============================================================ */
 
 .connect {
@@ -169,7 +169,7 @@
 .ctaBig:hover,
 .ctaBig:focus-visible {
   border-color: var(--accent);
-  box-shadow: 0 0 40px var(--accent-glow), inset 0 0 20px rgba(var(--gold-rgb) / 0.05);
+  box-shadow: 0 0 40px var(--accent-glow), inset 0 0 20px rgba(var(--gold-rgb), 0.05);
   transform: translateY(-2px);
 }
 

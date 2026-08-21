@@ -1,31 +1,31 @@
-/* =========================================================
-   ThoughtCluster — scatter field overlay (Loop-4 centered)
+﻿/* =========================================================
+   ThoughtCluster â€” scatter field overlay (Loop-4 centered)
    ---------------------------------------------------------
    The scatter field used to be a visible card on the visual
    left half of the hero (border + surface-strong background
-   + corner ticks). In the centered layout (Task 12 §2.5) it
+   + corner ticks). In the centered layout (Task 12 Â§2.5) it
    becomes a TRANSPARENT absolute overlay that covers the whole
    hero, so the six chips float on the ambient background
    (page::before glow + page::after grid) around the central
-   textBlock — "حومه" rather than a rival object.
+   textBlock â€” "Ø­ÙˆÙ…Ù‡" rather than a rival object.
    ---------------------------------------------------------
-   DOM (Worker A — verified against ThoughtCluster.tsx):
+   DOM (Worker A â€” verified against ThoughtCluster.tsx):
      <section class=scatterField data-layout=... data-mobile=...>
        <ul class=thoughtList role="list" data-mobile=...>
          <li class=thoughtItem><RawThought .../></li>
          ...
        </ul>
        <span class=hintTooltip data-visible="true|false">...</span>
-       <button class=resetButton data-visible="true|false">↺ خام</button>
+       <button class=resetButton data-visible="true|false">â†º Ø®Ø§Ù…</button>
        <p class="sr-only">... SEO/screen-reader fallback ...</p>
      </section>
    ---------------------------------------------------------
-   CRITICAL (roadmap §1.3-A): scatterField has NO z-index.
+   CRITICAL (roadmap Â§1.3-A): scatterField has NO z-index.
      If you add `z-index: 1` here, you create a stacking
-     context that traps the chips inside it — the active chip
+     context that traps the chips inside it â€” the active chip
      (z=50) would never rise above textBlock (z=10) in the
      hero stacking context. Leave z-index: auto.
-   CRITICAL (roadmap §1.3-B): scatterField has pointer-events:
+   CRITICAL (roadmap Â§1.3-B): scatterField has pointer-events:
      none so it cannot steal clicks from textBlock underneath.
      Children that need to be interactive (chips, reset) set
      `pointer-events: auto` themselves (see RawThought.module.css
@@ -41,11 +41,11 @@
 /* -------------------- Scatter field (desktop overlay) -------------------- */
 .scatterField {
   /* Loop-4: absolute overlay covers whole hero. CRITICAL: no z-index
-     here — must NOT create a stacking context (roadmap §1.3-A). */
+     here â€” must NOT create a stacking context (roadmap Â§1.3-A). */
   position: absolute;
   inset: 0;
 
-  /* Loop-4: transparent — chips float on ambient background, not in a card. */
+  /* Loop-4: transparent â€” chips float on ambient background, not in a card. */
   background: transparent;
   border: none;
   box-shadow: none;
@@ -53,7 +53,7 @@
   padding: 0;
   min-height: 0; /* override the old min-height: 540px */
 
-  /* CRITICAL (roadmap §1.3-B): don't block clicks on textBlock underneath.
+  /* CRITICAL (roadmap Â§1.3-B): don't block clicks on textBlock underneath.
      Children re-enable pointer-events where they need to be interactive. */
   pointer-events: none;
 
@@ -76,14 +76,14 @@
   position: relative;
   width: 100%;
   height: 100%;
-  /* No min-height — inherits the absolute scatterField which inherits
+  /* No min-height â€” inherits the absolute scatterField which inherits
      its size from the hero (min-height: calc(100svh - 80px)). */
 }
 
 /* Loop-2 FIX-1 preserved: `.thoughtItem` is `position: static` so the
    child <button class="thoughtChip"> (which IS `position: absolute` and
    receives inline top/left from RawThought.tsx) uses the nearest
-   positioned ancestor — `.thoughtList` (`position: relative`) — as its
+   positioned ancestor â€” `.thoughtList` (`position: relative`) â€” as its
    containing block. */
 .thoughtItem {
   position: static;
@@ -103,7 +103,7 @@
   letter-spacing: 0.02em;
   opacity: 0;
   transition: opacity 0.6s var(--ease-out);
-  /* hint is intentionally visual-only — keep pointer-events: none even
+  /* hint is intentionally visual-only â€” keep pointer-events: none even
      though scatterField already sets it (defense-in-depth). */
   pointer-events: none;
   white-space: nowrap;
@@ -111,7 +111,7 @@
   font-family: var(--font-vazirmatn), system-ui, sans-serif;
 }
 
-/* Visibility — supports both patterns:
+/* Visibility â€” supports both patterns:
    (a) `data-visible="true"` on the hint element itself (Worker A)
    (b) `data-hint="visible"` on the parent .scatterField (Worker B spec) */
 .hint[data-visible="true"],
@@ -127,15 +127,15 @@
   position: absolute;
   inset: 10% 6%;
   background:
-    radial-gradient(circle at 18% 24%, rgba(var(--accent-2-rgb) / 0.14) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 46% 18%, rgba(var(--accent-2-rgb) / 0.12) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 72% 34%, rgba(var(--accent-2-rgb) / 0.12) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 24% 72%, rgba(var(--accent-2-rgb) / 0.1) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 58% 64%, rgba(var(--accent-2-rgb) / 0.1) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 84% 78%, rgba(var(--accent-2-rgb) / 0.12) 0 1px, transparent 1.6px),
-    linear-gradient(155deg, transparent 29%, rgba(var(--accent-2-rgb) / 0.12) 30%, transparent 31%),
-    linear-gradient(28deg, transparent 46%, rgba(var(--accent-2-rgb) / 0.08) 47%, transparent 48%),
-    linear-gradient(78deg, transparent 62%, rgba(var(--accent-2-rgb) / 0.08) 63%, transparent 64%);
+    radial-gradient(circle at 18% 24%, rgba(var(--accent-2-rgb), 0.14) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 46% 18%, rgba(var(--accent-2-rgb), 0.12) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 72% 34%, rgba(var(--accent-2-rgb), 0.12) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 24% 72%, rgba(var(--accent-2-rgb), 0.1) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 58% 64%, rgba(var(--accent-2-rgb), 0.1) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 84% 78%, rgba(var(--accent-2-rgb), 0.12) 0 1px, transparent 1.6px),
+    linear-gradient(155deg, transparent 29%, rgba(var(--accent-2-rgb), 0.12) 30%, transparent 31%),
+    linear-gradient(28deg, transparent 46%, rgba(var(--accent-2-rgb), 0.08) 47%, transparent 48%),
+    linear-gradient(78deg, transparent 62%, rgba(var(--accent-2-rgb), 0.08) 63%, transparent 64%);
   opacity: 0.35;
   filter: blur(0.2px);
   pointer-events: none;
@@ -147,9 +147,9 @@
   position: absolute;
   inset: 6% 10%;
   background:
-    linear-gradient(135deg, transparent 24%, rgba(var(--accent-2-rgb) / 0.08) 25%, transparent 26%),
-    linear-gradient(215deg, transparent 54%, rgba(var(--accent-2-rgb) / 0.08) 55%, transparent 56%),
-    linear-gradient(310deg, transparent 68%, rgba(var(--accent-2-rgb) / 0.06) 69%, transparent 70%);
+    linear-gradient(135deg, transparent 24%, rgba(var(--accent-2-rgb), 0.08) 25%, transparent 26%),
+    linear-gradient(215deg, transparent 54%, rgba(var(--accent-2-rgb), 0.08) 55%, transparent 56%),
+    linear-gradient(310deg, transparent 68%, rgba(var(--accent-2-rgb), 0.06) 69%, transparent 70%);
   opacity: 0.22;
   pointer-events: none;
   z-index: 1;
@@ -176,12 +176,12 @@
     border-color 0.3s var(--ease-out);
   z-index: 5;
   backdrop-filter: blur(6px);
-  /* CRITICAL (roadmap §1.3-B): re-enable pointer-events so the reset
+  /* CRITICAL (roadmap Â§1.3-B): re-enable pointer-events so the reset
      button stays clickable inside the pointer-events: none overlay. */
   pointer-events: auto;
 }
 
-/* Visibility — supports both patterns:
+/* Visibility â€” supports both patterns:
    (a) `data-visible="true"` on the reset button itself (Worker A)
    (b) `data-show-reset="true"` on the parent .scatterField (Worker B spec) */
 .resetBtn[data-visible="true"],
@@ -208,10 +208,10 @@
 }
 
 /* =========================================================
-   Flask Shake — Reset Button Active State (§4.6)
+   Flask Shake â€” Reset Button Active State (Â§4.6)
    ---------------------------------------------------------
    When the reset button is actively pressed (active state),
-   the flask icon shakes slightly — a tactile "fizz" moment.
+   the flask icon shakes slightly â€” a tactile "fizz" moment.
    ========================================================= */
 @keyframes flaskShake {
   0%, 100% { transform: translateX(0) rotate(0deg); }

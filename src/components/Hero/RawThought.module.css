@@ -1,5 +1,5 @@
-/* =========================================================
-   RawThought — single chip with 4 modes × 6 states
+﻿/* =========================================================
+   RawThought â€” single chip with 4 modes Ã— 6 states
    ---------------------------------------------------------
    DOM (Worker A):
      <button class=thoughtChip
@@ -19,26 +19,26 @@
        <span class=traceDot />
      </button>
    ---------------------------------------------------------
-   Phases (per design spec §4):
-     0  raw         — idle drift
-     1  refining    — hover/focus enter, raw blurs+fades, chip scales + faceted growth + facet sweep
-     3  refined     — type-write done (caret hides), refined visible
-     5  trace       — hover leave, refined dim 0.15, trace dot appears
-     6  resetting   — return to raw over 1.2s (aqua regia dissolution)
-     7  aborting    — user left mid-type: half-typed text dissolves,
+   Phases (per design spec Â§4):
+     0  raw         â€” idle drift
+     1  refining    â€” hover/focus enter, raw blurs+fades, chip scales + faceted growth + facet sweep
+     3  refined     â€” type-write done (caret hides), refined visible
+     5  trace       â€” hover leave, refined dim 0.15, trace dot appears
+     6  resetting   â€” return to raw over 1.2s (aqua regia dissolution)
+     7  aborting    â€” user left mid-type: half-typed text dissolves,
                      raw re-emerges (600ms, no trace dot)
-   Modes (per design spec §7):
-     1  blur → type (default)         — t2, t5: hexagonal lattice grows; raw text sublimates into vapor trail
-     2  سؤال → جواب (raw stays + underline grows, refined below)  — t1, t6: seed crystal (raw) → twin crystal (refined) grows below
-     3  strikethrough → replace       — t3 (data-danger): danger crystal — jagged unstable lattice → clean replacement crystal
-     4  کلمه → جمله (large raw shrinks, refined below + dashed)  — t4: large seed crystal fractures into smaller refined facets
+   Modes (per design spec Â§7):
+     1  blur â†’ type (default)         â€” t2, t5: hexagonal lattice grows; raw text sublimates into vapor trail
+     2  Ø³Ø¤Ø§Ù„ â†’ Ø¬ÙˆØ§Ø¨ (raw stays + underline grows, refined below)  â€” t1, t6: seed crystal (raw) â†’ twin crystal (refined) grows below
+     3  strikethrough â†’ replace       â€” t3 (data-danger): danger crystal â€” jagged unstable lattice â†’ clean replacement crystal
+     4  Ú©Ù„Ù…Ù‡ â†’ Ø¬Ù…Ù„Ù‡ (large raw shrinks, refined below + dashed)  â€” t4: large seed crystal fractures into smaller refined facets
    ========================================================= */
 
 /* =========================================================
-   Crystal Growth Keyframes (Design Spec §4.3)
+   Crystal Growth Keyframes (Design Spec Â§4.3)
    ---------------------------------------------------------
    Faceted growth animation: border-radius transitions from
-   14px (raw, organic) → 8px (crystal, faceted) over 0.5s
+   14px (raw, organic) â†’ 8px (crystal, faceted) over 0.5s
    with progressive box-shadow deepening.
    ========================================================= */
 @keyframes crystalGrow {
@@ -48,7 +48,7 @@
   100% { scale: 1.04;  border-radius: 8px;  box-shadow: var(--shadow-crystal); }
 }
 
-/* Facet sweep — conic gradient rotation (Design Spec §4.3) */
+/* Facet sweep â€” conic gradient rotation (Design Spec Â§4.3) */
 @keyframes facetSweep {
   to { transform: rotate(360deg); }
 }
@@ -73,9 +73,9 @@
      flip to --danger in one place. */
   --chip-accent: var(--accent);
   --chip-accent-soft: var(--accent-soft);
-  --chip-line-raw: rgba(var(--accent-2-rgb) / 0.14);   /* line @ ~0.4 opacity */
+  --chip-line-raw: rgba(var(--accent-2-rgb), 0.14);   /* line @ ~0.4 opacity */
   --chip-line-active: var(--chip-accent);
-  --chip-line-trace: rgba(var(--accent-2-rgb) / 0.10);
+  --chip-line-trace: rgba(var(--accent-2-rgb), 0.10);
 
   position: absolute;
   transform: rotate(var(--rot, 0deg));
@@ -96,9 +96,9 @@
   text-align: right;
   color: var(--text);
 
-  /* Loop-4 (Task 12 §6.1): raw chip sits in the "حومه" layer — slightly
+  /* Loop-4 (Task 12 Â§6.1): raw chip sits in the "Ø­ÙˆÙ…Ù‡" layer â€” slightly
      dimmed so the central textBlock (z=10) reads as the focal point.
-     CRITICAL (roadmap §1.3-B): re-enable pointer-events so chips stay
+     CRITICAL (roadmap Â§1.3-B): re-enable pointer-events so chips stay
      hoverable inside the scatterField overlay (which is pointer-events: none). */
   z-index: 2;
   opacity: 0.88;
@@ -107,7 +107,7 @@
   max-width: 320px;
   width: max-content;
 
-  /* B1: default entered state — no blur. */
+  /* B1: default entered state â€” no blur. */
   filter: blur(0);
 
   transition:
@@ -120,7 +120,7 @@
     box-shadow 0.3s var(--ease-out);
 }
 
-/* t3 — humanities (data-danger): swap accent to --danger everywhere */
+/* t3 â€” humanities (data-danger): swap accent to --danger everywhere */
 .thoughtChip[data-danger] {
   --chip-accent: var(--danger);
   --chip-accent-soft: var(--danger-soft);
@@ -128,7 +128,7 @@
   --chip-line-trace: rgba(255, 77, 77, 0.12);
 }
 
-/* Halo behind chip — radial glow that appears on eyefish proximity + hover */
+/* Halo behind chip â€” radial glow that appears on eyefish proximity + hover */
 .thoughtChip::before {
   content: "";
   position: absolute;
@@ -157,14 +157,14 @@
 
 /* -------------------- Entrance (animation 1) --------------------
    Initial paint stays sharp. The chip can still transition, but never
-   starts blurred or shrunk — only motion polish, no readability tax. */
+   starts blurred or shrunk â€” only motion polish, no readability tax. */
 .thoughtChip[data-entered="false"] {
   opacity: 0.88;
   scale: 1;
   filter: none;
 }
 
-/* -------------------- Phase 0 — Idle (raw) -------------------- */
+/* -------------------- Phase 0 â€” Idle (raw) -------------------- */
 .thoughtChip[data-state="raw"] {
   border-color: var(--chip-line-raw);
   background: var(--surface);
@@ -181,7 +181,7 @@
     transform 0.15s ease-out;
 }
 
-/* -------------------- Phase 1 — Refining (hover/focus enter) -------------------- */
+/* -------------------- Phase 1 â€” Refining (hover/focus enter) -------------------- */
 /* Drift is paused; chip runs crystal growth animation; raw blurs+fades; halo glows.
    Type-write happens during this state (caret blinks).
    Facet sweep conic gradient runs on ::after pseudo-element. */
@@ -189,11 +189,11 @@
   animation: crystalGrow 0.5s var(--ease-out-expo) forwards; /* pause drift, run crystal growth */
   border-color: var(--chip-line-active);
   background: var(--surface-strong);
-  /* Loop-4 (Task 12 §6.1): active chip pops to z=50 — above textBlock (z=10)
+  /* Loop-4 (Task 12 Â§6.1): active chip pops to z=50 â€” above textBlock (z=10)
      so the refined text reads on top of the central message. Full opacity. */
   z-index: 50;
   opacity: 1;
-  /* faster, "smudgy" timing per §4 phase 1 */
+  /* faster, "smudgy" timing per Â§4 phase 1 */
   transition:
     transform 0.12s cubic-bezier(0.4, 0, 0.2, 1),
     border-color 0.12s cubic-bezier(0.4, 0, 0.2, 1),
@@ -206,14 +206,14 @@
   opacity: 0.6;
 }
 
-/* -------------------- Phase 3 — Refined (type-write done) -------------------- */
+/* -------------------- Phase 3 â€” Refined (type-write done) -------------------- */
 /* Chip settles; raw stays hidden; refined fully visible; caret hidden. */
 .thoughtChip[data-state="refined"] {
   animation: none;
   transform: rotate(var(--rot, 0deg)) scale(1);
   border-color: var(--chip-line-active);
   background: var(--surface-strong);
-  /* Loop-4 (Task 12 §6.1): same z-index as refining (50) — stays above textBlock. */
+  /* Loop-4 (Task 12 Â§6.1): same z-index as refining (50) â€” stays above textBlock. */
   z-index: 50;
   opacity: 1;
 }
@@ -222,14 +222,14 @@
   opacity: 0.4;
 }
 
-/* -------------------- Phase 5 — Trace (hover leave) -------------------- */
+/* -------------------- Phase 5 â€” Trace (hover leave) -------------------- */
 /* Refined fades to a faint trace; trace dot appears; chip returns to dim. */
 .thoughtChip[data-state="trace"] {
   animation: none;
   transform: rotate(var(--rot, 0deg)) scale(1);
   border-color: var(--chip-line-trace);
   background: var(--surface);
-  /* Loop-4 (Task 12 §6.1): trace layer = 3 (slightly above raw, still
+  /* Loop-4 (Task 12 Â§6.1): trace layer = 3 (slightly above raw, still
      below textBlock z=10). opacity inherited from base (0.88). */
   z-index: 3;
 }
@@ -238,15 +238,15 @@
   opacity: 0;
 }
 
-/* -------------------- Phase 6 — Resetting (return to raw) -------------------- */
+/* -------------------- Phase 6 â€” Resetting (return to raw) -------------------- */
 /* Over 1.2s, raw fades back in (de-blur), refined fades out,
    trace dot disappears, chip returns to idle.
-   The dissolve animation (§4.6 Aqua Regia) handles the visual transition. */
+   The dissolve animation (Â§4.6 Aqua Regia) handles the visual transition. */
 .thoughtChip[data-state="resetting"] {
   transform: rotate(var(--rot, 0deg)) scale(1);
   border-color: var(--chip-line-raw);
   background: var(--surface);
-  /* Loop-4 (Task 12 §6.1): back to raw level (z=2). opacity inherited (0.88). */
+  /* Loop-4 (Task 12 Â§6.1): back to raw level (z=2). opacity inherited (0.88). */
   z-index: 2;
   /* No transition here - dissolve keyframes handle the animation */
 }
@@ -325,9 +325,9 @@
   transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* -------------------- Phase 7 — Aborting (mid-type-write leave) --------------------
+/* -------------------- Phase 7 â€” Aborting (mid-type-write leave) --------------------
    User pulled away while the thought was still forming. The half-typed
-   text dissolves (blur + fade) while raw re-emerges — faster and softer
+   text dissolves (blur + fade) while raw re-emerges â€” faster and softer
    than a full reset, with NO trace dot (the thought never finished, so
    there's nothing to "remember"). A subtle, slightly disappointed return
    to idle. */
@@ -350,7 +350,7 @@
 }
 
 /* Aborting: raw re-emerges quickly (de-blur over 0.6s, slightly faster
-   than resetting's 1.2s — the abort feels more "snapped back" than
+   than resetting's 1.2s â€” the abort feels more "snapped back" than
    "slowly returning"). */
 .thoughtChip[data-state="aborting"] .thoughtRaw {
   filter: blur(0);
@@ -364,7 +364,7 @@
     text-decoration-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Aborting: the half-typed refined text blurs out and fades — like ink
+/* Aborting: the half-typed refined text blurs out and fades â€” like ink
    dissolving in water. Slightly faster than the raw return so the raw
    text "emerges through" the fading refined text. */
 .thoughtChip[data-state="aborting"] .thoughtRefined {
@@ -386,7 +386,7 @@
   opacity: 0;
 }
 
-/* Aborting: NO trace dot — the thought never finished forming, so there's
+/* Aborting: NO trace dot â€” the thought never finished forming, so there's
    nothing to leave a mark. This is the key difference from trace state. */
 .thoughtChip[data-state="aborting"] .traceDot {
   transform: scale(0);
@@ -399,7 +399,7 @@
   opacity: 0;
 }
 
-/* Mode 1 underline below refined text — grows right→left (RTL) */
+/* Mode 1 underline below refined text â€” grows rightâ†’left (RTL) */
 .thoughtChip[data-mode="1"] .thoughtRefined::after {
   content: "";
   position: absolute;
@@ -427,39 +427,39 @@
   transform: scaleX(1);
 }
 
-/* Mode 1: Blur→Type — Hexagonal lattice grows; raw text sublimates into vapor trail
+/* Mode 1: Blurâ†’Type â€” Hexagonal lattice grows; raw text sublimates into vapor trail
    Uses the base crystalGrow animation. */
 .thoughtChip[data-mode="1"][data-state="refining"] {
   /* Base crystalGrow animation applies */
 }
 
-/* Mode 2: Question→Answer — Seed crystal (raw) → twin crystal (refined) grows below
+/* Mode 2: Questionâ†’Answer â€” Seed crystal (raw) â†’ twin crystal (refined) grows below
    The refined text already appears below in Mode 2; enhance the effect */
 .thoughtChip[data-mode="2"][data-state="refining"] {
   /* The twin crystal effect is achieved by the refined text appearing below
      while raw stays visible with underline growing */
 }
 
-/* Mode 3: Strikethrough→Replace — Danger crystal: jagged unstable lattice → clean replacement crystal
+/* Mode 3: Strikethroughâ†’Replace â€” Danger crystal: jagged unstable lattice â†’ clean replacement crystal
    Uses danger colors via [data-danger] override. */
 .thoughtChip[data-mode="3"][data-state="refining"] {
   /* The strikethrough on raw + refined appearing as replacement is already handled
      in the Mode 3 specific rules below. The crystalGrow runs on the chip itself. */
 }
 
-/* Mode 4: Word→Sentence — Large seed crystal fractures into smaller refined facets
+/* Mode 4: Wordâ†’Sentence â€” Large seed crystal fractures into smaller refined facets
    Raw text shrinks (scale 0.7) while refined appears below with dashed separator. */
 .thoughtChip[data-mode="4"][data-state="refining"] {
-  /* The chip grows while raw shrinks — creates fracture effect */
+  /* The chip grows while raw shrinks â€” creates fracture effect */
 }
 
 /* =========================================================
-   Mode 1 — Blur → Type (default)
+   Mode 1 â€” Blur â†’ Type (default)
    Uses: t2, t5
    ========================================================= */
 /* -------------------- Label slide-in RTL (animation 7) --------------------
    Label slides in from right + down (RTL diagonal) when chip activates.
-   translate(8px, 4px) → translate(0, 0) over 0.22s — the existing
+   translate(8px, 4px) â†’ translate(0, 0) over 0.22s â€” the existing
    transition list still applies (transform 0.22s). */
 .thoughtLabel {
   font-size: 0.75rem;
@@ -524,7 +524,7 @@
   transform: scale(1);
 }
 
-/* B6: Accent dot pulse — re-use .traceDot in refined state. The dot
+/* B6: Accent dot pulse â€” re-use .traceDot in refined state. The dot
    was previously trace-only; now it also appears in refined and pulses
    with an expanding box-shadow ring (heartbeat effect). The 0.28s
    animation-delay lets the scale-in transition finish before the pulse
@@ -551,9 +551,9 @@
    A dot that expands into a line before the type-write begins. Sits
    inside the chip (Worker A adds it as a sibling of .thoughtRefined,
    before it in DOM order so it stacks below the typed text). Visible
-   only during refining — runs in parallel with the typewriter's 230ms
+   only during refining â€” runs in parallel with the typewriter's 230ms
    startDelay. The dot grows from 2px to 100% width (0.15s) then fades
-   (0.08s after a 0.15s delay) — total ~0.23s, matching the startDelay.
+   (0.08s after a 0.15s delay) â€” total ~0.23s, matching the startDelay.
    Uses var(--chip-accent) so t3 (data-danger) automatically picks up
    the --danger color via the chip-local override. */
 .inkSpread {
@@ -587,7 +587,7 @@
 }
 
 /* =========================================================
-   Mode 2 — سؤال → جواب (raw stays dim, underline grows,
+   Mode 2 â€” Ø³Ø¤Ø§Ù„ â†’ Ø¬ÙˆØ§Ø¨ (raw stays dim, underline grows,
                               refined appears below)
    Uses: t1 (Taskino), t6 (meta)
    ========================================================= */
@@ -595,7 +595,7 @@
   position: relative;
 }
 
-/* Underline below raw, grows right→left (RTL) on refine */
+/* Underline below raw, grows rightâ†’left (RTL) on refine */
 .thoughtChip[data-mode="2"] .thoughtRaw::after {
   content: "";
   position: absolute;
@@ -639,13 +639,13 @@
   opacity: 0.15;
 }
 
-/* Mode 2: refined underline (Mode 1 default) hidden — Mode 2 has its own */
+/* Mode 2: refined underline (Mode 1 default) hidden â€” Mode 2 has its own */
 .thoughtChip[data-mode="2"] .thoughtRefined::after {
   display: none;
 }
 
 /* =========================================================
-   Mode 3 — strikethrough → replace (t3 only, --danger color)
+   Mode 3 â€” strikethrough â†’ replace (t3 only, --danger color)
    ========================================================= */
 .thoughtChip[data-mode="3"][data-state="refining"] .thoughtRaw,
 .thoughtChip[data-mode="3"][data-state="refined"] .thoughtRaw,
@@ -685,7 +685,7 @@
 }
 
 /* =========================================================
-   Mode 4 — کلمه → جمله (large raw → shrinks, refined below
+   Mode 4 â€” Ú©Ù„Ù…Ù‡ â†’ Ø¬Ù…Ù„Ù‡ (large raw â†’ shrinks, refined below
                               with dashed separator)
    Uses: t4 (circadian)
    ========================================================= */
@@ -694,7 +694,7 @@
   font-weight: 700;
   font-style: normal;
   color: var(--ink-raw);
-  transform: scale(1); /* explicit baseline so scale(0.7)→scale(1) transitions cleanly */
+  transform: scale(1); /* explicit baseline so scale(0.7)â†’scale(1) transitions cleanly */
   transform-origin: right top;
   transition:
     font-size 0.24s var(--ease-out),
@@ -748,13 +748,13 @@
   opacity: 0.15;
 }
 
-/* Mode 4: refined underline (Mode 1 default) hidden — separator is the dashed line */
+/* Mode 4: refined underline (Mode 1 default) hidden â€” separator is the dashed line */
 .thoughtChip[data-mode="4"] .thoughtRefined::after {
   display: none;
 }
 
 /* =========================================================
-   Responsive — mobile (≤ 900px)
+   Responsive â€” mobile (â‰¤ 900px)
    ---------------------------------------------------------
    Mobile keeps the organic scatter. RawThought.tsx supplies mobile
    top/left percentages, and the cluster CSS gives those percentages
@@ -848,9 +848,9 @@
 }
 
 /* =========================================================
-   Responsive — desktop-narrow (1010-1179px)
+   Responsive â€” desktop-narrow (1010-1179px)
    ---------------------------------------------------------
-   Loop-4 (Task 12 §8.1): shrink chip max-width so t4 (left 76.3%)
+   Loop-4 (Task 12 Â§8.1): shrink chip max-width so t4 (left 76.3%)
    doesn't clip on the right edge of a narrower hero. Combined with
    the textBlock max-width: 480px rule in Hero.module.css, this gives
    chips enough breathing room to avoid overlap with the central text.
@@ -862,7 +862,7 @@
 }
 
 /* =========================================================
-   Touch affordance — hover:none / coarse pointer
+   Touch affordance â€” hover:none / coarse pointer
    ---------------------------------------------------------
    Fish-eye (mousemove) is desktop-only. On touch, chips sit at
    resting scale with no blur, meet 44px target, and keep
@@ -885,17 +885,17 @@
     min-height: 44px;
     min-width: 44px;
   }
-  /* keep ink spread off on touch — typewriter still runs on tap */
+  /* keep ink spread off on touch â€” typewriter still runs on tap */
   .inkSpread {
     display: none !important;
   }
 }
 
 /* =========================================================
-   Aqua Regia Dissolution — Reset Animation (§4.6)
+   Aqua Regia Dissolution â€” Reset Animation (Â§4.6)
    ---------------------------------------------------------
    When the reset button is pressed, all chips enter the
-   "resetting" state and dissolve like gold in aqua regia —
+   "resetting" state and dissolve like gold in aqua regia â€”
    a brief, violent blur + hue shift before settling back
    to the raw idle state. The animation runs forwards (does
    not reset to 0%) so the chip lands at its final idle
@@ -918,7 +918,7 @@
 /* =========================================================
    Reduced motion
    ---------------------------------------------------------
-   Per §4.2: drift removed, blur removed, transitions instant,
+   Per Â§4.2: drift removed, blur removed, transitions instant,
    caret hidden, refined text snaps to opacity 1.
    ========================================================= */
 @media (prefers-reduced-motion: reduce) {
@@ -942,7 +942,7 @@
     transition-duration: 0.001ms !important;
   }
 
-  /* B1: entrance snaps to visible — chip is shown immediately, no
+  /* B1: entrance snaps to visible â€” chip is shown immediately, no
      blur-in or scale-in. */
   .thoughtChip[data-entered="false"] {
     opacity: 0.88;

@@ -1,10 +1,10 @@
-/* ============================================================
-   Projects.module.css — میزِ آزمایشگاه (The Bench)
+﻿/* ============================================================
+   Projects.module.css â€” Ù…ÛŒØ²Ù Ø¢Ø²Ù…Ø§ÛŒØ´Ú¯Ø§Ù‡ (The Bench)
    ------------------------------------------------------------
-   «آزمایشگاه» — شش نمونه روی کاغذِ شطرنجی، زیر نورِ سقفی.
-   grid دو ستونه با ریتمِ نامنظمِ عمودی تا حس «چیده‌شده روی
-   میز» بدهد، نه «جدول». هر کارت خودش را در ProjectCard
-   می‌سازد؛ اینجا فقط بستر و سربرگ است.
+   Â«Ø¢Ø²Ù…Ø§ÛŒØ´Ú¯Ø§Ù‡Â» â€” Ø´Ø´ Ù†Ù…ÙˆÙ†Ù‡ Ø±ÙˆÛŒ Ú©Ø§ØºØ°Ù Ø´Ø·Ø±Ù†Ø¬ÛŒØŒ Ø²ÛŒØ± Ù†ÙˆØ±Ù Ø³Ù‚ÙÛŒ.
+   grid Ø¯Ùˆ Ø³ØªÙˆÙ†Ù‡ Ø¨Ø§ Ø±ÛŒØªÙ…Ù Ù†Ø§Ù…Ù†Ø¸Ù…Ù Ø¹Ù…ÙˆØ¯ÛŒ ØªØ§ Ø­Ø³ Â«Ú†ÛŒØ¯Ù‡â€ŒØ´Ø¯Ù‡ Ø±ÙˆÛŒ
+   Ù…ÛŒØ²Â» Ø¨Ø¯Ù‡Ø¯ØŒ Ù†Ù‡ Â«Ø¬Ø¯ÙˆÙ„Â». Ù‡Ø± Ú©Ø§Ø±Øª Ø®ÙˆØ¯Ø´ Ø±Ø§ Ø¯Ø± ProjectCard
+   Ù…ÛŒâ€ŒØ³Ø§Ø²Ø¯Ø› Ø§ÛŒÙ†Ø¬Ø§ ÙÙ‚Ø· Ø¨Ø³ØªØ± Ùˆ Ø³Ø±Ø¨Ø±Ú¯ Ø§Ø³Øª.
    ============================================================ */
 
 .projects {
@@ -21,8 +21,8 @@
   --accent-2: #7a9472;
   --accent-soft: rgba(58, 107, 107, 0.16);
   --accent-glow: rgba(58, 107, 107, 0.32);
-  --line: rgba(var(--gold-rgb) / 0.22);
-  --line-strong: rgba(var(--gold-rgb) / 0.4);
+  --line: rgba(var(--gold-rgb), 0.22);
+  --line-strong: rgba(var(--gold-rgb), 0.4);
   --danger: #e0935a;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -30,15 +30,15 @@
   --radius-lg: 18px;
   --radius-md: 12px;
 
-  /* باید دقیقاً برابرِ --seam در Synthesis.module.css باشد،
-     وگرنه مرزِ دو بخش به‌صورتِ یک خطِ افقی دیده می‌شود. */
+  /* Ø¨Ø§ÛŒØ¯ Ø¯Ù‚ÛŒÙ‚Ø§Ù‹ Ø¨Ø±Ø§Ø¨Ø±Ù --seam Ø¯Ø± Synthesis.module.css Ø¨Ø§Ø´Ø¯ØŒ
+     ÙˆÚ¯Ø±Ù†Ù‡ Ù…Ø±Ø²Ù Ø¯Ùˆ Ø¨Ø®Ø´ Ø¨Ù‡â€ŒØµÙˆØ±ØªÙ ÛŒÚ© Ø®Ø·Ù Ø§ÙÙ‚ÛŒ Ø¯ÛŒØ¯Ù‡ Ù…ÛŒâ€ŒØ´ÙˆØ¯. */
   --seam: #0e0d11;
 
   position: relative;
-  /* padding بالا کم شد: ریلِ ورودی خودش فاصله را می‌سازد */
+  /* padding Ø¨Ø§Ù„Ø§ Ú©Ù… Ø´Ø¯: Ø±ÛŒÙ„Ù ÙˆØ±ÙˆØ¯ÛŒ Ø®ÙˆØ¯Ø´ ÙØ§ØµÙ„Ù‡ Ø±Ø§ Ù…ÛŒâ€ŒØ³Ø§Ø²Ø¯ */
   padding: 0 clamp(24px, 5vw, 60px) clamp(60px, 10vw, 120px);
   background:
-    radial-gradient(900px 520px at 50% 92%, rgba(var(--gold-rgb) / 0.035) 0%, transparent 72%),
+    radial-gradient(900px 520px at 50% 92%, rgba(var(--gold-rgb), 0.035) 0%, transparent 72%),
     radial-gradient(700px 420px at 82% 78%, rgba(58, 107, 107, 0.02) 0%, transparent 70%),
     linear-gradient(
       to bottom,
@@ -52,7 +52,7 @@
   direction: rtl;
 }
 
-/* === Scroll-Reveal برای سربرگ === */
+/* === Scroll-Reveal Ø¨Ø±Ø§ÛŒ Ø³Ø±Ø¨Ø±Ú¯ === */
 .projects :global([data-reveal]) {
   opacity: 0;
   transform: translateY(20px);
@@ -75,7 +75,7 @@
 .projects[data-revealed="true"] .status { transition-delay: 270ms; }
 
 /* ============================================================
-   میز — کاغذِ شطرنجی + نورِ سقفی
+   Ù…ÛŒØ² â€” Ú©Ø§ØºØ°Ù Ø´Ø·Ø±Ù†Ø¬ÛŒ + Ù†ÙˆØ±Ù Ø³Ù‚ÙÛŒ
    ============================================================ */
 .bench {
   position: absolute;
@@ -85,29 +85,29 @@
   overflow: hidden;
 }
 
-/* کاغذِ مهندسی: دو شبکه‌ی تودرتو، محو به سمت لبه‌ها */
+/* Ú©Ø§ØºØ°Ù Ù…Ù‡Ù†Ø¯Ø³ÛŒ: Ø¯Ùˆ Ø´Ø¨Ú©Ù‡â€ŒÛŒ ØªÙˆØ¯Ø±ØªÙˆØŒ Ù…Ø­Ùˆ Ø¨Ù‡ Ø³Ù…Øª Ù„Ø¨Ù‡â€ŒÙ‡Ø§ */
 .grid1 {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(rgba(var(--gold-rgb) / 0.05) 1px, transparent 1px) 0 0 / 100% 96px,
-    linear-gradient(90deg, rgba(var(--gold-rgb) / 0.05) 1px, transparent 1px) 0 0 / 96px 100%,
-    linear-gradient(rgba(var(--gold-rgb) / 0.022) 1px, transparent 1px) 0 0 / 100% 24px,
-    linear-gradient(90deg, rgba(var(--gold-rgb) / 0.022) 1px, transparent 1px) 0 0 / 24px 100%;
-  /* بالای شبکه هم محو می‌شود تا از زیرِ درز بیرون نزند */
+    linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px) 0 0 / 100% 96px,
+    linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px) 0 0 / 96px 100%,
+    linear-gradient(rgba(var(--gold-rgb), 0.022) 1px, transparent 1px) 0 0 / 100% 24px,
+    linear-gradient(90deg, rgba(var(--gold-rgb), 0.022) 1px, transparent 1px) 0 0 / 24px 100%;
+  /* Ø¨Ø§Ù„Ø§ÛŒ Ø´Ø¨Ú©Ù‡ Ù‡Ù… Ù…Ø­Ùˆ Ù…ÛŒâ€ŒØ´ÙˆØ¯ ØªØ§ Ø§Ø² Ø²ÛŒØ±Ù Ø¯Ø±Ø² Ø¨ÛŒØ±ÙˆÙ† Ù†Ø²Ù†Ø¯ */
   mask-image: radial-gradient(ellipse 72% 62% at 50% 52%, #000 12%, transparent 78%);
   opacity: 0.85;
 }
 
-/* نورِ سقفیِ آزمایشگاه — پایین‌تر از درز شروع می‌شود تا
-   با هاله‌ی کوره تداخل نکند و مرز را لو ندهد */
+/* Ù†ÙˆØ±Ù Ø³Ù‚ÙÛŒÙ Ø¢Ø²Ù…Ø§ÛŒØ´Ú¯Ø§Ù‡ â€” Ù¾Ø§ÛŒÛŒÙ†â€ŒØªØ± Ø§Ø² Ø¯Ø±Ø² Ø´Ø±ÙˆØ¹ Ù…ÛŒâ€ŒØ´ÙˆØ¯ ØªØ§
+   Ø¨Ø§ Ù‡Ø§Ù„Ù‡â€ŒÛŒ Ú©ÙˆØ±Ù‡ ØªØ¯Ø§Ø®Ù„ Ù†Ú©Ù†Ø¯ Ùˆ Ù…Ø±Ø² Ø±Ø§ Ù„Ùˆ Ù†Ø¯Ù‡Ø¯ */
 .bgGlow {
   position: absolute;
   inset: 0;
   background:
     radial-gradient(
       ellipse 62% 34% at 50% 16%,
-      rgba(var(--gold-rgb) / 0.1) 0%,
+      rgba(var(--gold-rgb), 0.1) 0%,
       transparent 68%
     ),
     radial-gradient(
@@ -183,7 +183,7 @@
 }
 
 /* ============================================================
-   نوارِ وضعیت
+   Ù†ÙˆØ§Ø±Ù ÙˆØ¶Ø¹ÛŒØª
    ============================================================ */
 .status {
   display: inline-flex;
@@ -192,7 +192,7 @@
   margin-top: clamp(20px, 3vw, 28px);
   padding: 9px 18px;
   background: rgba(245, 240, 228, 0.028);
-  border: 1px solid rgba(var(--gold-rgb) / 0.16);
+  border: 1px solid rgba(var(--gold-rgb), 0.16);
   border-radius: 999px;
   backdrop-filter: blur(10px);
   font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
@@ -223,7 +223,7 @@
 .statusDivider {
   width: 1px;
   height: 12px;
-  background: rgba(var(--gold-rgb) / 0.2);
+  background: rgba(var(--gold-rgb), 0.2);
 }
 
 .statusPulse {
@@ -231,7 +231,7 @@
   height: 6px;
   border-radius: 50%;
   background: var(--accent-2);
-  box-shadow: 0 0 8px rgba(var(--accent-2-rgb) / 0.5);
+  box-shadow: 0 0 8px rgba(var(--accent-2-rgb), 0.5);
   animation: livePulse 2.2s ease-in-out infinite;
 }
 
@@ -241,7 +241,7 @@
 }
 
 /* ============================================================
-   شبکه‌ی نمونه‌ها — ۲×۳ با ریتمِ نامنظمِ عمودی
+   Ø´Ø¨Ú©Ù‡â€ŒÛŒ Ù†Ù…ÙˆÙ†Ù‡â€ŒÙ‡Ø§ â€” Û²Ã—Û³ Ø¨Ø§ Ø±ÛŒØªÙ…Ù Ù†Ø§Ù…Ù†Ø¸Ù…Ù Ø¹Ù…ÙˆØ¯ÛŒ
    ============================================================ */
 .grid {
   display: grid;
@@ -250,16 +250,16 @@
   align-items: start;
 }
 
-/* ستونِ دوم کمی پایین‌تر می‌نشیند — چیده‌شده روی میز، نه در جدول */
+/* Ø³ØªÙˆÙ†Ù Ø¯ÙˆÙ… Ú©Ù…ÛŒ Ù¾Ø§ÛŒÛŒÙ†â€ŒØªØ± Ù…ÛŒâ€ŒÙ†Ø´ÛŒÙ†Ø¯ â€” Ú†ÛŒØ¯Ù‡â€ŒØ´Ø¯Ù‡ Ø±ÙˆÛŒ Ù…ÛŒØ²ØŒ Ù†Ù‡ Ø¯Ø± Ø¬Ø¯ÙˆÙ„ */
 .grid > *:nth-child(even) {
   margin-top: clamp(14px, 2.4vw, 32px);
 }
 
 /* ============================================================
-   ریلِ ورودی — ادامه‌ی ناودانِ کوره
+   Ø±ÛŒÙ„Ù ÙˆØ±ÙˆØ¯ÛŒ â€” Ø§Ø¯Ø§Ù…Ù‡â€ŒÛŒ Ù†Ø§ÙˆØ¯Ø§Ù†Ù Ú©ÙˆØ±Ù‡
    ------------------------------------------------------------
-   همان ریلِ عمودیِ بخشِ تبلور از درز عبور می‌کند و اینجا به
-   یک خطِ افقی می‌رسد: مذاب رسید، حالا روی میز پهن می‌شود.
+   Ù‡Ù…Ø§Ù† Ø±ÛŒÙ„Ù Ø¹Ù…ÙˆØ¯ÛŒÙ Ø¨Ø®Ø´Ù ØªØ¨Ù„ÙˆØ± Ø§Ø² Ø¯Ø±Ø² Ø¹Ø¨ÙˆØ± Ù…ÛŒâ€ŒÚ©Ù†Ø¯ Ùˆ Ø§ÛŒÙ†Ø¬Ø§ Ø¨Ù‡
+   ÛŒÚ© Ø®Ø·Ù Ø§ÙÙ‚ÛŒ Ù…ÛŒâ€ŒØ±Ø³Ø¯: Ù…Ø°Ø§Ø¨ Ø±Ø³ÛŒØ¯ØŒ Ø­Ø§Ù„Ø§ Ø±ÙˆÛŒ Ù…ÛŒØ² Ù¾Ù‡Ù† Ù…ÛŒâ€ŒØ´ÙˆØ¯.
    ============================================================ */
 .threadBridge {
   position: relative;
@@ -267,7 +267,7 @@
   margin-bottom: clamp(28px, 4vw, 44px);
 }
 
-/* نیمه‌ی بالا: ادامه‌ی ریلِ عمودی */
+/* Ù†ÛŒÙ…Ù‡â€ŒÛŒ Ø¨Ø§Ù„Ø§: Ø§Ø¯Ø§Ù…Ù‡â€ŒÛŒ Ø±ÛŒÙ„Ù Ø¹Ù…ÙˆØ¯ÛŒ */
 .threadBridge::before {
   content: "";
   position: absolute;
@@ -284,7 +284,7 @@
     opacity 0.5s var(--ease-out);
 }
 
-/* نیمه‌ی پایین: پهن‌شدن روی میز */
+/* Ù†ÛŒÙ…Ù‡â€ŒÛŒ Ù¾Ø§ÛŒÛŒÙ†: Ù¾Ù‡Ù†â€ŒØ´Ø¯Ù† Ø±ÙˆÛŒ Ù…ÛŒØ² */
 .threadBridge::after {
   content: "";
   position: absolute;
@@ -335,7 +335,7 @@
     max-width: 480px;
     margin: 0 auto;
   }
-  /* در حالتِ تک‌ستونی، آفستِ عمودی معنا ندارد */
+  /* Ø¯Ø± Ø­Ø§Ù„ØªÙ ØªÚ©â€ŒØ³ØªÙˆÙ†ÛŒØŒ Ø¢ÙØ³ØªÙ Ø¹Ù…ÙˆØ¯ÛŒ Ù…Ø¹Ù†Ø§ Ù†Ø¯Ø§Ø±Ø¯ */
   .grid > *:nth-child(even) {
     margin-top: 0;
   }

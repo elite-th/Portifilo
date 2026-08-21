@@ -1,5 +1,5 @@
-/* =========================================================
-   Archive — «آزمایشگاه» (Lab)
+﻿/* =========================================================
+   Archive â€” Â«Ø¢Ø²Ù…Ø§ÛŒØ´Ú¯Ø§Ù‡Â» (Lab)
    Tokens come from src/app/globals.css (no new tokens).
    Layout follows the new design: Deep Ink background with
    parchment-like cards, crimson accents.
@@ -10,7 +10,7 @@
   isolation: isolate;
   width: 100%;
   background:
-    radial-gradient(820px 420px at 50% 0%, rgba(var(--gold-rgb) / 0.038) 0%, transparent 68%),
+    radial-gradient(820px 420px at 50% 0%, rgba(var(--gold-rgb), 0.038) 0%, transparent 68%),
     radial-gradient(600px 380px at 88% 92%, rgba(58, 107, 107, 0.018) 0%, transparent 72%),
     var(--bg);
   border-top: 1px solid var(--line);
@@ -73,8 +73,8 @@
   max-width: 48ch;
 }
 
-/* ---------- Stats (Task 23 §8) ----------
-   Each number is a button — click → filter that type.
+/* ---------- Stats (Task 23 Â§8) ----------
+   Each number is a button â€” click â†’ filter that type.
    Active state matches the filter bar (accent fill). */
 .stats {
   display: flex;
@@ -183,7 +183,7 @@
   outline-offset: 3px;
 }
 
-/* ---------- Masonry (Task 23 §2.3) ---------- */
+/* ---------- Masonry (Task 23 Â§2.3) ---------- */
 .masonry {
   direction: rtl; /* RTL: first item in the right column, per Persian reading */
   column-count: 3;
@@ -197,7 +197,7 @@
   margin-bottom: 24px;
   display: block;
   width: 100%;
-  /* Entrance animation — fades + lifts. Driven by `data-entered` on the
+  /* Entrance animation â€” fades + lifts. Driven by `data-entered` on the
      child card, but the wrapper controls the animation-delay so the
      staggering applies to the wrapper, not the inner card. */
   opacity: 0;
@@ -330,7 +330,7 @@
 
   .masonryItem {
     margin-bottom: 18px;
-    /* Mobile: opacity-only — transform/filter feels heavy on small screens. */
+    /* Mobile: opacity-only â€” transform/filter feels heavy on small screens. */
     transform: none;
     filter: none;
     transition: opacity 0.4s var(--ease-out);
