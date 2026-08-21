@@ -23,51 +23,51 @@
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  background:
-    radial-gradient(1100px 700px at 50% -12%, rgba(var(--gold-rgb), 0.16) 0%, transparent 62%),
-    radial-gradient(900px 650px at 12% 28%, rgba(58, 107, 107, 0.09) 0%, transparent 68%),
-    radial-gradient(700px 500px at 88% 84%, rgba(197, 160, 89, 0.05) 0%, transparent 70%),
-    var(--bg);
+  /* Obsidian base — cool near-black, no warmth in the floor */
+  background: #08080a;
   color: var(--text);
   position: relative;
   overflow: hidden;
   isolation: isolate;
 }
 
-/* Layer 1 â€” aurora mesh + vignette (distinct from Journey) */
+/* Layer 1 — Gilt beam: one precise light shaft from top-center.
+   Cool ink everywhere else; gold only where it means something. */
 .page::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(750px 520px at 50% 32%, rgba(var(--gold-rgb), 0.11) 0%, transparent 58%),
-    radial-gradient(560px 420px at 22% 14%, rgba(var(--accent-2-rgb), 0.07) 0%, transparent 62%),
-    radial-gradient(620px 480px at 84% 78%, rgba(122, 148, 114, 0.06) 0%, transparent 68%),
-    radial-gradient(900px 600px at 50% 100%, rgba(10, 10, 12, 0) 45%, rgba(10, 10, 12, 0.65) 100%);
-  filter: blur(0.3px);
+    radial-gradient(420px 340px at 50% -6%, rgba(var(--gold-rgb), 0.28) 0%, rgba(var(--gold-rgb), 0.10) 38%, transparent 68%),
+    radial-gradient(900px 520px at 50% -14%, rgba(var(--gold-rgb), 0.07) 0%, transparent 60%),
+    radial-gradient(700px 480px at -8% 108%, rgba(45, 85, 85, 0.12) 0%, transparent 62%),
+    radial-gradient(700px 480px at 108% 108%, rgba(45, 85, 85, 0.1) 0%, transparent 62%),
+    linear-gradient(180deg, transparent 88%, rgba(var(--gold-rgb), 0.05) 97%, transparent 100%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* Layer 2 â€” grid + grain mask (fainter, larger reveal) */
+/* Layer 2 — architectural grid + vignette.
+   Fine lines with a wide center hole so text sits on clean black. */
 .page::after {
   content: "";
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(var(--accent-2-rgb), 0.11) 1px, transparent 1.7px),
-    linear-gradient(150deg, transparent 31%, rgba(var(--accent-2-rgb), 0.05) 31.5%, transparent 32%),
-    linear-gradient(28deg, transparent 62%, rgba(var(--accent-2-rgb), 0.04) 62.5%, transparent 63%),
-    radial-gradient(circle at 1px 1px, rgba(212, 175, 106, 0.06) 1px, transparent 1.4px);
-  background-size: 28px 28px, 100% 100%, 100% 100%, 46px 46px;
-  background-position: center;
-  mask-image: radial-gradient(78% 74% at 50% 36%, black 32%, transparent 92%);
-  -webkit-mask-image: radial-gradient(78% 74% at 50% 36%, black 32%, transparent 92%);
-  opacity: 0.32;
+    linear-gradient(to left, rgba(245, 240, 228, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 240, 228, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  background-position: center top;
+  mask-image:
+    radial-gradient(ellipse 46% 42% at 50% 44%, transparent 34%, black 78%),
+    linear-gradient(180deg, black 0%, black 82%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    radial-gradient(ellipse 46% 42% at 50% 44%, transparent 34%, black 78%);
+  opacity: 0.5;
   pointer-events: none;
   z-index: 0;
 }
-
 /* ===================== Header ===================== */
 .header {
   position: relative;
@@ -198,10 +198,9 @@
 .textBlock::before {
   content: "";
   position: absolute;
-  inset: -42% -35% -35% -35%;
-  background: radial-gradient(ellipse 62% 55% at 50% 48%, rgba(var(--gold-rgb), 0.08) 0%, transparent 72%);
-  filter: blur(20px);
-  opacity: 0.9;
+  inset: -30% -25% -25% -25%;
+  background: radial-gradient(ellipse 58% 52% at 50% 45%, rgba(10, 10, 12, 0.55) 0%, rgba(10, 10, 12, 0.25) 55%, transparent 78%);
+  filter: blur(14px);
   z-index: -1;
   pointer-events: none;
 }
