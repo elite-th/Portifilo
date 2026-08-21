@@ -216,9 +216,17 @@
   --muted-foreground: var(--sepia-ink);
 }
 
+/* View Transitions — native, progressive, no library */
+@view-transition {
+  navigation: auto;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
   }
   html,
   body {
@@ -232,6 +240,27 @@
     font-family: var(--font-vazirmatn), system-ui, -apple-system, sans-serif;
     font-size: var(--step-0);
     line-height: 1.7;
+    /* Persian typographic refinements — Vazirmatn optical sizing + ZWNJ handling */
+    font-feature-settings: "ss01" 1, "ss02" 1;
+    font-variant-ligatures: contextual common-ligatures;
+    font-kerning: normal;
+    hanging-punctuation: first allow-end;
+    line-break: auto;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+  /* Alchemy stage labels — one faint line per journey section to make the arc legible */
+  [data-alchemy-stage]::before {
+    content: attr(data-alchemy-stage);
+    display: block;
+    font-family: var(--font-jetbrains-mono, monospace);
+    font-size: var(--step--2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    opacity: 0.6;
+    margin-bottom: 1.2rem;
+    text-align: center;
   }
 
   /* Focus visible ring */
@@ -397,6 +426,17 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+  html {
+    scroll-behavior: auto !important;
+  }
+  @view-transition {
+    navigation: none;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
   .thoughtChip[data-scroll-revealed="true"] { animation: none; opacity: 0.88; scale: 1; filter: none; }
   .thoughtChip[data-state="refining"] { animation: none; }

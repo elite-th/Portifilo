@@ -86,6 +86,7 @@ export default function WhatIBuild() {
       ref={ref}
       className={styles.whatIBuild}
       data-journey-section="2"
+      data-alchemy-stage="02 — Dissolution"
       aria-labelledby="build-title"
     >
       <div className={styles.inner}>

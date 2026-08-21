@@ -70,6 +70,7 @@ export default function Connect() {
       ref={ref}
       className={styles.connect}
       data-journey-section="6"
+      data-alchemy-stage="06 — Coagulation"
       aria-label="بیا وصل بشیم"
     >
       <div className={styles.inner}>

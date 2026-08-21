@@ -67,6 +67,7 @@ export default function WhereIGo() {
       ref={ref}
       className={styles.whereIGo}
       data-journey-section="4"
+      data-alchemy-stage="04 — Conjunction"
       aria-labelledby="go-title"
     >
       <div className={styles.inner}>

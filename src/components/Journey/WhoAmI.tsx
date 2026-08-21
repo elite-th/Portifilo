@@ -29,6 +29,7 @@ export default function WhoAmI() {
       ref={ref}
       className={styles.whoAmI}
       data-journey-section="1"
+      data-alchemy-stage="01 — Calcination"
       aria-labelledby="who-title"
     >
       <div className={styles.inner}>

@@ -85,6 +85,7 @@ export default function OpenQuestions() {
       ref={ref}
       className={styles.openQuestions}
       data-journey-section="5"
+      data-alchemy-stage="05 — Fermentation"
       aria-labelledby="questions-title"
     >
       <div className={styles.inner}>

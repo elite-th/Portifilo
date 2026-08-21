@@ -20,6 +20,7 @@ export default function WhereIFrom() {
       ref={ref}
       className={styles.whereIFrom}
       data-journey-section="3"
+      data-alchemy-stage="03 — Separation"
       aria-labelledby="from-title"
     >
       {/* بک‌گراند طلایی ایران */}
