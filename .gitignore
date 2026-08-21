@@ -66,5 +66,6 @@ server.log
 
 # SQLite database (regenerate with `bun run db:push`)
 /db/*.db
-/db/*.db-journalprisma/*.db
+/db/*.db-journal
+prisma/*.db
 prisma/*.db-journal
