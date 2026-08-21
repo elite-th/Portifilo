@@ -90,7 +90,7 @@ export default function Connect() {
         >
           <span className={styles.ctaBigLabel}>{CTA_BUTTON.label}</span>
           <span className={styles.ctaBigArrow} aria-hidden="true">→</span>
-          <span className={styles.ctaBigHint}>immediate response zone</span>
+          <span className={styles.ctaBigHint}>معمولاً سریع جواب می‌دم</span>
         </a>
 
         <div className={styles.connectDividerSmall} aria-hidden="true">
