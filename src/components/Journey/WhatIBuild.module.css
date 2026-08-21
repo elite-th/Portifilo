@@ -15,11 +15,22 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    60% 50% at 80% 50%,
-    rgba(212, 175, 106, 0.04) 0%,
-    transparent 70%
-  );
+  background:
+    radial-gradient(740px 460px at 82% 38%, rgba(212, 175, 106, 0.06) 0%, transparent 68%),
+    radial-gradient(560px 420px at 12% 84%, rgba(58, 107, 107, 0.028) 0%, transparent 72%),
+    linear-gradient(180deg, transparent 60%, rgba(10, 10, 12, 0.32) 100%);
+  pointer-events: none;
+}
+
+.whatIBuild::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(212, 175, 106, 0.038) 1px, transparent 1.7px);
+  background-size: 32px 32px;
+  opacity: 0.13;
+  mask-image: radial-gradient(62% 52% at 82% 38%, black 28%, transparent 78%);
+  -webkit-mask-image: radial-gradient(62% 52% at 82% 38%, black 28%, transparent 78%);
   pointer-events: none;
 }
 

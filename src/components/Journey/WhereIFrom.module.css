@@ -12,6 +12,23 @@
   color: var(--text);
   overflow: hidden;
   isolation: isolate;
+  background:
+    radial-gradient(820px 620px at 50% 48%, rgba(212, 175, 106, 0.045) 0%, transparent 68%),
+    radial-gradient(640px 460px at 18% 18%, rgba(58, 107, 107, 0.032) 0%, transparent 70%),
+    linear-gradient(180deg, transparent 62%, rgba(10, 10, 12, 0.45) 100%);
+}
+
+.whereIFrom::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(212, 175, 106, 0.032) 1px, transparent 1.6px);
+  background-size: 36px 36px;
+  opacity: 0.10;
+  mask-image: radial-gradient(55% 55% at 50% 50%, black 35%, transparent 78%);
+  -webkit-mask-image: radial-gradient(55% 55% at 50% 50%, black 35%, transparent 78%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .inner {

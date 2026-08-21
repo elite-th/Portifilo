@@ -6,10 +6,26 @@
 
 .journey {
   position: relative;
-  background: var(--bg);
+  background:
+    radial-gradient(1100px 700px at 50% 2%, rgba(var(--gold-rgb) / 0.035) 0%, transparent 68%),
+    radial-gradient(900px 600px at 85% 92%, rgba(58, 107, 107, 0.025) 0%, transparent 70%),
+    var(--bg);
   color: var(--text);
   padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 4vw, 2.5rem) clamp(5rem, 10vw, 8rem);
   overflow: hidden;
+}
+
+.journey::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(245, 240, 228, 0.025) 1px, transparent 1.6px);
+  background-size: 34px 34px;
+  opacity: 0.14;
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Ambient — sticky light-line that flows behind the whole journey.

@@ -6,15 +6,36 @@
    ========================================================= */
 
 .archive {
+  position: relative;
+  isolation: isolate;
   width: 100%;
-  background: var(--bg);
+  background:
+    radial-gradient(820px 420px at 50% 0%, rgba(var(--gold-rgb) / 0.038) 0%, transparent 68%),
+    radial-gradient(600px 380px at 88% 92%, rgba(58, 107, 107, 0.018) 0%, transparent 72%),
+    var(--bg);
   border-top: 1px solid var(--line);
   padding: 80px 32px;
   display: flex;
   justify-content: center;
+  overflow: hidden;
+}
+
+.archive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(245, 240, 228, 0.022) 1px, transparent 1.6px);
+  background-size: 34px 34px;
+  opacity: 0.12;
+  mask-image: linear-gradient(to bottom, black 0%, black 65%, transparent 92%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 65%, transparent 92%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .archiveInner {
+  position: relative;
+  z-index: 1;
   max-width: 1180px;
   width: 100%;
   margin: 0 auto;

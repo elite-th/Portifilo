@@ -37,13 +37,16 @@
   position: relative;
   /* padding بالا کم شد: ریلِ ورودی خودش فاصله را می‌سازد */
   padding: 0 clamp(24px, 5vw, 60px) clamp(60px, 10vw, 120px);
-  background: linear-gradient(
-    to bottom,
-    var(--seam) 0%,
-    var(--seam) 4%,
-    var(--bg) 26%,
-    var(--bg) 100%
-  );
+  background:
+    radial-gradient(900px 520px at 50% 92%, rgba(var(--gold-rgb) / 0.035) 0%, transparent 72%),
+    radial-gradient(700px 420px at 82% 78%, rgba(58, 107, 107, 0.02) 0%, transparent 70%),
+    linear-gradient(
+      to bottom,
+      var(--seam) 0%,
+      var(--seam) 4%,
+      var(--bg) 26%,
+      var(--bg) 100%
+    );
   overflow: hidden;
   isolation: isolate;
   direction: rtl;

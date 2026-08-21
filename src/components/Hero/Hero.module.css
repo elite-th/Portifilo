@@ -23,40 +23,47 @@
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg);
+  background:
+    radial-gradient(1100px 700px at 50% -12%, rgba(var(--gold-rgb) / 0.16) 0%, transparent 62%),
+    radial-gradient(900px 650px at 12% 28%, rgba(58, 107, 107, 0.09) 0%, transparent 68%),
+    radial-gradient(700px 500px at 88% 84%, rgba(197, 160, 89, 0.05) 0%, transparent 70%),
+    var(--bg);
   color: var(--text);
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
-/* Ambient background — sleek ink aurora (upgraded) */
+/* Layer 1 — aurora mesh + vignette (distinct from Journey) */
 .page::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -10% -5% -5% -5%;
   background:
-    radial-gradient(900px 600px at 50% -8%, rgba(var(--gold-rgb) / 0.14) 0%, transparent 60%),
-    radial-gradient(700px 500px at 18% 18%, rgba(var(--accent-2-rgb) / 0.09) 0%, transparent 55%),
-    radial-gradient(800px 600px at 82% 76%, rgba(197, 160, 89, 0.06) 0%, transparent 65%),
-    radial-gradient(600px 500px at 50% 100%, rgba(var(--accent-2-rgb) / 0.07) 0%, transparent 70%),
-    linear-gradient(180deg, rgba(10,10,12,0) 60%, rgba(10,10,12,0.55) 100%);
+    radial-gradient(750px 520px at 50% 32%, rgba(var(--gold-rgb) / 0.11) 0%, transparent 58%),
+    radial-gradient(560px 420px at 22% 14%, rgba(var(--accent-2-rgb) / 0.07) 0%, transparent 62%),
+    radial-gradient(620px 480px at 84% 78%, rgba(122, 148, 114, 0.06) 0%, transparent 68%),
+    radial-gradient(900px 600px at 50% 100%, rgba(10, 10, 12, 0) 45%, rgba(10, 10, 12, 0.65) 100%);
+  filter: blur(0.3px);
   pointer-events: none;
   z-index: 0;
 }
 
+/* Layer 2 — grid + grain mask (fainter, larger reveal) */
 .page::after {
   content: "";
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(var(--accent-2-rgb) / 0.14) 1px, transparent 1.6px),
-    linear-gradient(150deg, transparent 31%, rgba(var(--accent-2-rgb) / 0.06) 31.5%, transparent 32%),
-    linear-gradient(28deg, transparent 62%, rgba(var(--accent-2-rgb) / 0.05) 62.5%, transparent 63%);
-  background-size: 28px 28px, 100% 100%, 100% 100%;
+    radial-gradient(circle at 1px 1px, rgba(var(--accent-2-rgb) / 0.11) 1px, transparent 1.7px),
+    linear-gradient(150deg, transparent 31%, rgba(var(--accent-2-rgb) / 0.05) 31.5%, transparent 32%),
+    linear-gradient(28deg, transparent 62%, rgba(var(--accent-2-rgb) / 0.04) 62.5%, transparent 63%),
+    radial-gradient(circle at 1px 1px, rgba(212, 175, 106, 0.06) 1px, transparent 1.4px);
+  background-size: 28px 28px, 100% 100%, 100% 100%, 46px 46px;
   background-position: center;
-  mask-image: radial-gradient(75% 72% at 50% 38%, black 30%, transparent 90%);
-  -webkit-mask-image: radial-gradient(75% 72% at 50% 38%, black 30%, transparent 90%);
-  opacity: 0.38;
+  mask-image: radial-gradient(78% 74% at 50% 36%, black 32%, transparent 92%);
+  -webkit-mask-image: radial-gradient(78% 74% at 50% 36%, black 32%, transparent 92%);
+  opacity: 0.32;
   pointer-events: none;
   z-index: 0;
 }
@@ -186,6 +193,17 @@
   max-width: 560px;
   margin: 0 auto;
   text-align: center;
+}
+
+.textBlock::before {
+  content: "";
+  position: absolute;
+  inset: -42% -35% -35% -35%;
+  background: radial-gradient(ellipse 62% 55% at 50% 48%, rgba(var(--gold-rgb) / 0.08) 0%, transparent 72%);
+  filter: blur(20px);
+  opacity: 0.9;
+  z-index: -1;
+  pointer-events: none;
 }
 
 
