@@ -38,7 +38,7 @@
 .page::before {
   content: "";
   position: absolute;
-  inset: -10% -5% -5% -5%;
+  inset: 0;
   background:
     radial-gradient(750px 520px at 50% 32%, rgba(var(--gold-rgb) / 0.11) 0%, transparent 58%),
     radial-gradient(560px 420px at 22% 14%, rgba(var(--accent-2-rgb) / 0.07) 0%, transparent 62%),
