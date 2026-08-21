@@ -16,6 +16,10 @@ function getClientIp(req: NextRequest): string {
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+  // opportunistic cleanup of expired entries when map grows
+  if (attempts.size > 100) {
+    for (const [k, v] of attempts) if (now > v.resetAt) attempts.delete(k);
+  }
   const entry = attempts.get(ip);
   if (!entry || now > entry.resetAt) {
     attempts.set(ip, { count: 1, resetAt: now + WINDOW_MS });

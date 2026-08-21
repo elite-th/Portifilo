@@ -84,7 +84,7 @@ export default function Hero() {
       </main>
 
       <footer className={styles.footer}>
-        <span>© {new Date().getFullYear()} طاها حسینی</span>
+        <span suppressHydrationWarning>© {new Date().getFullYear()} طاها حسینی</span>
       </footer>
     </div>
   );

@@ -249,19 +249,6 @@
     word-break: keep-all;
     overflow-wrap: anywhere;
   }
-  /* Alchemy stage labels — one faint line per journey section to make the arc legible */
-  [data-alchemy-stage]::before {
-    content: attr(data-alchemy-stage);
-    display: block;
-    font-family: var(--font-jetbrains-mono, monospace);
-    font-size: var(--step--2);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted-2);
-    opacity: 0.6;
-    margin-bottom: 1.2rem;
-    text-align: center;
-  }
 
   /* Focus visible ring */
   :focus-visible {
@@ -291,6 +278,20 @@
   ::-webkit-scrollbar-thumb:hover {
     background: var(--line);
   }
+}
+
+/* Alchemy stage labels — one faint line per journey section to make the arc legible (outside @layer so not overridden) */
+[data-alchemy-stage]::before {
+  content: attr(data-alchemy-stage);
+  display: block;
+  font-family: var(--font-jetbrains-mono, monospace);
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  opacity: 0.6;
+  margin-bottom: 1.2rem;
+  text-align: center;
 }
 
 /* === Structural Language (Archive Grammar) === */
