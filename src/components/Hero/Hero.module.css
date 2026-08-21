@@ -29,16 +29,17 @@
   overflow: hidden;
 }
 
-/* Ambient background — soft glow plus faint node grid */
+/* Ambient background — sleek ink aurora (upgraded) */
 .page::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 34%, rgba(var(--accent-2-rgb) / 0.12) 0%, transparent 24%),
-    radial-gradient(circle at 18% 18%, rgba(var(--accent-2-rgb) / 0.07) 0%, transparent 20%),
-    radial-gradient(circle at 82% 76%, rgba(197, 160, 89, 0.05) 0%, transparent 26%),
-    radial-gradient(circle at 50% 100%, rgba(var(--accent-2-rgb) / 0.06) 0%, transparent 42%);
+    radial-gradient(900px 600px at 50% -8%, rgba(var(--gold-rgb) / 0.14) 0%, transparent 60%),
+    radial-gradient(700px 500px at 18% 18%, rgba(var(--accent-2-rgb) / 0.09) 0%, transparent 55%),
+    radial-gradient(800px 600px at 82% 76%, rgba(197, 160, 89, 0.06) 0%, transparent 65%),
+    radial-gradient(600px 500px at 50% 100%, rgba(var(--accent-2-rgb) / 0.07) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(10,10,12,0) 60%, rgba(10,10,12,0.55) 100%);
   pointer-events: none;
   z-index: 0;
 }
@@ -48,14 +49,14 @@
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(var(--accent-2-rgb) / 0.18) 1px, transparent 1.5px),
-    linear-gradient(150deg, transparent 31%, rgba(var(--accent-2-rgb) / 0.08) 31.5%, transparent 32%),
-    linear-gradient(28deg, transparent 62%, rgba(var(--accent-2-rgb) / 0.06) 62.5%, transparent 63%);
+    radial-gradient(circle at 1px 1px, rgba(var(--accent-2-rgb) / 0.14) 1px, transparent 1.6px),
+    linear-gradient(150deg, transparent 31%, rgba(var(--accent-2-rgb) / 0.06) 31.5%, transparent 32%),
+    linear-gradient(28deg, transparent 62%, rgba(var(--accent-2-rgb) / 0.05) 62.5%, transparent 63%);
   background-size: 28px 28px, 100% 100%, 100% 100%;
   background-position: center;
-  mask-image: radial-gradient(75% 72% at 50% 38%, black 28%, transparent 88%);
-  -webkit-mask-image: radial-gradient(75% 72% at 50% 38%, black 28%, transparent 88%);
-  opacity: 0.45;
+  mask-image: radial-gradient(75% 72% at 50% 38%, black 30%, transparent 90%);
+  -webkit-mask-image: radial-gradient(75% 72% at 50% 38%, black 30%, transparent 90%);
+  opacity: 0.38;
   pointer-events: none;
   z-index: 0;
 }
