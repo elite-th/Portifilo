@@ -78,7 +78,8 @@
   --muted: var(--sepia-ink);
   --ink-raw: #8A7A66;             /* raw chip text — 4.6:1 (was #6B5B4A, 3.02 = AA fail) */
   --muted-2: #7A6E5E;             /* decorative only — 3.6:1 (was #5A4E3E, 2.43) */
-  --border: #5C4938;              /* visible border — 2.6:1 (was --iron-gall, 1.81 = invisible) */
+  --border-strong: #5C4938;       /* visible border — 2.6:1 (was --iron-gall, 1.81 = invisible) */
+  --border: #5C4938;              /* alias for legacy uses; shadcn --border remapped to --line below */
   --accent: var(--verdigris);
   --accent-bright: #4DB8B8;
   --accent-deep: #2D5555;
@@ -329,7 +330,7 @@
 
 /* === Motion Keyframes === */
 
-/* Crystallization Entrance */
+/* Crystallization Entrance — DESIGN_DOCUMENT.md §4.2 */
 @keyframes crystallizeIn {
   0%   { opacity: 0; scale: 0.6; filter: blur(12px) hue-rotate(40deg); transform: rotate(var(--rot, 0deg)) translateY(40px); }
   40%  { opacity: 0.6; scale: 0.9; filter: blur(4px) hue-rotate(10deg); transform: rotate(var(--rot, 0deg)) translateY(4px); }
