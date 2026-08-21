@@ -227,7 +227,7 @@ export default function RawThought({
       return;
     }
     onDeactivate();
-  }, [onDeactivate, reducedMotion, layout]);
+  }, [onDeactivate]);
 
   const handleToggle = useCallback(() => {
     // Click = tap on mobile. Toggle behaviour:
@@ -245,23 +245,18 @@ export default function RawThought({
   // Position is computed in JS so the escaped-thought override (t6 desktop)
   // works without needing CSS to fight inline styles.
   //
-  // Loop-4 (Task 12 §1.3-C): in mobile, chips are arranged by CSS grid
-  // (2-column) — no inline top/left. Returning {} lets CSS `position: static`
-  // apply cleanly without `!important` wars against inline styles.
+  // Position is data-driven: desktop frames the headline; mobile keeps the
+  // same scattered feel inside a safe-height field instead of falling back to a grid.
   const positionStyle: React.CSSProperties = (() => {
     if (layout === "mobile") {
-      // CRITICAL: mobile uses CSS grid positioning — don't apply top/left inline.
-      // Return empty object so CSS `position: static` works without !important.
-      return {};
+      return {
+        top: thought.positionMobile.top,
+        left: thought.positionMobile.left,
+      };
     }
     if (layout === "desktop" && isEscaped) {
-      // Loop-4 (Task 12 §7.4): t6 escape refined to bottom: -30px (was -60px)
-      // — hero now covers full viewport so -30px is enough to read as escape
-      // without hitting footer (z=20). left aligned with positionDesktop
-      // (73.7%) so horizontal offset matches the on-grid position.
-      return { top: "auto", bottom: "-30px", left: "73.7%" };
+      return { top: "auto", bottom: "-30px", left: thought.positionDesktop.left };
     }
-    // desktop, desktop-narrow (escaped t6 returns inside in narrow).
     return {
       top: thought.positionDesktop.top,
       left: thought.positionDesktop.left,

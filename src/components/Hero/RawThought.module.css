@@ -156,16 +156,12 @@
 }
 
 /* -------------------- Entrance (animation 1) --------------------
-   Pre-entrance state: chip is invisible (before data-entered="true"
-   flips). Uses CSS individual `scale` property (not transform: scale)
-   so it composes cleanly with drift's `transform` without conflict.
-   When Worker A flips data-entered to "true", the base transition
-   list (opacity 0.6s + scale 0.6s + filter 0.5s) fires the entrance. */
+   Initial paint stays sharp. The chip can still transition, but never
+   starts blurred or shrunk — only motion polish, no readability tax. */
 .thoughtChip[data-entered="false"] {
-  opacity: 0;
-  scale: 0.92;
-  filter: blur(8px);
-  pointer-events: none;
+  opacity: 0.88;
+  scale: 1;
+  filter: none;
 }
 
 /* -------------------- Phase 0 — Idle (raw) -------------------- */
@@ -466,7 +462,7 @@
    translate(8px, 4px) → translate(0, 0) over 0.22s — the existing
    transition list still applies (transform 0.22s). */
 .thoughtLabel {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--chip-accent);
@@ -493,7 +489,7 @@
 
 /* -------------------- thoughtTimestamp -------------------- */
 .thoughtTimestamp {
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.05em;
   color: var(--muted-2);
@@ -691,7 +687,7 @@
 /* =========================================================
    Mode 4 — کلمه → جمله (large raw → shrinks, refined below
                               with dashed separator)
-   Uses: t4 (circadian, auto-demo target)
+   Uses: t4 (circadian)
    ========================================================= */
 .thoughtChip[data-mode="4"] .thoughtRaw {
   font-size: 1.4em;
@@ -760,63 +756,38 @@
 /* =========================================================
    Responsive — mobile (≤ 900px)
    ---------------------------------------------------------
-   Loop-4 (Task 12 §3): chips are arranged as a 2-column grid,
-   not absolute scatter. RawThought.tsx returns {} for the
-   inline positionStyle in mobile (roadmap §1.3-C) so we don't
-   need !important wars against inline top/left. position: static
-   here makes the chip flow as a normal grid item.
+   Mobile keeps the organic scatter. RawThought.tsx supplies mobile
+   top/left percentages, and the cluster CSS gives those percentages
+   a safe-height positioned field to resolve against.
    ========================================================= */
 @media (max-width: 900px) {
   .thoughtChip {
-    /* Mobile: grid item, not absolute. CRITICAL: this works without
-       !important because RawThought.tsx returns {} for positionStyle
-       in mobile (roadmap §1.3-C). No inline top/left/bottom to fight. */
-    position: static;
+    position: absolute;
     top: auto;
     left: auto;
     bottom: auto;
-
-    /* Grid item sizing — fill the column. */
-    width: 100%;
-    max-width: 100%; /* override desktop-narrow 240px and desktop 320px */
-    align-self: stretch;
-
-    /* Mobile: same layer as text — chips are below textBlock in flex
-       column, no z-index competition. opacity 1 (not dimmed). */
+    width: auto;
+    max-width: min(46vw, 240px);
+    align-self: auto;
     opacity: 1;
     z-index: 3;
-
-    /* Rotation preserved for character (var --rot still set inline). */
     transform: rotate(var(--rot, 0deg));
-
     padding: 8px 12px;
     font-size: 0.8rem;
-
-    /* B10: mobile drops decorative motion (drift, breathing, haloPulse)
-       — keeps layout and interaction. Also drops the ambient box-shadow
-       halo (chips on mobile are dense, halo would visually muddy the
-       grid). */
     animation: none !important;
     box-shadow: none !important;
   }
 
-  /* B10: entrance on mobile = opacity-only fade (no scale, no blur).
-     The 0.6s opacity transition from base still applies, but scale
-     and filter are neutralized so chips don't blur in/out on small
-     screens (perf + visual clarity). */
   .thoughtChip[data-entered="false"] {
     opacity: 0;
     scale: 1;
     filter: none;
   }
 
-  /* B10: ink spread hidden on mobile (decorative motion dropped). */
   .inkSpread {
     display: none;
   }
 
-  /* Active chip on mobile: straighten rotation + slight scale, but no
-     need to pop above textBlock (textBlock is above in flex column). */
   .thoughtChip[data-state="refining"],
   .thoughtChip[data-state="refined"] {
     z-index: 5;
@@ -833,34 +804,27 @@
   }
 
   .thoughtLabel {
-    font-size: 0.64rem;
+    font-size: 0.75rem;
   }
 
   .thoughtTimestamp {
-    font-size: 0.58rem;
+    font-size: 0.75rem;
   }
 
-  /* FIX-M4 (Worker B loop 3): raw-state chip compaction on mobile.
-     In raw state, label & timestamp are display:none so they no longer
-     reserve vertical space — chip shrinks to just raw text. Reduces
-     overlap between the 6 chips in a 380px field. Refined/trace states
-     keep label/timestamp visible (their opacity rules still apply).
-     NB: this block is placed *before* the Mode 4 mobile rule so that
-     Mode 4's 1.3em font-size (same specificity, later source order)
-     still wins for t4 chips. */
   .thoughtChip[data-state="raw"] .thoughtLabel,
   .thoughtChip[data-state="raw"] .thoughtTimestamp {
     display: none;
   }
+
   .thoughtChip[data-state="raw"] {
     padding: 7px 11px;
   }
+
   .thoughtChip[data-state="raw"] .thoughtRaw {
     font-size: 0.82rem;
     line-height: 1.35;
   }
 
-  /* Mode 4 raw slightly smaller on mobile to fit narrow field */
   .thoughtChip[data-mode="4"] .thoughtRaw {
     font-size: 1.3em;
   }
@@ -869,6 +833,17 @@
   .thoughtChip[data-mode="4"][data-state="refined"] .thoughtRaw,
   .thoughtChip[data-mode="4"][data-state="trace"] .thoughtRaw {
     font-size: 0.85em;
+  }
+}
+
+@media (max-width: 480px) {
+  .thoughtChip {
+    max-width: 41vw;
+    padding-inline: 9px;
+  }
+
+  .thoughtChip[data-state="raw"] {
+    padding-inline: 9px;
   }
 }
 
@@ -883,6 +858,36 @@
 @media (max-width: 1179px) and (min-width: 1010px) {
   .thoughtChip {
     max-width: 240px;
+  }
+}
+
+/* =========================================================
+   Touch affordance — hover:none / coarse pointer
+   ---------------------------------------------------------
+   Fish-eye (mousemove) is desktop-only. On touch, chips sit at
+   resting scale with no blur, meet 44px target, and keep
+   label/timestamp faintly visible as tap hint (instead of
+   display:none on mobile).
+   ========================================================= */
+@media (hover: none), (pointer: coarse) {
+  .thoughtChip[data-state="raw"] {
+    --fish-scale: 1 !important;
+    --fish-blur: 0px !important;
+    --fish-opacity: 0.88 !important;
+    scale: 1 !important;
+    filter: none !important;
+    opacity: 0.88 !important;
+  }
+  .thoughtChip[data-state="raw"]::before {
+    opacity: 0 !important;
+  }
+  .thoughtChip {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* keep ink spread off on touch — typewriter still runs on tap */
+  .inkSpread {
+    display: none !important;
   }
 }
 

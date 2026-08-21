@@ -86,7 +86,7 @@ export default function WhereIGo() {
             <div className={styles.railFill} />
           </div>
 
-          <ol className={styles.timeline} role="list">
+          <ol className={styles.timeline} role="list" aria-label="خط زمانی آینده">
             {WAYPOINTS.map((wp, i) => (
               <li
                 key={wp.year}

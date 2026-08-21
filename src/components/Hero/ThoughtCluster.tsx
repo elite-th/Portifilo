@@ -34,16 +34,15 @@ const RESONANCE_PAIRS: readonly [string, string][] = [
  *  - which thought is currently active (single-hover rule)
  *  - responsive LayoutMode (desktop / desktop-narrow / mobile)
  *    via useSyncExternalStore — no setState-in-effect.
- *  - auto-demo of the t4 (circadian) thought after mount
  *  - hint tooltip visibility (until first user interaction)
  *  - trace-count → reset affordance
  *
- * Loop-4 (Task 12 §2.5): the scatter field is now a transparent
- * absolute overlay covering the whole hero (see ThoughtCluster.module.css
+ * Loop-4 (Task 12 §2.5): the scatter field stays a transparent
+ * overlay covering the whole hero (see ThoughtCluster.module.css
  * — no z-index, pointer-events: none). Chips float on the ambient
  * background around the central textBlock rather than competing with
- * it as a card. On mobile it becomes a static 2-column grid below
- * the text.
+ * it as a card. On mobile it keeps that floating layout with safe
+ * padding and tighter chip sizing.
  *
  * The cluster renders a single <section> + <ul> + <li> per thought.
  * Each <li> only carries semantic meaning; RawThought's <button>
@@ -55,15 +54,13 @@ const NARROW_MIN = 1010;
 
 const HINT_INTRO_DELAY = 600;
 const HINT_AUTO_HIDE = 16_000;
-const AUTO_DEMO_DELAY = 1200;
-
 /* =========================================================
  * Loop-8 (animation 1): entrance choreography — SCROLL-REVEAL CRYSTALLIZATION.
  *
  * Chips crystallize into view as they enter the viewport via IntersectionObserver.
  * Each chip has a custom delay based on its position in the choreography.
  *
- * Choreography order (t4 first — auto-demo target):
+ * Choreography order:
  *   t4 → t1 → t6 → t2 → t5 → t3
  *
  * The CSS handles the crystallizeIn animation via [data-scroll-revealed="true"]
@@ -164,18 +161,12 @@ export default function ThoughtCluster() {
   const [traceIds, setTraceIds] = useState<Set<string>>(() => new Set());
   const [resetSignal, setResetSignal] = useState<number>(0);
 
-  // Resonance beams state: which pairs have both chips in trace
-  const [resonancePairs, setResonancePairs] = useState<Set<string>>(() => new Set());
-
-  // When traceIds changes, update resonance pairs
-  useEffect(() => {
-    const newResonance = new Set<string>();
+  const resonancePairs = useMemo(() => {
+    const next = new Set<string>();
     RESONANCE_PAIRS.forEach(([id1, id2]) => {
-      if (traceIds.has(id1) && traceIds.has(id2)) {
-        newResonance.add(`${id1}-${id2}`);
-      }
+      if (traceIds.has(id1) && traceIds.has(id2)) next.add(`${id1}-${id2}`);
     });
-    setResonancePairs(newResonance);
+    return next;
   }, [traceIds]);
 
   // Beam endpoints — measured in layout effect (FIX-9), not in render.
@@ -191,8 +182,8 @@ export default function ThoughtCluster() {
 
   useLayoutEffect(() => {
     if (reducedMotion || resonancePairs.size === 0) {
-      setBeams([]);
-      return;
+      const clear = requestAnimationFrame(() => setBeams([]));
+      return () => cancelAnimationFrame(clear);
     }
     const measure = () => {
       const field = fieldRef.current;
@@ -264,30 +255,6 @@ export default function ThoughtCluster() {
     };
   }, []);
 
-  // Auto-demo: activate t4 shortly after mount. Deactivate after t4's
-  // traceDuration so the chip can enter its trace phase naturally.
-  useEffect(() => {
-    if (reducedMotion) return; // skip auto-demo in reduced-motion mode
-    const demo = THOUGHTS.find((t) => t.isAutoDemo);
-    if (!demo) return;
-
-    const activate = window.setTimeout(() => {
-      // Only auto-activate if the user hasn't touched anything yet.
-      setActiveId((prev) => (prev === null ? demo.id : prev));
-    }, AUTO_DEMO_DELAY);
-
-    const deactivate = window.setTimeout(
-      () => {
-        setActiveId((prev) => (prev === demo.id ? null : prev));
-      },
-      AUTO_DEMO_DELAY + demo.traceDuration
-    );
-
-    return () => {
-      window.clearTimeout(activate);
-      window.clearTimeout(deactivate);
-    };
-  }, [reducedMotion]);
 
   // --- Cluster-side activation handlers (passed to chips) -----------
 
@@ -335,6 +302,11 @@ export default function ThoughtCluster() {
 
   useEffect(() => {
     if (reducedMotion || layout === "mobile") return;
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(hover: none), (pointer: coarse)").matches
+    )
+      return;
     const els = chipEls.current;
     const rects = new Map<string, { cx: number; cy: number }>();
     const pointer = { x: 0, y: 0 };
@@ -402,13 +374,13 @@ export default function ThoughtCluster() {
       ref={fieldRef}
       className={styles.scatterField}
       data-layout={layout}
-      data-mobile={layout === "mobile" ? "grid" : undefined}
+      data-mobile={layout === "mobile" ? "scatter" : undefined}
       aria-label="فکرهای خام طاها حسینی"
     >
       <ul
         className={styles.thoughtList}
         role="list"
-        data-mobile={layout === "mobile" ? "grid" : undefined}
+        data-mobile={layout === "mobile" ? "scatter" : undefined}
       >
         {THOUGHTS.map((thought) => (
           <li className={styles.thoughtItem} key={thought.id}>

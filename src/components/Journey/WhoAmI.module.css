@@ -93,6 +93,7 @@
   display: inline-flex;
   align-items: baseline;
   gap: 0.15em;
+  text-wrap: balance;
   /* reveal */
   opacity: 0;
   transform: translateY(20px);

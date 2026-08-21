@@ -136,10 +136,10 @@ export function Archive() {
     <section id="archive" className={styles.archive}>
       <div className={styles.archiveInner}>
         <header className={styles.header}>
-          <span className={styles.kicker}>آرشیو زنده</span>
-          <h2 className={styles.title}>توشه‌ی مغز</h2>
+          <span className={styles.kicker}>دفترچه‌ی ذهن</span>
+          <h2 className={styles.title}>چیزهایی که در من مانده‌اند</h2>
           <p className={styles.subtitle}>
-            قطره‌های فکر، مقاله‌ها و شعرهایی که از ذهنم عبور کرده‌اند.
+            یادداشت‌ها، مقاله‌ها و شعرهایی که نشان می‌دهند طاها بیرون از پروژه‌ها چطور فکر می‌کند.
           </p>
         </header>
 
@@ -209,8 +209,47 @@ interface MasonryProps {
 }
 
 function Masonry({ entries, onSelect, reducedMotion }: MasonryProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [enteredIds, setEnteredIds] = useState<Set<string>>(() => new Set());
+
+  // Single shared IntersectionObserver (Phase B) — one observer for all items
+  // instead of N observers. Reduces work on filter changes with many entries.
+  useEffect(() => {
+    if (reducedMotion || typeof IntersectionObserver === "undefined") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- sync visible state for reduced-motion/no-IO fallback
+      setEnteredIds(new Set(entries.map((e) => e.id)));
+      return;
+    }
+    const container = containerRef.current;
+    if (!container) return;
+    const observed = new Set<string>();
+    const io = new IntersectionObserver(
+      (items) => {
+        let changed = false;
+        for (const item of items) {
+          if (item.isIntersecting) {
+            const id = (item.target as HTMLElement).dataset.entryId;
+            if (id && !observed.has(id)) {
+              observed.add(id);
+              changed = true;
+              io.unobserve(item.target);
+            }
+          }
+        }
+        if (changed) setEnteredIds(new Set(observed));
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 }
+    );
+    const els = container.querySelectorAll<HTMLElement>("[data-entry-id]");
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [entries, reducedMotion]);
+
+  // reducedMotion snap — synchronous so first paint is visible
+  const shouldSnap = reducedMotion || typeof IntersectionObserver === "undefined";
+
   return (
-    <div className={styles.masonry}>
+    <div ref={containerRef} className={styles.masonry}>
       {entries.map((entry, i) => (
         <MasonryItem
           key={entry.id}
@@ -218,6 +257,7 @@ function Masonry({ entries, onSelect, reducedMotion }: MasonryProps) {
           index={i}
           onSelect={onSelect}
           reducedMotion={reducedMotion}
+          entered={shouldSnap || enteredIds.has(entry.id)}
         />
       ))}
     </div>
@@ -229,6 +269,7 @@ interface MasonryItemProps {
   index: number;
   onSelect: (id: string) => void;
   reducedMotion: boolean;
+  entered: boolean;
 }
 
 function MasonryItem({
@@ -236,45 +277,16 @@ function MasonryItem({
   index,
   onSelect,
   reducedMotion,
+  entered,
 }: MasonryItemProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [entered, setEntered] = useState<boolean>(false);
-
-  /* Snap-to-entered condition: reduced motion OR IntersectionObserver
-     unsupported (legacy browsers). The render-phase flip below avoids
-     setState-during-effect. */
-  const shouldSnap =
-    reducedMotion || typeof IntersectionObserver === "undefined";
-  if (shouldSnap && !entered) {
-    setEntered(true);
-  }
-
-  /* IntersectionObserver — flip `entered` once the item scrolls into view. */
-  useEffect(() => {
-    if (shouldSnap) return;
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (items) => {
-        if (items[0]?.isIntersecting) {
-          setEntered(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [shouldSnap]);
-
   const delay = reducedMotion
     ? 0
     : REVEAL_STAGGER_MS[index % REVEAL_STAGGER_MS.length];
 
   return (
     <div
-      ref={ref}
       className={styles.masonryItem}
+      data-entry-id={entry.id}
       data-entered={entered ? "true" : "false"}
       style={{ transitionDelay: `${delay}ms` }}
     >

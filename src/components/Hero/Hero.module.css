@@ -12,13 +12,14 @@
        hover above the textBlock.
      - Mobile (≤900px): flex column — textBlock on top (still
        centered, max-width 100%), scatterField below in static
-       position with chips arranged as a 2-column grid.
+       safe-height scatter field.
    The visual half is now a transparent overlay of scattered
    chips rendered by <ThoughtCluster /> (Worker A). The p5
    constellation has been removed (see design spec §0).
    ========================================================= */
 
 .page {
+  min-height: 100dvh;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -28,27 +29,16 @@
   overflow: hidden;
 }
 
-/* Ambient background — crimson glow + antique gold for depth */
+/* Ambient background — soft glow plus faint node grid */
 .page::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(
-      55% 45% at 75% 18%,
-      rgba(var(--accent-2-rgb) / 0.08) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      40% 35% at 18% 82%,
-      rgba(197, 160, 89, 0.06) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      50% 40% at 50% 100%,
-      rgba(var(--accent-2-rgb) / 0.04) 0%,
-      transparent 65%
-    );
+    radial-gradient(circle at 50% 34%, rgba(var(--accent-2-rgb) / 0.12) 0%, transparent 24%),
+    radial-gradient(circle at 18% 18%, rgba(var(--accent-2-rgb) / 0.07) 0%, transparent 20%),
+    radial-gradient(circle at 82% 76%, rgba(197, 160, 89, 0.05) 0%, transparent 26%),
+    radial-gradient(circle at 50% 100%, rgba(var(--accent-2-rgb) / 0.06) 0%, transparent 42%);
   pointer-events: none;
   z-index: 0;
 }
@@ -58,12 +48,14 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(var(--accent-2-rgb) / 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(var(--accent-2-rgb) / 0.02) 1px, transparent 1px);
-  background-size: 64px 64px;
+    radial-gradient(circle at 1px 1px, rgba(var(--accent-2-rgb) / 0.18) 1px, transparent 1.5px),
+    linear-gradient(150deg, transparent 31%, rgba(var(--accent-2-rgb) / 0.08) 31.5%, transparent 32%),
+    linear-gradient(28deg, transparent 62%, rgba(var(--accent-2-rgb) / 0.06) 62.5%, transparent 63%);
+  background-size: 28px 28px, 100% 100%, 100% 100%;
   background-position: center;
-  mask-image: radial-gradient(80% 80% at 50% 40%, black 30%, transparent 90%);
-  -webkit-mask-image: radial-gradient(80% 80% at 50% 40%, black 30%, transparent 90%);
+  mask-image: radial-gradient(75% 72% at 50% 38%, black 28%, transparent 88%);
+  -webkit-mask-image: radial-gradient(75% 72% at 50% 38%, black 28%, transparent 88%);
+  opacity: 0.45;
   pointer-events: none;
   z-index: 0;
 }
@@ -205,6 +197,7 @@
   color: var(--text);
   margin: 0;
   text-align: center;
+  text-wrap: balance;
   opacity: 0;
   transform: translateY(18px);
   animation: heroRise 1s var(--ease-out) 0.18s forwards;
@@ -274,6 +267,8 @@
   border: 1px solid var(--accent);
   padding: 14px 26px;
   border-radius: 999px;
+  min-height: 44px;
+  min-width: 44px;
   cursor: pointer;
   text-decoration: none;
   transition: transform 0.3s var(--ease-out),
@@ -312,6 +307,8 @@
   border: 1px solid var(--line);
   padding: 14px 26px;
   border-radius: 999px;
+  min-height: 44px;
+  min-width: 44px;
   cursor: pointer;
   text-decoration: none;
   transition: border-color 0.3s var(--ease-out),
@@ -395,17 +392,13 @@
    buttons have their own background contrast, so no shadow there. */
 .headline,
 .description {
-  text-shadow: 0 2px 12px rgba(8, 8, 7, 0.6);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
 }
 
 @media (max-width: 900px) {
-  /* Loop-5 (Task 16): on mobile, content flows in a natural flex column
-     (textBlock + scatterField grid stacked). The desktop `overflow: hidden`
-     (which exists to clip escaped t6 chip) is wrong on mobile — it clips
-     the footer (تهران · ۱۶ سال · علوم انسانی + © year) when the chips grid
-     is taller than (viewport - header - textBlock). Allow the page to grow
-     with content and let the user scroll. No chip on mobile is `isEscaped`
-     (positionMobile is safe inside hero), so nothing leaks out visually. */
+  /* On mobile, content flows in a natural flex column. The desktop
+     `overflow: hidden` is wrong here because the scatter field can make
+     the page taller than the viewport. Let the user scroll. */
   .page {
     overflow: visible;
   }
@@ -422,12 +415,9 @@
     font-size: 0.8rem;
   }
 
-  /* Mobile: flex column — textBlock on top (still centered),
-     scatterField flows below as a 2-column grid.
-     Note: DOM order is scatterOverlay→textBlock (so on desktop,
-     scatterOverlay's absolute overlay paints behind textBlock).
-     On mobile we use CSS `order` to swap them visually:
-     textBlock (order: 1) on top, scatterOverlay (order: 2) below. */
+  /* Mobile: flex column — textBlock on top, scatter field below.
+     DOM order is scatterOverlay→textBlock (so on desktop the overlay
+     paints behind textBlock). On mobile CSS `order` swaps them visually. */
   .hero {
     display: flex;
     flex-direction: column;
